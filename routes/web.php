@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,4 +19,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
+
+//admin
+Route::group(['prefix' => 'admin/', 'middleware' => 'is_admin'], function () {
+    Route::get('home', 'HomeController@adminHome')->name('admin.home');
+    Route::get('processing-data', 'ProcessingDataController@index')->name('admin.processingData.index');
+});

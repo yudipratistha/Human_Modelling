@@ -23,7 +23,7 @@
                     <li class="dropdown"><a class="nav-link menu-title link-nav" href="/admin/home"><i data-feather="home"></i><span>Dashboard</span></a></li>
                     <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="airplay"></i><span>Add Data</span></a>
                     <ul class="nav-submenu menu-content">
-                      <li><a href="general-widget.html">General</a></li>
+                      <li><a href="{{ route('admin.processingData.index') }}">General</a></li>
                       <li><a href="chart-widget.html">Chart</a></li>
                     </ul>
                   </li>                  
