@@ -13,8 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
+// Route::get('/', function () {
+//     return view('home');
+// });
+
+Route::group(['prefix' => '', 'middleware' => 'is_admin'], function () {
+    Route::get('/', 'HomeController@index')->name('index');
 });
 
 Auth::routes();
@@ -24,4 +28,6 @@ Auth::routes();
 Route::group(['prefix' => 'admin/', 'middleware' => 'is_admin'], function () {
     Route::get('home', 'HomeController@adminHome')->name('admin.home');
     Route::get('processing-data', 'ProcessingDataController@index')->name('admin.processingData.index');
+    Route::post('processing-data/upload-data-CSV', 'ProcessingDataController@parseDataCSV')->name('admin.processingData.parseDataCSV');
+    Route::post('processing-data/processing-data-CSV', 'ProcessingDataController@storeDataCSV')->name('admin.processingData.processingDataCSV');
 });
