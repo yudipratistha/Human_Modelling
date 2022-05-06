@@ -29,42 +29,39 @@
                                 <h5>Upload CSV File</h5>
                             </div>
                             <div class="card-body">
-                                <form class="form-horizontal" method="POST" action="{{ route('admin.processingData.parseDataCSV') }}" enctype="multipart/form-data">
-                                {{ csrf_field() }}
+                                <span id="success-message"></span>
+                                <form id="upload-csv" class="form-horizontal" method="POST" action="{{route('admin.processingData.storeDataCSV')}}" enctype="multipart/form-data">
+                                    {{ csrf_field() }}
 
-                                <div class="form-group{{ $errors->has('csv_file') ? ' has-error' : '' }}">
-                                    <label for="csv_file" class="col-md-4 control-label">CSV file to import</label>
+                                    <div class="form-group{{ $errors->has('csv_file') ? ' has-error' : '' }}">
+                                        <label for="csv_file" class="col-md-4 control-label">CSV file to import</label>
 
-                                    <div class="col-md-6">
-                                        <input id="csv_file" type="file" class="form-control" name="csv_file" required>
+                                        <div class="col-md-6">
+                                            <input id="csv_file" type="file" class="form-control" name="csv_file" required>
 
-                                        @if ($errors->has('csv_file'))
-                                            <span class="help-block">
-                                            <strong>{{ $errors->first('csv_file') }}</strong>
-                                        </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="header" checked> File contains header row?
-                                            </label>
+                                            @if ($errors->has('csv_file'))
+                                                <span class="help-block">
+                                                <strong>{{ $errors->first('csv_file') }}</strong>
+                                            </span>
+                                            @endif
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            Parse CSV
-                                        </button>
+                                    <div class="form-group">
+                                        <div class="col-md-8 col-md-offset-4">
+                                            <button id="btn-parse-csv" type="submit" class="btn btn-primary">
+                                                Parse CSV
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="form-group" id="process" style="display:none;">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style=""></div>
                                     </div>
                                 </div>
-                            </form>
-                                <!-- <form class="dropzone digits" id="singleFileUpload" action="{{route('admin.processingData.parseDataCSV')}}">
+
+                                <!-- <form class="dropzone digits" id="singleFileUpload" action="{{route('admin.processingData.storeDataCSV')}}">
                                     <div class="dz-message needsclick"><i class="icon-cloud-up"></i>
                                         <h6>Drop files here or click to upload.</h6>
                                     </div>
@@ -111,5 +108,69 @@
     };
 }();
 DropzoneExample.init();
+
+// $(document).ready(function(){
+  
+//     $('#upload-csv').on('submit', function(event){
+//         event.preventDefault();
+//         var form = $("#upload-csv").get(0);
+//         console.log(form)
+//         $.ajax({
+//             xhr: function() {
+//                 var xhr = new window.XMLHttpRequest();
+//                 xhr.upload.addEventListener("progress", function(evt) {
+//                     if (evt.lengthComputable) {
+//                         var percentComplete = (evt.loaded / evt.total) * 100;
+//                         //Do something with upload progress here
+//                         console.log("tes", percentComplete)
+//                     }
+//                 }, false);
+//                 return xhr;
+//             },
+//             type:"POST",
+//             url:"{{route('admin.processingData.storeDataCSV')}}",
+//             processData: false,
+//             contentType: false,
+//             cache: false,
+//             data: new FormData(form), 
+//             beforeSend:function(){
+//                 $('#btn-parse-csv').attr('disabled', 'disabled');
+//                 $('#process').css('display', 'block');
+//             },
+//             // uploadProgress: function (event, position, total, percentComplete) {
+//             //     console.log("tes")
+//             //     var percentage = percentComplete;
+//             //     $('.progress .progress-bar').css("width", percentage+'%', function() {
+//             //         return $(this).attr("aria-valuenow", percentage) + "%";
+//             //     })
+//             // },
+//             success:function(data){
+//                 var percentage = 0;
+
+//                 var timer = setInterval(function(){
+//                 percentage = percentage + 20;
+//                 progress_bar_process(percentage, timer);
+//                 }, 1000);
+//             }
+//         })
+//     });
+
+//     function progress_bar_process(percentage, timer){
+//         $('.progress-bar').css('width', percentage + '%');
+//         if(percentage > 100){
+//             clearInterval(timer);
+//             $('#upload-csv')[0].reset();
+//             $('#process').css('display', 'none');
+//             $('.progress-bar').css('width', '0%');
+//             $('#btn-parse-csv').attr('disabled', false);
+//             $('#success_message').html("<div class='alert alert-success'>Data Saved</div>");
+//             setTimeout(function(){
+//                 $('#success_message').html('');
+//             }, 5000);
+//         }
+//     }
+
+// });
+
 </script>
 @endsection
