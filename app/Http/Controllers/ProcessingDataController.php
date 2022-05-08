@@ -34,7 +34,7 @@ class ProcessingDataController extends Controller
      */
     public function index()
     {
-        return view('admin.processingData');
+        return view('admin.viewData.processingData');
     }
 
     public function storeDataCSV(Request $request)
@@ -104,8 +104,7 @@ class ProcessingDataController extends Controller
         SspTime::insert($timesDataArr);
         
         $i = 0;
-        foreach (SspTime::where('ssp_ticket_id', 1)->cursor()->toArray() as $sspTimes) {
-
+        foreach(SspTime::where('ssp_ticket_id', 1)->cursor()->toArray() as $sspTimes){
             // echo "<pre>".print_r($csvDataArray[$i],true)."</pre>";
 
             $jointAnglesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
@@ -141,43 +140,6 @@ class ProcessingDataController extends Controller
         SspPercentCapable::insert($strengthStdDevsDataArr);
         SspStrengthStdDev::insert($percentCapablesDataArr);
 
-        // foreach($csvDataArray as $csvDataArrayKey => $csvDataArrayValue){
-
-            // $time = new SspTime();
-            // $time->time = $csvDataArrayValue['time']['time_time'];
-            // $time->task = $csvDataArrayValue['time']['time_task'];
-            // $time->action = $csvDataArrayValue['time']['time_action'];
-            // $time->push();
-            
-            // $jointAnglesDataArr[$i]["id_ssp_times"] = $sspTimes[$i]["id"];
-            // foreach($csvDataArrayValue['joint_angles'] as $dataKey => $dataValue){
-            //     $jointAnglesDataArr[$i][$dataKey]= $dataValue;
-            // }
-
-            // $jointTorquesDataArr[$i]["id_ssp_times"] = $sspTimes[$i]["id"];
-            // foreach($csvDataArrayValue['joint_torques'] as $dataKey => $dataValue){
-            //     $jointTorquesDataArr[$i][$dataKey]= $dataValue;
-            // }
-
-            // $meanStrengthsDataArr[$i]["id_ssp_times"] = $sspTimes[$i]["id"];
-            // foreach($csvDataArrayValue['mean_strengths'] as $dataKey => $dataValue){
-            //     $meanStrengthsDataArr[$i][$dataKey]= $dataValue;
-            // }
-
-            // $strengthStdDevsDataArr[$i]["id_ssp_times"] = $sspTimes[$i]["id"];
-            // foreach($csvDataArrayValue['percent_capables'] as $dataKey => $dataValue){
-            //     $strengthStdDevsDataArr[$i][$dataKey]= $dataValue;
-            // }
-
-            // $percentCapablesDataArr[$i]["id_ssp_times"] = $sspTimes[$i]["id"];
-            // foreach($csvDataArrayValue['strength_std_devs'] as $dataKey => $dataValue){
-            //     $percentCapablesDataArr[$i][$dataKey]= $dataValue;
-            // }
-            // echo $i;
-        //     $i++;
-        // }
-
         // return response()->json('success');
     }
-    
 }

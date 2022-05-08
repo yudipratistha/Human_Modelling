@@ -4,7 +4,7 @@
 
 @section('plugin_css')
 <!-- Plugins css start-->
-<link rel="stylesheet" type="text/css" href="../assets/css/dropzone.css">
+<link rel="stylesheet" type="text/css" href="../../assets/css/dropzone.css">
 <!-- Plugins css Ends-->
 @endsection
 
@@ -81,8 +81,8 @@
 
 @section('plugin_js')
 <!-- Plugins JS start-->
-<script src="../assets/js/dropzone/dropzone.js"></script>
-<script src="../assets/js/dropzone/dropzone-script.js"></script>
+<script src="../../assets/js/dropzone/dropzone.js"></script>
+<script src="../../assets/js/dropzone/dropzone-script.js"></script>
 <!-- Plugins JS Ends-->
 
 <script>
@@ -171,6 +171,54 @@ DropzoneExample.init();
 //     }
 
 // });
+
+
+function processingCsvData(){
+    swal.fire({
+      title: "Create this form?",
+      text: "Apakah ",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Process",
+      showLoaderOnConfirm: true,
+      preConfirm: (login) => {  
+        let selected = $('#form-type :selected').val() !== '';
+        var form = $("#tambahFormOption").get(0);
+
+        if (!selected) {
+            swal.showValidationMessage('Please select an option!');
+        }else{
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+          return $.ajax({
+            type: "POST", 
+            url: "{{route('admin.processingData.storeDataCSV')}}",
+            processData: false,
+            contentType: false,
+            cache: false,
+            data: new FormData(form), 
+            success: function(data) {
+              var request = 'success';
+            },
+              error: function(xhr, status, error){
+                  swal.fire({title:"Form Project Gagal Di Tambah!", text: xhr.responseText, type:"error"});
+              }
+          });
+        }                
+      }          
+    }).then((result) => {
+      console.log("sadsa ", result.value)
+        if(result.value){
+          swal.fire({title:"New Form Data Added!", text:"Successfuly add new Form data!", type:"success"})
+          .then(function(){ 
+              window.location.href = "/";
+          });
+        }
+    })
+}
 
 </script>
 @endsection

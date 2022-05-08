@@ -27,6 +27,12 @@ Auth::routes();
 //admin
 Route::group(['prefix' => 'admin/', 'middleware' => 'is_admin'], function () {
     Route::get('home', 'HomeController@adminHome')->name('admin.home');
-    Route::get('processing-data', 'ProcessingDataController@index')->name('admin.processingData.index');
-    Route::post('processing-data/processing-data-csv', 'ProcessingDataController@storeDataCSV')->name('admin.processingData.storeDataCSV');
+
+    Route::group(['prefix' => 'data/'], function () {
+        Route::get('processing-data', 'ProcessingDataController@index')->name('admin.processingData.index');
+        Route::post('processing-data/processing-data-csv', 'ProcessingDataController@storeDataCSV')->name('admin.processingData.storeDataCSV');
+        Route::get('list-data-tickets', 'ViewDataController@index')->name('admin.listDataTickets.index');
+        Route::get('data-ticket/{id}', 'ViewDataController@dataTicketIndex')->name('admin.dataTicket.index');
+        Route::post('get-data-ticket/{tiketId}', 'ViewDataController@getDataTicket')->name('admin.dataTicket.getDataTicket');
+    });
 });

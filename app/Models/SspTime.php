@@ -17,7 +17,9 @@ class SspTime extends Model
     // }
     // protected $fillable = ['time', 'task', 'action'];
 
-    
+    public function SspTicket(){
+        return $this->belongsTo('App\Models\SspTicket', 'ssp_ticket_id', 'id');
+    }    
     
     public function SspJointAngle(){
         return $this->hasMany('App\Models\SspJointAngle', 'id_ssp_times');
