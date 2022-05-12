@@ -203,9 +203,8 @@ class TicketDataController extends Controller
     }
 
     public function destroyTicketData($ticketId){
-        $ticket = SspTicket::find($ticketId);
-        $ticket->ssp_ticket_status = 0;
-        $ticket->save();
+        $ticket = SspTicket::where('ssp_tickets.id', $ticketId)->where('user_id', Auth::user()->id)
+        ->update(['ssp_ticket_status'=> 0]);
 
         $ticketHistory = new SspTicketHistory;
         $ticketHistory->ssp_ticket_id = $ticketId;
@@ -228,7 +227,7 @@ class TicketDataController extends Controller
         return response()->json('success');
     }
 
-    public function updateDataErgonomic(Request $request){
+    public function updateErgonomicData(Request $request){
         DB::table('ssp_times')
             ->leftJoin('ssp_tickets', 'ssp_times.ssp_ticket_id', '=', 'ssp_tickets.id')
             ->leftJoin('ssp_joint_angles', 'ssp_joint_angles.id_ssp_times', '=', 'ssp_times.id')
@@ -273,4 +272,13 @@ class TicketDataController extends Controller
 
         return response()->json('success');
     }
+
+    public function destroyErgonomicData($timeId){
+        DB::table('ssp_times')->leftJoin('ssp_tickets', 'ssp_times.ssp_ticket_id', '=', 'ssp_tickets.id')
+            ->where('user_id', Auth::user()->id)->where('ssp_times.id', $timeId)
+            ->update(['time_status'=> 0]);
+
+        return response()->json('success');
+    }
+    
 }

@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
+use File;
+use Box\Spout\Reader\Common\Creator\ReaderFactory;
+// use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Writer\WriterFactory;
+use Box\Spout\Common\Type;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProcessingDataController extends Controller
@@ -41,68 +46,69 @@ class ProcessingDataController extends Controller
 
     public function storeDataCSV(Request $request)
     {
+        ini_set('memory_limit','256M');
         $this->validate($request,[
             'job_analyst' => 'required',
             'csvFile' => 'required',
         ]);
 
         try{
-            $ticket = SspTicket::find($request->ticket_id);
-            $ticket->ssp_ticket_status = 2;
-            $ticket->ssp_ticket_job_analyst = $request->job_analyst;
-            $ticket->save();
-
-            $ticketHistory = new SspTicketHistory;
-            $ticketHistory->ssp_ticket_id = $request->ticket_id;
-            $ticketHistory->ssp_ticket_histories_status = 2;
-            $ticketHistory->save();
-            
             $path = $request->file('csvFile');
-            $csvData = Excel::toArray(new ProcessingDataController, $path);
+            $reader = $reader = ReaderFactory::createFromType(Type::CSV);
+            $reader->open($path);
+
+            $status = false;
+            foreach ($reader->getSheetIterator() as $sheet){
+                foreach ($sheet->getRowIterator() as $row){
+                    if($row->toArray()[0] === "Time (sec)"){
+                        $status = true;
+                    }
+                    if($status){
+                        $csvData[] = $row->toArray();
+                    }
+                }
+            }
+            $reader->close();
             
             $csvTableNameArray = [];
             $csvDataArray = [];
             $columnLength=0;
             $columnCount = 0;
             $lastArrFoundStats= false;
-
-            foreach(array_reverse($csvData[0][9]) as $tableNameKey => $tableNameValue){
+            
+            array_pop($csvData);
+            // array_pop($csvData[0]);
+            foreach(array_reverse($csvData[0]) as $tableNameKey => $tableNameValue){
                 if(!empty($tableNameValue)){
-                    $csvTableNameArray[substr(strtolower(str_replace(" ", "_", $tableNameValue)), 0, strrpos($tableNameValue, "(") -1)] = $columnLength+1;
+                    $csvTableNameArray[substr(strtolower(str_replace(" ", "_", ltrim($tableNameValue))), 0, strrpos(ltrim($tableNameValue), "(") -1)] = $columnLength+1;
                     $columnLength=0;
                 }else{
                     $columnLength++;
                 }
             }
-
+            
             for(end($csvTableNameArray); key($csvTableNameArray)!==null; prev($csvTableNameArray)){
                 $csvColumnNameKey = key($csvTableNameArray);
                 $csvColumnNameValue = current($csvTableNameArray);
                 for($i = 0; $i < $csvColumnNameValue; $i++){
-                    for($j= 11; $j < count($csvData[0]); $j++){
-                        if(!preg_match('/^[a-z0\h]+$/s', $csvData[0][$j][$columnCount]) && $csvData[0][10][$columnCount] === "Task"){
-                            $csvDataArray[$j-11][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[0][10][$columnCount]))] = ltrim($csvData[0][$j][$columnCount]);
-                            $emptyColumnTask = ltrim($csvData[0][$j][$columnCount]);
-                        }else if($csvData[0][10][$columnCount] === "Task"){
-                            $csvDataArray[$j-11][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[0][10][$columnCount]))] = $emptyColumnTask;
-                        }else if($csvData[0][$j][$columnCount] !== NULL && $csvData[0][10][$columnCount] === "Action"){
-                            $csvDataArray[$j-11][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[0][10][$columnCount]))] = $csvData[0][$j][$columnCount];
-                            $emptyColumnAction = $csvData[0][$j][$columnCount];
-                        }else if($csvData[0][10][$columnCount] === "Action"){
-                            $csvDataArray[$j-11][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[0][10][$columnCount]))] = $emptyColumnAction;
+                    for($j= 2; $j < count($csvData); $j++){
+                        if(!preg_match('/^[a-z0\h]+$/s', $csvData[$j][$columnCount]) && $csvData[1][$columnCount] === "Task"){
+                            $csvDataArray[$j-2][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[1][$columnCount]))] = ltrim($csvData[$j][$columnCount]);
+                            $emptyColumnTask = ltrim($csvData[$j][$columnCount]);
+                        }else if($csvData[1][$columnCount] === "Task"){
+                            $csvDataArray[$j-2][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[1][$columnCount]))] = $emptyColumnTask;
+                        }else if(!empty($csvData[$j][$columnCount]) && $csvData[1][$columnCount] === "Action"){
+                            $csvDataArray[$j-2][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[1][$columnCount]))] = $csvData[$j][$columnCount];
+                            $emptyColumnAction = $csvData[$j][$columnCount];
+                        }else if($csvData[1][$columnCount] === "Action"){
+                            $csvDataArray[$j-2][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[1][$columnCount]))] = $emptyColumnAction;
                         }else{
-                            $csvDataArray[$j-11][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[0][10][$columnCount]))] = $csvData[0][$j][$columnCount];
-                        }
-                        if(strpos($csvData[0][$j][$columnCount], 'Report generated by Task Simulation Builder - Jack') !== false){
-                            $lastArrFoundStats= true;
-                            $lastArrFoundVal= $j-11;
+                            $csvDataArray[$j-2][$csvColumnNameKey][$csvColumnNameKey. "_" .strtolower(str_replace(" ", "_", $csvData[1][$columnCount]))] = $csvData[$j][$columnCount];
                         }
                     }
                     $columnCount++;
                 }
             }
-            
-            if($lastArrFoundStats) unset($csvDataArray[$lastArrFoundVal]);
             
             $timesDataArr = array();
             $jointAnglesDataArr = array();
@@ -116,48 +122,64 @@ class ProcessingDataController extends Controller
                     'ssp_ticket_id' => $request->ticket_id,
                     'time' => $csvDataArrayValue['time']['time_time'],
                     'task' => $csvDataArrayValue['time']['time_task'],
-                    'action' => $csvDataArrayValue['time']['time_action'])
+                    'action' => $csvDataArrayValue['time']['time_action'],
+                    'time_status' => 1)
                 );
             }
-            SspTime::insert($timesDataArr);
+            
+            foreach (array_chunk($timesDataArr,1000) as $timesData){
+                SspTime::insert($timesData);
+            }
             
             $i = 0;
             foreach(SspTime::where('ssp_ticket_id', $request->ticket_id)->cursor()->toArray() as $sspTimes){
                 // echo "<pre>".print_r($csvDataArray[$i],true)."</pre>";
-
-                $jointAnglesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
-                foreach($csvDataArray[$i]['joint_angles'] as $dataKey => $dataValue){
-                    $jointAnglesDataArr[$i][$dataKey]= $dataValue;
-                }
                 
+                $jointAnglesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
                 $jointTorquesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
-                foreach($csvDataArray[$i]['joint_torques'] as $dataKey => $dataValue){
-                    $jointTorquesDataArr[$i][$dataKey]= $dataValue;
-                }
-
                 $meanStrengthsDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
-                foreach($csvDataArray[$i]['mean_strengths'] as $dataKey => $dataValue){
-                    $meanStrengthsDataArr[$i][$dataKey]= $dataValue;
-                }
-
                 $strengthStdDevsDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
-                foreach($csvDataArray[$i]['percent_capables'] as $dataKey => $dataValue){
-                    $strengthStdDevsDataArr[$i][$dataKey]= $dataValue;
-                }
-
                 $percentCapablesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
-                foreach($csvDataArray[$i]['strength_std_devs'] as $dataKey => $dataValue){
-                    $percentCapablesDataArr[$i][$dataKey]= $dataValue;
+                for($j=0; $j< count($csvDataArray[$i]['joint_angles']); $j++){
+                    $jointAnglesDataArr[$i][array_keys($csvDataArray[$i]['joint_angles'])[$j]]= $csvDataArray[$i]['joint_angles'][array_keys($csvDataArray[$i]['joint_angles'])[$j]];
+                    $jointTorquesDataArr[$i][array_keys($csvDataArray[$i]['joint_torques'])[$j]]= $csvDataArray[$i]['joint_torques'][array_keys($csvDataArray[$i]['joint_torques'])[$j]];
+                    $meanStrengthsDataArr[$i][array_keys($csvDataArray[$i]['mean_strengths'])[$j]]= $csvDataArray[$i]['mean_strengths'][array_keys($csvDataArray[$i]['mean_strengths'])[$j]];
+                    $strengthStdDevsDataArr[$i][array_keys($csvDataArray[$i]['percent_capables'])[$j]]= $csvDataArray[$i]['percent_capables'][array_keys($csvDataArray[$i]['percent_capables'])[$j]];
+                    $percentCapablesDataArr[$i][array_keys($csvDataArray[$i]['strength_std_devs'])[$j]]= $csvDataArray[$i]['strength_std_devs'][array_keys($csvDataArray[$i]['strength_std_devs'])[$j]];
                 }
                 $i++;
             }
-
-            SspJointAngle::insert($jointAnglesDataArr);
-            SspJointTorque::insert($jointTorquesDataArr);
-            SspMeanStrength::insert($meanStrengthsDataArr);
-            SspPercentCapable::insert($strengthStdDevsDataArr);
-            SspStrengthStdDev::insert($percentCapablesDataArr);
             
+            foreach(array_chunk($jointAnglesDataArr,1000) as $jointAnglesData){
+                SspJointAngle::insert($jointAnglesData);
+            }
+
+            foreach(array_chunk($jointTorquesDataArr,1000) as $jointTorquesData){
+                SspJointTorque::insert($jointTorquesData);
+            }
+
+            foreach(array_chunk($meanStrengthsDataArr,1000) as $meanStrengthsData){
+                SspMeanStrength::insert($meanStrengthsData);
+            }
+
+            foreach(array_chunk($strengthStdDevsDataArr,1000) as $strengthStdDevsData){
+                SspPercentCapable::insert($strengthStdDevsData);
+            }
+
+            foreach(array_chunk($percentCapablesDataArr,1000) as $percentCapablesData){
+                SspStrengthStdDev::insert($percentCapablesData);
+            }
+            
+            $ticket = SspTicket::find($request->ticket_id);
+            $ticket->ssp_ticket_status = 2;
+            $ticket->ssp_ticket_job_analyst = $request->job_analyst;
+            $ticket->save();
+
+            $ticketHistory = new SspTicketHistory;
+            $ticketHistory->ssp_ticket_id = $request->ticket_id;
+            $ticketHistory->ssp_ticket_histories_status = 2;
+            $ticketHistory->save();
+
             // DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
 
             return response()->json('success');

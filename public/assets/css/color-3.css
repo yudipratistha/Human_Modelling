@@ -1626,13 +1626,13 @@ a:hover {
     border-color: #0e2622 !important; }
 
 .btn-outline-danger {
-  border-color: #d22d3d;
-  color: #d22d3d;
-  background-color: transparent; }
+  border-color: #d22d3d !important;
+  color: #d22d3d !important;
+  background-color: transparent !important; }
   .btn-outline-danger.disabled {
-    color: #d22d3d; }
+    color: #d22d3d !important; }
   .btn-outline-danger:hover, .btn-outline-danger:focus, .btn-outline-danger:active, .btn-outline-danger.active {
-    color: white;
+    color: white !important;
     background-color: #a82431 !important;
     border-color: #a82431 !important; }
 

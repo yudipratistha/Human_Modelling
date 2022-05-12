@@ -41,7 +41,8 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'is_admin'], function () {
     Route::get('ticket-data/{id}', 'TicketDataController@dataTicketIndex')->name('admin.ticketData.index');
     Route::post('get-ticket-data/{ticketId}', 'TicketDataController@getDataTicket')->name('admin.ticketData.getTicketData');
     Route::post('approve-ticket-data/{ticketId}', 'TicketDataController@approveDataTicket')->name('admin.ticketData.approveTicketData');
-    Route::post('update-data-ergonomic/{timeId}', 'TicketDataController@updateDataErgonomic')->name('admin.ticketData.updateDataErgonomic');
+    Route::post('update-ergonomic-data/{timeId}', 'TicketDataController@updateErgonomicData')->name('admin.ticketData.updateErgonomicData');
+    Route::delete('delete-ergonomics-data/{timeId}', 'TicketDataController@destroyErgonomicData')->name('admin.ticketData.destroyErgonomicData');
 
 
     // Route::group(['prefix' => 'data/'], function () {

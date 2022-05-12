@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/date-picker.css')}}">
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/sweetalert2.css')}}">
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/leaflet.css')}}">
+<link rel="stylesheet" type="text/css" href="{{url('/assets/css/leaflet-gesture-handling.min.css')}}">
 <!-- Plugins css Ends-->
 @endsection
 
@@ -317,6 +318,7 @@
 <script src="{{url('/assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 <script src="{{url('/assets/js/tooltip-init.js')}}"></script>
 <script src="{{url('/assets/js/leaflet/leaflet.js')}}"></script>
+<script src="{{url('/assets/js/leaflet/leaflet-gesture-handling.min.js')}}"></script>
 <!-- Plugins JS Ends-->
 
 <script>
@@ -326,8 +328,7 @@
         tickets.data.forEach(function(item, index) {
             var map = L.map('map-'+index, {
                 zoomControl:true,
-                gestureHandling: true,
-                scrollWheelZoom: false
+                gestureHandling: true
             }).setView([item.ssp_ticket_job_lat_location, item.ssp_ticket_job_lng_location],17);
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -349,7 +350,8 @@
         var latlngview = L.latLng($('#job-lat-location').val(), $('#job-lng-location').val());
         if(latlngview.lat == 0 && latlngview.lng == 0) latlngview = L.latLng('-8.660315332079342', '115.21636962890626');
         var map = L.map('map', {
-            zoomControl:true
+            zoomControl:true,
+            gestureHandling: true
         }).setView([latlngview.lat, latlngview.lng],12.5);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -599,7 +601,8 @@
                 var latlngview = L.latLng($('#job-lat-location').val(), $('#job-lng-location').val());
                 if(latlngview.lat == 0 && latlngview.lng == 0) latlngview = L.latLng(data.ssp_ticket_job_lat_location, data.ssp_ticket_job_lng_location);
                 var map = L.map('map-edit', {
-                    zoomControl:true
+                    zoomControl:true,
+                    gestureHandling: true
                 }).setView([latlngview.lat, latlngview.lng],12.5);
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',

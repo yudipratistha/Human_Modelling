@@ -245,7 +245,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-square btn-outline-light txt-dark" data-bs-dismiss="modal">Close</button>
-                    <button type="button" onclick="updateDataErgonomic()" class="btn btn-square btn-outline-secondary">Update Ergonomics Data</button>
+                    <button type="button" onclick="updateErgonomicData()" class="btn btn-square btn-outline-secondary">Update Ergonomics Data</button>
                 </div>
             </form>
         </div>
@@ -308,7 +308,7 @@
     columns: [
         { orderable: false, defaultContent: '\
             <button type="button" class="btn btn-outline-primary" id="edit-data-ergonomic" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-edit" style="font-size:20px;"></i></button>\
-            <button type="button" class="btn btn-outline-primary" id="edit-data-ergonomic" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-edit" style="font-size:20px;"></i></button>',
+            <button type="button" class="btn btn-outline-danger" id="delete-data-ergonomic" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-trash" style="font-size:20px;"></i></button>',
             render: function (data, type, row) { if(row.ssp_ticket_status === 3) table.column(0).visible(false); }
         },
         { data: 'time' },{ data: 'task' },{ data: 'action' },
@@ -367,15 +367,13 @@
                             </div>');
                     }
                 })
-                
                 $('#editDataErgonomic').modal('show');
             });
-            
-            // json.aaData.data.forEach(function(item, index) {
-            //     table.row.add(Object.values(item)).draw();
-                
-            // });
-            // console.log(json.aaData.data);
+
+            $('#data-ergonomic tbody').on('click', "#delete-data-ergonomic", function() {
+                let row = $(this).parents('tr')[0];
+                deleteDataErgonomic(table.row(row).data().ssp_time_id);
+            });
         }
     });
 
@@ -415,9 +413,9 @@
         })
     }
 
-    function updateDataErgonomic(){
-        link = "{{route('admin.ticketData.updateDataErgonomic', ':timeId')}}";
-        link = link.replace(":timeId", $("#updateDataErgonomic").find("#time-id").val());
+    function updateErgonomicData(){
+        link = "{{route('admin.ticketData.updateErgonomicData', ':timeId')}}";
+        link = link.replace(":timeId", $("#updateErgonomicData").find("#time-id").val());
         swal.fire({
             title: "Update Ergonomics Data",
             text: "Do you will to update this ergonomics data?",
@@ -480,6 +478,42 @@
             .then(function(){ 
                 window.location.reload();
             });
+            }
+        })
+    }
+
+    function deleteDataErgonomic(timeId){
+        link = "{{route('admin.ticketData.destroyErgonomicData', ':id')}}";
+        link = link.replace(':id', timeId);
+        
+		swal.fire({
+			title: "Delete Ergonomics Data?",
+			text: "Ergonomics Data will deleted on your ergonomics data table!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "Delete",
+            closeOnConfirm: true,
+            preConfirm: (login) => {
+                return $.ajax({
+                    type: "DELETE", 
+                    url: link,
+                    datatype : "json", 
+                    data:{id:timeId, "_token": "{{ csrf_token() }}"},
+                    success: function(data) {
+                    
+                    },
+                    error: function(data){
+                        swal.fire({title:"Ergonomics Data Failed to Deleted!", text:"This ergonomics data was not deleted successfully", icon:"error"});
+                    }
+                }); 
+            } 
+		}).then((result) => {
+            if(result.value){
+                swal.fire({title:"Ergonomics Data Deleted!", text:"This ergonomics data has been deleted on your ergonomics data table", icon:"success"})
+                .then(function(){ 
+                    window.location.reload();
+                });
             }
         })
     }
