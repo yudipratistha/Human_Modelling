@@ -20,13 +20,15 @@
                     </div>
                   </li>
                   @if (Auth::user()->is_admin == 0)
-                    <li class="dropdown"><a class="nav-link menu-title link-nav" href="/admin/home"><i data-feather="home"></i><span>Dashboard</span></a></li>
-                    <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="airplay"></i><span>Data</span></a>
+                  
+                    <!-- <li class="dropdown"><a class="nav-link menu-title link-nav" href="{{route('admin.home')}}"><i data-feather="home"></i><span>Dashboard</span></a></li> -->
+                    <li class="dropdown "><a class="nav-link menu-title link-nav {{ isset($activeMenu) ? 'active' : '' }}" href="{{route('admin.ticketsList.index')}}"><i class="icon-ticket" style="margin-right: 15px;vertical-align: bottom;float: none;margin-left: -3px;font-size: 21px;"></i><span>Tickets</span></a></li>
+                    <!-- <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="airplay"></i><span>Data</span></a>
                     <ul class="nav-submenu menu-content">
                       <li><a href="{{ route('admin.processingData.index') }}">Processing CSV Data</a></li>
-                      <li><a href="{{route('admin.listDataTickets.index')}}">Tickets</a></li>
+                      <li><a href="{{route('admin.ticketsList.index')}}">Tickets</a></li>
                     </ul>
-                  </li>                  
+                  </li>-->
                   @endif
                   
                   

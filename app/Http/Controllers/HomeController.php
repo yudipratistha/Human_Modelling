@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return redirect()->route('admin.ticketsList.index');
     }
   
     /**
@@ -33,7 +33,7 @@ class HomeController extends Controller
      */
     public function adminHome()
     {
-        return view('admin.adminHome');
+        return redirect()->route('admin.ticketsList.index');
     }
     
 }

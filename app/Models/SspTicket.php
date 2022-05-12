@@ -12,4 +12,7 @@ class SspTicket extends Model
     public function SspTime(){
         return $this->hasMany('App\Models\SspTime', 'ssp_ticket_id');
     }
+    public function SspTicketHistory(){
+        return $this->hasMany('App\Models\SspTicketHistory', 'ssp_ticket_id');
+    }
 }

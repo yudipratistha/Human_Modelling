@@ -1593,13 +1593,13 @@ a:hover {
             box-shadow: none; }
 
 .btn-outline-primary {
-  border-color: #168eea;
-  color: #168eea;
-  background-color: transparent; }
+  border-color: #168eea !important;
+  color: #168eea !important;
+  background-color: transparent !important; }
   .btn-outline-primary.disabled {
-    color: #168eea; }
+    color: #168eea !important; }
   .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active {
-    color: white;
+    color: white !important;
     background-color: #1172bc !important;
     border-color: #1172bc !important; }
 

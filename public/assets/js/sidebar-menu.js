@@ -181,15 +181,16 @@ $("#left-arrow").click(function () {
 });
 
 // page active
-    $( ".main-navbar" ).find( "a" ).removeClass("active");
-    $( ".main-navbar" ).find( "li" ).removeClass("active");
+    // $( ".main-navbar" ).find( "a" ).removeClass("active");
+    // $( ".main-navbar" ).find( "li" ).removeClass("active");
 
     var current = window.location.pathname
     $(".main-navbar ul>li a").filter(function() {
-
-        var link = $(this).attr("href");
+        var link = $(this)[0].pathname;
         if(link){
             if (current.indexOf(link) != -1) {
+                $(".main-navbar" ).find( "a" ).removeClass("active");
+                $(".main-navbar" ).find( "li" ).removeClass("active");
                 $(this).parents().children('a').addClass('active');
                 $(this).parents().parents().children('ul').css('display', 'block');
                 $(this).addClass('active');

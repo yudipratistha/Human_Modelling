@@ -6234,6 +6234,21 @@ table tbody .border-bottom-warning td {
     color: #fff;
     font-weight: 700; }
 
+.float {
+  position: fixed;
+  height: 55px;
+  width: 55px;
+  bottom: 103px;
+  right: 19px;
+}
+.btn-add {
+  border-radius: 10rem;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /**=====================
      06. Button CSS end
 ==========================**/
@@ -10851,8 +10866,10 @@ strong {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin-left: auto;
-  margin-right: auto; }
+  margin-left: 1% !important;
+  /* margin-left: auto;
+  margin-right: auto; */
+ }
   .login-form h4 {
     text-transform: capitalize;
     font-weight: 600;
@@ -10865,7 +10882,8 @@ strong {
   .login-form .btn {
     text-transform: uppercase;
     font-weight: 700;
-    margin-left: auto;
+    margin-left: 1%;
+    /* margin-left: auto; */
     display: block; }
   .login-form p {
     font-weight: 600;
@@ -10969,8 +10987,9 @@ strong {
       width: -webkit-fit-content;
       width: -moz-fit-content;
       width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: 1%;
+      /* margin-left: auto;
+      margin-right: auto; */
       padding-left: 10px;
       padding-right: 10px;
       background-color: #fff; }
@@ -18540,12 +18559,12 @@ body.dark-only {
             filter: brightness(0) invert(1); }
   body.dark-only .cke_combo_text {
     color: #fff; }
-  body.dark-only .job-search .job-description {
+  body.dark-only .ticket-list .job-description {
     border-top: 1px solid #202938; }
   body.dark-only .job-sidebar .job-left-aside {
     background-color: #111727;
     border-color: rgba(36, 105, 92, 0.2); }
-  body.dark-only .job-search .job-description .theme-form {
+  body.dark-only .ticket-list .job-description .theme-form {
     border-bottom: 1px solid #202938; }
   body.dark-only .categories ul li:hover {
     background-color: #202938; }
@@ -18950,7 +18969,7 @@ body.dark-only {
     border: 2px solid rgba(36, 105, 92, 0.2); }
   body.dark-only .browse .browse-articles h6 {
     border-bottom: 1px solid rgba(36, 105, 92, 0.2); }
-  body.dark-only .job-search .job-description .theme-form .row div[class^="col-"] .input-group .datepicker-here {
+  body.dark-only .ticket-list .job-description .theme-form .row div[class^="col-"] .input-group .datepicker-here {
     border: 1px solid rgba(36, 105, 92, 0.2); }
   body.dark-only .calendar-wrap .fc-unthemed td, body.dark-only .calendar-wrap .fc-unthemed th {
     border-color: rgba(36, 105, 92, 0.2); }
@@ -23139,70 +23158,70 @@ body.dark-sidebar .main-navbar ul.nav-pills {
   width: -moz-fit-content;
   width: fit-content; }
 
-.job-search p {
+.ticket-list p {
   margin-top: 20px;
   color: #999; }
 
-.job-search .media .media-body h6 {
+.ticket-list .media .media-body h6 {
   margin-bottom: 3px; }
-  .job-search .media .media-body h6 span {
+  .ticket-list .media .media-body h6 span {
     font-size: 13px;
     font-weight: normal; }
-    .job-search .media .media-body h6 span.badge {
+    .ticket-list .media .media-body h6 span.badge {
       color: #fff;
       font-weight: 600; }
-  .job-search .media .media-body h6 .btn {
+  .ticket-list .media .media-body h6 .btn {
     font-weight: 600; }
 
-.job-search .media .media-body p {
+.ticket-list .media .media-body p {
   margin-top: 0;
   margin-bottom: 0;
   font-weight: 500;
   display: inline-block; }
 
-.job-search .media .media-body ul.rating {
+.ticket-list .media .media-body ul.rating {
   margin-left: 10px;
   display: inline-block; }
-  .job-search .media .media-body ul.rating li {
+  .ticket-list .media .media-body ul.rating li {
     display: inline-block;
     letter-spacing: -2px; }
 
-.job-search .media .media-body .job-apply-btn {
+.ticket-list .media .media-body .job-apply-btn {
   position: absolute;
   top: 30px;
   right: 30px; }
 
-.job-search .job-description {
+.ticket-list .job-description {
   margin-top: 20px;
   border-top: 1px solid #ececec;
   padding-top: 20px; }
-  .job-search .job-description h6 {
+  .ticket-list .job-description h6 {
     font-weight: 600; }
-  .job-search .job-description p {
+  .ticket-list .job-description p {
     margin-top: 0;
     margin-bottom: 6px;
     letter-spacing: 0.04em; }
-  .job-search .job-description ul {
+  .ticket-list .job-description ul {
     list-style-type: disc;
     list-style-position: inside; }
-    .job-search .job-description ul li {
+    .ticket-list .job-description ul li {
       margin-bottom: 10px;
       cursor: pointer;
       color: #999; }
-      .job-search .job-description ul li:last-child {
+      .ticket-list .job-description ul li:last-child {
         margin-bottom: 0; }
-      .job-search .job-description ul li:hover {
+      .ticket-list .job-description ul li:hover {
         color: #24695c; }
-  .job-search .job-description .theme-form {
+  .ticket-list .job-description .theme-form {
     margin-top: 20px;
     margin-bottom: 30px;
     border-bottom: 1px solid #efefef; }
-    .job-search .job-description .theme-form .row div[class^="col-"] + div[class^="col-"] .select2-container {
+    .ticket-list .job-description .theme-form .row div[class^="col-"] + div[class^="col-"] .select2-container {
       margin-top: 14px;
       max-width: 100%; }
-    .job-search .job-description .theme-form .row div[class^="col-"] .job-select2 ~ .select2-container {
+    .ticket-list .job-description .theme-form .row div[class^="col-"] .job-select2 ~ .select2-container {
       margin-top: 0 !important; }
-    .job-search .job-description .theme-form .row div[class^="col-"] .input-group .datepicker-here {
+    .ticket-list .job-description .theme-form .row div[class^="col-"] .input-group .datepicker-here {
       font-size: 14px;
       border: 1px solid #e6edef;
       padding-top: 7px;
@@ -23226,7 +23245,7 @@ body.dark-sidebar .main-navbar ul.nav-pills {
     margin-bottom: 20px; } }
 
 @media only screen and (max-width: 1400px) and (min-width: 1200px) {
-  .job-search .media .media-body .job-apply-btn {
+  .ticket-list .media .media-body .job-apply-btn {
     position: unset;
     width: -webkit-fit-content;
     width: -moz-fit-content;
@@ -23244,11 +23263,11 @@ body.dark-sidebar .main-navbar ul.nav-pills {
       margin-bottom: 20px; }
   .job-accordion .animate-chk {
     padding: 20px !important; }
-  .job-search p {
+  .ticket-list p {
     margin-top: 15px; } }
 
 @media only screen and (max-width: 767px) {
-  .job-search .media .media-body .job-apply-btn {
+  .ticket-list .media .media-body .job-apply-btn {
     position: unset;
     display: block;
     width: -webkit-fit-content;
@@ -23266,51 +23285,51 @@ body.dark-sidebar .main-navbar ul.nav-pills {
       margin-bottom: 15px; }
   .job-accordion .animate-chk {
     padding: 15px !important; }
-  .job-search p {
+  .ticket-list p {
     margin-top: 10px;
     text-align: center;
     font-size: 13px; }
-  .job-search .media {
+  .ticket-list .media {
     display: block;
     text-align: center; }
-    .job-search .media .media-body {
+    .ticket-list .media .media-body {
       text-align: center; }
-      .job-search .media .media-body .job-apply-btn {
+      .ticket-list .media .media-body .job-apply-btn {
         margin-left: auto;
         margin-right: auto; }
-      .job-search .media .media-body h6 {
+      .ticket-list .media .media-body h6 {
         margin-bottom: unset; }
-        .job-search .media .media-body h6 .pull-right {
+        .ticket-list .media .media-body h6 .pull-right {
           float: none;
           display: inline-block;
           margin-left: 15px; }
-        .job-search .media .media-body h6 span.badge {
+        .ticket-list .media .media-body h6 span.badge {
           font-size: 10px;
           padding: 5px; }
-        .job-search .media .media-body h6 a {
+        .ticket-list .media .media-body h6 a {
           margin-bottom: 10px; }
-      .job-search .media .media-body p span + span {
+      .ticket-list .media .media-body p span + span {
         display: block; }
-    .job-search .media img {
+    .ticket-list .media img {
       margin-bottom: 15px; }
-    .job-search .media .m-r-20 {
+    .ticket-list .media .m-r-20 {
       margin-right: 0; }
-  .job-search .job-description {
+  .ticket-list .job-description {
     margin-top: 15px;
     padding-top: 15px; }
-    .job-search .job-description label {
+    .ticket-list .job-description label {
       display: block;
       text-align: left !important; }
-    .job-search .job-description .select2-container {
+    .ticket-list .job-description .select2-container {
       width: 100% !important; }
-    .job-search .job-description .theme-form {
+    .ticket-list .job-description .theme-form {
       margin-top: 15px;
       margin-bottom: 15px; }
-      .job-search .job-description .theme-form .row div[class^="col-"] + div[class^="col-"] .select2-container {
+      .ticket-list .job-description .theme-form .row div[class^="col-"] + div[class^="col-"] .select2-container {
         margin-top: 2px; }
-      .job-search .job-description .theme-form .xs-mt-period {
+      .ticket-list .job-description .theme-form .xs-mt-period {
         margin-top: 15px; }
-  .job-search .card-footer {
+  .ticket-list .card-footer {
     padding: 20px; }
   .job-pagination {
     margin-bottom: 15px; }
@@ -23318,11 +23337,11 @@ body.dark-sidebar .main-navbar ul.nav-pills {
     margin-bottom: 15px; } }
 
 @media only screen and (max-width: 420px) {
-  .job-search .media .media-body h6 span.badge {
+  .ticket-list .media .media-body h6 span.badge {
     display: none; } }
 
 @media only screen and (max-width: 360px) {
-  .job-search .job-description .btn {
+  .ticket-list .job-description .btn {
     padding: 6px 12px; } }
 
 /**=====================
@@ -29877,11 +29896,11 @@ span.twitter-typeahead .tt-suggestion {
 .rtl .icofont.icofont-truck {
   display: inline-block; }
 
-.rtl .job-search .media .media-body .job-apply-btn {
+.rtl .ticket-list .media .media-body .job-apply-btn {
   left: 30px;
   right: unset; }
 
-.rtl .job-search .media ul.rating {
+.rtl .ticket-list .media ul.rating {
   margin-right: 10px;
   margin-left: unset; }
 
@@ -30898,7 +30917,7 @@ span.twitter-typeahead .tt-suggestion {
     margin-left: 0; }
   .rtl .card-body .value-left {
     margin-left: 15px; }
-  .rtl .job-search .media .media-body h6 .pull-right {
+  .rtl .ticket-list .media .media-body h6 .pull-right {
     margin-right: 15px;
     margin-left: unset; }
   .rtl .invoice .invo-header .media-body {
@@ -30927,7 +30946,7 @@ span.twitter-typeahead .tt-suggestion {
     right: unset; }
   .rtl .m-r-30 {
     margin-left: 15px; }
-  .rtl .job-search .job-description label {
+  .rtl .ticket-list .job-description label {
     text-align: right !important; }
   .rtl .user-profile .profile-post .post-body .post-react ul li:nth-child(n+2) {
     margin-right: -15px; }
@@ -30964,3 +30983,34 @@ span.twitter-typeahead .tt-suggestion {
     60. RTL CSS Ends
 ==========================**/
 /*# sourceMappingURL=style.css.map */
+
+
+/* div .video-bg video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 83%;
+  min-height: 83%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+} */
+
+
+#video-viewport {
+  position: absolute;
+  top: 0;
+  /* left:0; */
+  overflow: hidden;
+  z-index: -1 !important; /* for accessing the video by click */
+}
+
+.login-bg{
+  min-height:100%;
+  background-size:cover;
+  box-shadow:inset 0 0 0 2000px rgba(22, 142, 234, 0.1);
+}
