@@ -1500,7 +1500,7 @@ var options1 = {
         height: 350,
         type: 'area',
         toolbar:{
-          show: false
+          show: true
         }
     },
     dataLabels: {

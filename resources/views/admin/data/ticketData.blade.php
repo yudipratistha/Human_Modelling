@@ -73,10 +73,54 @@
                                     <hr/>
                                     @if($ticket->ssp_ticket_status != 3)
                                         <button class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm" type="button" onclick="approveTicket({{$ticket->id}}, '{{$ticket->ssp_ticket_job_title}}')" title="Approve Ticket" style="border-radius: 0px !important;">Approve Ticket</button>
+                                        <button class="btn btn-pill btn-outline-primary btn-air-secondary btn-sm" type="button" onclick="recalculateRulaData({{$ticket->id}}, '{{$ticket->ssp_ticket_job_title}}')" title="Recalculate Rula Data" style="border-radius: 0px !important;">Recalculate Rula Data</button>
+
                                     @endif
                                 </div>
                             </div>
                         </div>
+                        <div class="card">
+                            <div class="card-header pb-0">
+                                <h5>Line Chart</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="area-spaline"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <!-- <div class="card-header">
+                                <h5>Data Ergonomic</h5>
+                            </div> -->
+                            <div class="card-body">
+                                <div id="length-data-ssp-rula" class="dataTables_wrapper"></div>
+                                <div class="table-responsive">
+                                    <table class="display datatables" id="data-ssp-rula">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Action Level</th>
+                                                <th>Rula Score Table C</th>
+                                                <th>Rula Score Table B</th>
+                                                <th>Rula Score Table A</th>
+                                                <th>Upper Arm Left</th>
+                                                <th>Upper Arm Right</th>
+                                                <th>Lower Arm Left</th>
+                                                <th>Lower Arm Right</th>
+                                                <th>wrist Left</th>
+                                                <th>Wrist Right</th>
+                                                <th>Wrist Twist Left</th>
+                                                <th>Wrist Twist Right</th>
+                                                <th>Neck</th>
+                                                <th>Trunk Position</th>
+                                                <th>Legs</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div id="pagination-data-ssp-rula" class="dataTables_wrapper"></div>
+                            </div>
+                        </div>
+
                         <div class="card">
                             <!-- <div class="card-header">
                                 <h5>Data Ergonomic</h5>
@@ -259,6 +303,10 @@
 <script src="{{url('/assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 <script src="{{url('/assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{url('/assets/js/datatable/datatable-extension/dataTables.fixedColumns.min.js')}}"></script>
+<script src="{{url('/assets/js/chart/apex-chart/apex-chart.js')}}"></script>
+<script src="{{url('/assets/js/chart/apex-chart/stock-prices.js')}}"></script>
+<!-- <script src="{{url('/assets/js/chart/apex-chart/chart-custom.js')}}"></script> -->
+<script src="{{url('/assets/js/tooltip-init.js')}}"></script>
 <!-- Plugins JS Ends-->
 
 <script>
@@ -268,6 +316,121 @@
         });
         return str;
     }
+
+    $.ajax({
+        type: "GET",
+        url: "{{route('admin.sspRulaData.getDataSspRulaChart', $ticketId)}}",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function(data) {
+            // var morris_chart = {
+            //     init: function() {
+            //         Morris.Line({
+            //             element: "morris-line-chart",
+            //             data: data,
+            //             xkey: ["ssp_time"],
+            //             ykeys: ["ssp_rula_table_c"],
+            //             lineColors: [vihoAdminConfig.primary],
+            //             labels: ["test"],
+            //             parseTime: !1,
+            //             ymax: 8,
+            //             ymin: 1,
+            //         });
+            //     }
+            // }
+            // morris_chart.init()
+
+            // area spaline chart
+            var options1 = {
+                chart: {
+                    height: 350,
+                    type: 'area',
+                    toolbar:{
+                    show: true
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth'
+                },
+                series: [{
+                    name: 'series1',
+                    data: data
+                }],
+
+                xaxis: {
+                    labels: {
+                formatter: function(val) {
+                return Math.floor(val)
+                }    
+                            }            },
+                tooltip: {
+                    x: {
+                        format: 'dd/MM/yy HH:mm'
+                    },
+                },
+                colors:[vihoAdminConfig.primary, vihoAdminConfig.secondary]
+            }
+
+            var chart1 = new ApexCharts(
+                document.querySelector("#area-spaline"),
+                options1
+            );
+
+            chart1.render();
+            console.log(data)
+        }
+    });
+
+//     "use strict";
+// var morris_chart = {
+//     init: function() {
+//          Morris.Line({
+//             element: "morris-line-chart",
+//             data: [{
+//                 ssp_rula_table_c: "0.1",
+//                 ssp_time: 100
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2012",
+//                     ssp_time: 75
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2013",
+//                     ssp_time: 50
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2014",
+//                     ssp_time: 75
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2015",
+//                     ssp_time: 50
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2016",
+//                     ssp_time: 75
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2017",
+//                     ssp_time: 100
+//                 }],
+//             xkey: "ssp_rula_table_c",
+//             ykeys: ["ssp_time"],
+//             lineColors: [vihoAdminConfig.primary, vihoAdminConfig.secondary],
+//             labels: ["Series A"],
+//             parseTime: !1,
+//         })
+        
+//     }
+// };
+// (function($) {
+//     "use strict";
+//     morris_chart.init()
+// })(jQuery);
+
 
     $('#editDataErgonomic').on('hidden.bs.modal', function () {
         $('#edit-body-data-ergonomic').children().remove();
@@ -413,6 +576,42 @@
         })
     }
 
+    function recalculateRulaData(ticketId, ticketTitle){
+        link = "{{route('admin.processingData.recalculateRulaData', ':id')}}";
+        link = link.replace(':id', ticketId);
+        
+		swal.fire({
+			title: "Recalculate Rula Data Ticket "+ticketTitle+"?",
+			text: "Ticket "+ticketTitle+" will be approved on tickets list!",
+			icon: "warning",
+			showCancelButton: true,
+			// confirmButtonClass: "btn-danger",
+			confirmButtonText: "Approve",
+            closeOnConfirm: true,
+            preConfirm: (login) => {
+                return $.ajax({
+                    type: "POST", 
+                    url: link,
+                    datatype : "json", 
+                    data:{id:ticketId, "_token": "{{ csrf_token() }}"},
+                    success: function(data) {
+                    
+                    },
+                    error: function(data){
+                        swal.fire({title:"Ticket Failed to Approved!", text:"This ticket was not approved successfully", icon:"error"});
+                    }
+                }); 
+            } 
+		}).then((result) => {
+            if(result.value){
+                swal.fire({title:"Ticket Approved!", text:"This ticket has been approved on tickets list", icon:"success"})
+                .then(function(){ 
+                    window.location.href = "{{ route('admin.ticketsList.index')}}";
+                });
+            }
+        })
+    }
+
     function updateErgonomicData(){
         link = "{{route('admin.ticketData.updateErgonomicData', ':timeId')}}";
         link = link.replace(":timeId", $("#updateErgonomicData").find("#time-id").val());
@@ -517,6 +716,62 @@
             }
         })
     }
+
+    var table;
+    var api;
+    table = $('#data-ssp-rula').DataTable({
+    bFilter: false,
+    processing: true,
+    serverSide: true,
+    // scrollY: true,
+    // scrollX: true,
+    // paging: true,
+    // searching: { "regex": true },
+    preDrawCallback: function(settings) {
+        api = new $.fn.dataTable.Api(settings);
+    },
+    ajax: {
+        type: "POST",
+        url: "{{route('admin.sspRulaData.getDataSspRula', $ticketId)}}",
+        dataType: "json",
+        contentType: 'application/json',
+        data: function (data) {
+            var form = {};
+            $.each($("form").serializeArray(), function (i, field) {
+                form[field.name] = field.value || "";
+            });
+            // Add options used by Datatables
+            var info = { "start": api.page.info().start, "length": api.page.info().length, "draw": api.page.info().draw };
+            $.extend(form, info);
+            return JSON.stringify(form);
+        },
+        "complete": function(response) {
+
+        }
+    },
+    columns: [
+        { data: 'time' },
+        { orderable: false,
+            defaultContent:'',
+            render: function (data, type, row) {
+                 if(row.ssp_rula_table_c === 1 || row.ssp_rula_table_c === 2) return 'Level 1'; 
+                 if(row.ssp_rula_table_c === 3 || row.ssp_rula_table_c === 4) return 'Level 2';
+                 if(row.ssp_rula_table_c === 5 || row.ssp_rula_table_c === 6) return 'Level 3';
+                 if(row.ssp_rula_table_c === 7) return 'Level 4';
+            }
+        },
+        { data: 'ssp_rula_table_c' }, { data: 'ssp_rula_table_b' }, { data: 'ssp_rula_table_a' }, 
+        { data: 'ssp_rula_upper_arm_left' }, { data: 'ssp_rula_upper_arm_right' }, { data: 'ssp_rula_lower_arm_left' }, { data: 'ssp_rula_lower_arm_right' }, { data: 'ssp_rula_wrist_left' },
+        { data: 'ssp_rula_wrist_right' }, { data: 'ssp_rula_wrist_twist_left' }, { data: 'ssp_rula_wrist_twist_right' }, { data: 'ssp_rula_neck' }, { data: 'ssp_rula_trunk_position' },
+        { data: 'ssp_rula_legs' },
+        ],
+        initComplete:function( settings, json){
+            // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');
+            $('#data-ssp-rula_length').appendTo('#length-data-ssp-rula');
+            $('#data-ssp-rula_info').appendTo('#pagination-data-ssp-rula');
+            $('#data-ssp-rula_paginate').appendTo('#pagination-data-ssp-rula');
+        }
+    });
         
     // });
 </script>
