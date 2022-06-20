@@ -274,7 +274,7 @@ class TicketDataController extends Controller
     }
 
     public function getDataSspRulaChartAdmin($ticketId){
-        $dataRulaChart = DB::table('ssp_rula')->select('ssp_rula_table_c', 'ssp_times.time AS ssp_time')     
+        $dataRulaChart = DB::table('ssp_rula')->select('ssp_rula_table_c AS y', 'ssp_times.time AS x')     
             ->leftJoin('ssp_times', 'ssp_rula.ssp_time_id', '=', 'ssp_times.id')
             ->leftJoin('ssp_tickets', 'ssp_rula.ssp_ticket_id', '=', 'ssp_tickets.id')
             ->where('ssp_tickets.id', $ticketId)->where('ssp_times.time_status', 1)->whereBetween('ssp_ticket_status', [2, 3])

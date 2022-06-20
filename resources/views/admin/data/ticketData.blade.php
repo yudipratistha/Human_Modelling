@@ -317,6 +317,77 @@
         return str;
     }
 
+    var options1 = {
+        series: [],
+                chart: {
+                    type: 'area',
+                    stacked: false,
+                    height: 350,
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    toolbar: {
+                        autoSelected: 'zoom'
+                    },
+                    animations: {
+                        enabled: false
+                    }
+                },
+                noData: {
+                    text: 'Loading...'
+                },
+                    dataLabels: {
+                    enabled: false
+                },
+                markers: {
+                    size: 0,
+                },
+                title: {
+                text: 'Stock Price Movement',
+                align: 'left'
+                },
+                fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    inverseColors: false,
+                    opacityFrom: 0.5,
+                    opacityTo: 0,
+                    stops: [0, 90, 100]
+                },
+                },
+                yaxis: {
+                // labels: {
+                //     formatter: function (val) {
+                //     return (val / 1000000).toFixed(0);
+                //     },
+                // },
+                title: {
+                    text: 'Price'
+                },
+                },
+                xaxis: {
+                data:[]
+                },
+                tooltip: {
+                shared: false,
+                // y: {
+                //     formatter: function (val) {
+                //     return (val / 1000000).toFixed(0)
+                //     }
+                // }
+                }
+            };
+            
+            var chart1 = new ApexCharts(
+                document.querySelector("#area-spaline"),
+                options1
+            );
+
+            chart1.render();
+
     $.ajax({
         type: "GET",
         url: "{{route('admin.sspRulaData.getDataSspRulaChart', $ticketId)}}",
@@ -341,45 +412,12 @@
             // morris_chart.init()
 
             // area spaline chart
-            var options1 = {
-                chart: {
-                    height: 350,
-                    type: 'area',
-                    toolbar:{
-                    show: true
-                    }
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth'
-                },
-                series: [{
-                    name: 'series1',
-                    data: data
-                }],
-
-                xaxis: {
-                    labels: {
-                formatter: function(val) {
-                return Math.floor(val)
-                }    
-                            }            },
-                tooltip: {
-                    x: {
-                        format: 'dd/MM/yy HH:mm'
-                    },
-                },
-                colors:[vihoAdminConfig.primary, vihoAdminConfig.secondary]
-            }
-
-            var chart1 = new ApexCharts(
-                document.querySelector("#area-spaline"),
-                options1
-            );
-
-            chart1.render();
+            chart1.updateSeries([{
+                data: data //pass them here 
+            }]);
+            chart1.updatexaxis([{
+                data: data
+            }])
             console.log(data)
         }
     });
