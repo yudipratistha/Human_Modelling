@@ -7,7 +7,14 @@
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/sweetalert2.css')}}">
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/fixedColumns.bootstrap.css')}}">
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/datatables.css')}}">
-
+<link rel="stylesheet" type="text/css" href="{{url('/assets/css/chartist.css')}}">
+<style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+</style>
 <!-- Plugins css Ends-->
 @endsection
 
@@ -73,8 +80,26 @@
                                     <hr/>
                                     @if($ticket->ssp_ticket_status != 3)
                                         <button class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm" type="button" onclick="approveTicket({{$ticket->id}}, '{{$ticket->ssp_ticket_job_title}}')" title="Approve Ticket" style="border-radius: 0px !important;">Approve Ticket</button>
+                                        <button class="btn btn-pill btn-outline-primary btn-air-secondary btn-sm" type="button" onclick="recalculateRulaData({{$ticket->id}}, '{{$ticket->ssp_ticket_job_title}}')" title="Recalculate Rula Data" style="border-radius: 0px !important;">Recalculate Rula Data</button>
+
                                     @endif
                                 </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header pb-0">
+                                <h5>Line Chart</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rula-chart" style="width: 100%; height:491px;">
+                                    <div></div>
+                                </div>
+                                <!-- <div id="area-spaline"></div> -->
+                                <!-- <div>
+                                    <button onclick="resetZoom()">Reset Zoom</button>
+                                    <button id="drag-switch" onclick="toggleDragMode()">Disable drag mode</button>
+                                    <canvas id="mycanvas"></canvas>
+                                </div> -->
                             </div>
                         </div>
                         <div class="card">
@@ -88,6 +113,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Time</th>
+                                                <th>Action Level</th>
                                                 <th>Rula Score Table C</th>
                                                 <th>Rula Score Table B</th>
                                                 <th>Rula Score Table A</th>
@@ -292,6 +318,21 @@
 <script src="{{url('/assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 <script src="{{url('/assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{url('/assets/js/datatable/datatable-extension/dataTables.fixedColumns.min.js')}}"></script>
+<!-- <script src="{{url('/assets/js/chart/apex-chart/apex-chart.js')}}"></script>
+<script src="{{url('/assets/js/chart/apex-chart/stock-prices.js')}}"></script> -->
+
+<script src="{{url('/assets/js/chart/echarts/echarts.min.js')}}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0"></script>
+<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js"></script> -->
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> -->
+<!-- <script src="{{url('/assets/js/chart/chartjs/chartjs-plugin-zoom.min.js')}}"></script> -->
+<!-- <script src="{{url('/assets/js/chart/chartjs/chart.custom.js')}}"></script> -->
+
+<!-- <script src="{{url('/assets/js/chart/apex-chart/chart-custom.js')}}"></script> -->
+<script src="{{url('/assets/js/tooltip-init.js')}}"></script>
 <!-- Plugins JS Ends-->
 
 <script>
@@ -301,6 +342,153 @@
         });
         return str;
     }
+
+    
+    $.ajax({
+        type: "GET",
+        url: "{{route('admin.sspRulaData.getDataSspRulaChart', $ticketId)}}",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function(data) {
+            var dataLabels = data.map(function(e) {
+                return e.time;
+            });
+            var dataCharts = data.map(function(e) {
+                return e.ssp_rula_table_c;
+            });
+            
+            var rulaChart = echarts.init(document.getElementById('rula-chart'));
+            
+            var option = {
+                tooltip: {
+                    trigger: 'none',
+                    axisPointer: {
+                    type: 'cross'
+                    }
+                },
+                dataZoom: [{
+                    type: 'inside'
+                }],
+                toolbox: {
+                    right: '9%',
+                    feature: {
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left:100,
+                    right:145
+                },
+                title: {
+                    text: 'Rula Chart',
+                    left: 'center',
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    min: 0,
+                    axisTick: {
+                        show: false,
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        show: true
+                    },
+                    axisPointer: {
+                    label: {
+                        formatter: function (params) {
+                        return (
+                            'Action Level ' +
+                            
+                            (params.seriesData.length ? params.seriesData[0].data : '') + ' ：' + params.value + ' Time (s)'
+                        );
+                        }
+                    }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#73c0de'
+                        }
+                    },
+                    name: 'Time (s)',
+                    nameLocation: 'middle',
+                    nameGap: 40,
+                    data: dataLabels
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 1,
+                    max: 10,
+                    name: 'Action Level',
+                    nameLocation: 'middle',
+                    nameGap: 40
+                },
+                series: [{
+                    data: dataCharts,
+                    type: 'line',
+                    areaStyle: {color: '#9dd3e8'},
+                    lineStyle: {
+                        color: '#73c0de'
+                    },
+                    itemStyle: {
+                        color: '#73c0de'
+                    }
+                }]
+            };
+
+            rulaChart.setOption(option);
+            console.log(data)
+        }
+    });
+
+//     "use strict";
+// var morris_chart = {
+//     init: function() {
+//          Morris.Line({
+//             element: "morris-line-chart",
+//             data: [{
+//                 ssp_rula_table_c: "0.1",
+//                 ssp_time: 100
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2012",
+//                     ssp_time: 75
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2013",
+//                     ssp_time: 50
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2014",
+//                     ssp_time: 75
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2015",
+//                     ssp_time: 50
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2016",
+//                     ssp_time: 75
+//                 },
+//                 {
+//                     ssp_rula_table_c: "2017",
+//                     ssp_time: 100
+//                 }],
+//             xkey: "ssp_rula_table_c",
+//             ykeys: ["ssp_time"],
+//             lineColors: [vihoAdminConfig.primary, vihoAdminConfig.secondary],
+//             labels: ["Series A"],
+//             parseTime: !1,
+//         })
+        
+//     }
+// };
+// (function($) {
+//     "use strict";
+//     morris_chart.init()
+// })(jQuery);
+
 
     $('#editDataErgonomic').on('hidden.bs.modal', function () {
         $('#edit-body-data-ergonomic').children().remove();
@@ -416,6 +604,42 @@
         
 		swal.fire({
 			title: "Approve Ticket "+ticketTitle+"?",
+			text: "Ticket "+ticketTitle+" will be approved on tickets list!",
+			icon: "warning",
+			showCancelButton: true,
+			// confirmButtonClass: "btn-danger",
+			confirmButtonText: "Approve",
+            closeOnConfirm: true,
+            preConfirm: (login) => {
+                return $.ajax({
+                    type: "POST", 
+                    url: link,
+                    datatype : "json", 
+                    data:{id:ticketId, "_token": "{{ csrf_token() }}"},
+                    success: function(data) {
+                    
+                    },
+                    error: function(data){
+                        swal.fire({title:"Ticket Failed to Approved!", text:"This ticket was not approved successfully", icon:"error"});
+                    }
+                }); 
+            } 
+		}).then((result) => {
+            if(result.value){
+                swal.fire({title:"Ticket Approved!", text:"This ticket has been approved on tickets list", icon:"success"})
+                .then(function(){ 
+                    window.location.href = "{{ route('admin.ticketsList.index')}}";
+                });
+            }
+        })
+    }
+
+    function recalculateRulaData(ticketId, ticketTitle){
+        link = "{{route('admin.processingData.recalculateRulaData', ':id')}}";
+        link = link.replace(':id', ticketId);
+        
+		swal.fire({
+			title: "Recalculate Rula Data Ticket "+ticketTitle+"?",
 			text: "Ticket "+ticketTitle+" will be approved on tickets list!",
 			icon: "warning",
 			showCancelButton: true,
@@ -585,6 +809,15 @@
     },
     columns: [
         { data: 'time' },
+        { orderable: false,
+            defaultContent:'',
+            render: function (data, type, row) {
+                 if(row.ssp_rula_table_c === 1 || row.ssp_rula_table_c === 2) return 'Level 1'; 
+                 if(row.ssp_rula_table_c === 3 || row.ssp_rula_table_c === 4) return 'Level 2';
+                 if(row.ssp_rula_table_c === 5 || row.ssp_rula_table_c === 6) return 'Level 3';
+                 if(row.ssp_rula_table_c === 7) return 'Level 4';
+            }
+        },
         { data: 'ssp_rula_table_c' }, { data: 'ssp_rula_table_b' }, { data: 'ssp_rula_table_a' }, 
         { data: 'ssp_rula_upper_arm_left' }, { data: 'ssp_rula_upper_arm_right' }, { data: 'ssp_rula_lower_arm_left' }, { data: 'ssp_rula_lower_arm_right' }, { data: 'ssp_rula_wrist_left' },
         { data: 'ssp_rula_wrist_right' }, { data: 'ssp_rula_wrist_twist_left' }, { data: 'ssp_rula_wrist_twist_right' }, { data: 'ssp_rula_neck' }, { data: 'ssp_rula_trunk_position' },

@@ -7,7 +7,14 @@
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/sweetalert2.css')}}">
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/fixedColumns.bootstrap.css')}}">
 <link rel="stylesheet" type="text/css" href="{{url('/assets/css/datatables.css')}}">
-
+<link rel="stylesheet" type="text/css" href="{{url('/assets/css/chartist.css')}}">
+<style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+</style>
 <!-- Plugins css Ends-->
 @endsection
 
@@ -84,7 +91,14 @@
                                 <h5>Line Chart</h5>
                             </div>
                             <div class="card-body">
-                                <div id="area-spaline"></div>
+                                <div id="rula-chart" class="col-md-12" style="width: 430px; min-width: 110%; height:400px;">
+                                </div>
+                                <!-- <div id="area-spaline"></div> -->
+                                <!-- <div>
+                                    <button onclick="resetZoom()">Reset Zoom</button>
+                                    <button id="drag-switch" onclick="toggleDragMode()">Disable drag mode</button>
+                                    <canvas id="mycanvas"></canvas>
+                                </div> -->
                             </div>
                         </div>
                         <div class="card">
@@ -303,8 +317,19 @@
 <script src="{{url('/assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 <script src="{{url('/assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{url('/assets/js/datatable/datatable-extension/dataTables.fixedColumns.min.js')}}"></script>
-<script src="{{url('/assets/js/chart/apex-chart/apex-chart.js')}}"></script>
-<script src="{{url('/assets/js/chart/apex-chart/stock-prices.js')}}"></script>
+<!-- <script src="{{url('/assets/js/chart/apex-chart/apex-chart.js')}}"></script>
+<script src="{{url('/assets/js/chart/apex-chart/stock-prices.js')}}"></script> -->
+
+<script src="{{url('/assets/js/chart/echarts/echarts.min.js')}}"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0"></script>
+<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.2.1/chartjs-plugin-zoom.min.js"></script> -->
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> -->
+<!-- <script src="{{url('/assets/js/chart/chartjs/chartjs-plugin-zoom.min.js')}}"></script> -->
+<!-- <script src="{{url('/assets/js/chart/chartjs/chart.custom.js')}}"></script> -->
+
 <!-- <script src="{{url('/assets/js/chart/apex-chart/chart-custom.js')}}"></script> -->
 <script src="{{url('/assets/js/tooltip-init.js')}}"></script>
 <!-- Plugins JS Ends-->
@@ -317,107 +342,104 @@
         return str;
     }
 
-    var options1 = {
-        series: [],
-                chart: {
-                    type: 'area',
-                    stacked: false,
-                    height: 350,
-                    zoom: {
-                        type: 'x',
-                        enabled: true,
-                        autoScaleYaxis: true
-                    },
-                    toolbar: {
-                        autoSelected: 'zoom'
-                    },
-                    animations: {
-                        enabled: false
-                    }
-                },
-                noData: {
-                    text: 'Loading...'
-                },
-                    dataLabels: {
-                    enabled: false
-                },
-                markers: {
-                    size: 0,
-                },
-                title: {
-                text: 'Stock Price Movement',
-                align: 'left'
-                },
-                fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    inverseColors: false,
-                    opacityFrom: 0.5,
-                    opacityTo: 0,
-                    stops: [0, 90, 100]
-                },
-                },
-                yaxis: {
-                // labels: {
-                //     formatter: function (val) {
-                //     return (val / 1000000).toFixed(0);
-                //     },
-                // },
-                title: {
-                    text: 'Price'
-                },
-                },
-                xaxis: {
-                data:[]
-                },
-                tooltip: {
-                shared: false,
-                // y: {
-                //     formatter: function (val) {
-                //     return (val / 1000000).toFixed(0)
-                //     }
-                // }
-                }
-            };
-            
-            var chart1 = new ApexCharts(
-                document.querySelector("#area-spaline"),
-                options1
-            );
-
-            chart1.render();
-
+    
     $.ajax({
         type: "GET",
         url: "{{route('admin.sspRulaData.getDataSspRulaChart', $ticketId)}}",
         dataType: "json",
         contentType: 'application/json',
         success: function(data) {
-            // var morris_chart = {
-            //     init: function() {
-            //         Morris.Line({
-            //             element: "morris-line-chart",
-            //             data: data,
-            //             xkey: ["ssp_time"],
-            //             ykeys: ["ssp_rula_table_c"],
-            //             lineColors: [vihoAdminConfig.primary],
-            //             labels: ["test"],
-            //             parseTime: !1,
-            //             ymax: 8,
-            //             ymin: 1,
-            //         });
-            //     }
-            // }
-            // morris_chart.init()
+            var dataLabels = data.map(function(e) {
+                return e.time;
+            });
+            var dataCharts = data.map(function(e) {
+                return e.ssp_rula_table_c;
+            });
+            
+            var rulaChart = echarts.init(document.getElementById('rula-chart'));
+            
+            var option = {
+                tooltip: {
+                    trigger: 'none',
+                    axisPointer: {
+                    type: 'cross'
+                    }
+                },
+                dataZoom: [{
+                    type: 'inside'
+                }],
+                toolbox: {
+                    right: '9%',
+                    feature: {
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left:'5%',
+                    right: '13%'
+                },
+                title: {
+                    text: 'Rula Chart',
+                    left: 'center',
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    min: 0,
+                    axisTick: {
+                        show: false,
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        show: true
+                    },
+                    axisPointer: {
+                    label: {
+                        formatter: function (params) {
+                        return (
+                            'Action Level ' +
+                            
+                            (params.seriesData.length ? params.seriesData[0].data : '') + ' ：' + params.value + ' Time (s)'
+                        );
+                        }
+                    }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#73c0de'
+                        }
+                    },
+                    axisLabel: {
+                        rotate: 45,
+                    },
+                    name: 'Time (s)',
+                    nameLocation: 'middle',
+                    nameGap: 40,
+                    data: dataLabels
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 1,
+                    max: 10,
+                    name: 'Action Level',
+                    nameLocation: 'middle',
+                    nameGap: 40
+                },
+                series: [{
+                    data: dataCharts,
+                    type: 'line',
+                    areaStyle: {color: '#9dd3e8'},
+                    lineStyle: {
+                        color: '#73c0de'
+                    },
+                    itemStyle: {
+                        color: '#73c0de'
+                    }
+                }]
+            };
 
-            // area spaline chart
-            chart1.updateSeries([{
-                data: data //pass them here 
-            }]);
-            chart1.updatexaxis([{
-                data: data
-            }])
+            rulaChart.setOption(option);
             console.log(data)
         }
     });

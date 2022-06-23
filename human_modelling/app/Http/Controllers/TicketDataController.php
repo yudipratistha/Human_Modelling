@@ -246,7 +246,19 @@ class TicketDataController extends Controller
             ->skip($start)
             ->take($rowperpage)
             ->get();
-            
+
+
+        // $dataRula = (object)array_merge($dataRula->toArray()[0], ['action_level'=>'Level 1'] );
+        // dd($dataRula);
+        // $i=0;
+        // foreach($dataRula->toArray() as $data){
+           
+        //     // if($data->ssp_rula_table_c === 1 || $data->ssp_rula_table_c === 2) $dataRula->toArray()
+        //     // if($data->ssp_rula_table_c === 3 || $data->ssp_rula_table_c === 4)
+        //     // if($data->ssp_rula_table_c === 5 || $data->ssp_rula_table_c === 6)
+        //     // if($data->ssp_rula_table_c === 7)
+        // }
+
         $response = array(
             "draw" => intval($draw),
             "iTotalRecords" => $totalRecords,
@@ -258,6 +270,29 @@ class TicketDataController extends Controller
             return response()->json(['error' => "Data Not Found"], 404);
         }else{
             return response()->json($response); 
+        }
+    }
+
+    public function getDataSspRulaChartAdmin($ticketId){
+        $dataRula = array();
+        $dataRulaChart = DB::table('ssp_rula')->select('ssp_rula_table_c', 'ssp_times.time')     
+            ->leftJoin('ssp_times', 'ssp_rula.ssp_time_id', '=', 'ssp_times.id')
+            ->leftJoin('ssp_tickets', 'ssp_rula.ssp_ticket_id', '=', 'ssp_tickets.id')
+            ->where('ssp_tickets.id', $ticketId)->where('ssp_times.time_status', 1)->whereBetween('ssp_ticket_status', [2, 3])
+            ->get();
+        
+        // $dataRulaChartX = DB::table('ssp_rula')->select('ssp_times.time AS x')     
+        //     ->leftJoin('ssp_times', 'ssp_rula.ssp_time_id', '=', 'ssp_times.id')
+        //     ->leftJoin('ssp_tickets', 'ssp_rula.ssp_ticket_id', '=', 'ssp_tickets.id')
+        //     ->where('ssp_tickets.id', $ticketId)->where('ssp_times.time_status', 1)->whereBetween('ssp_ticket_status', [2, 3])
+        //     ->get();
+
+        // $dataRula['dataRulaChart'] = $dataRulaChart;
+        // $dataRula['dataRulaChartX'] = $dataRulaChartX;
+        if($dataRulaChart->isEmpty()){
+            return response()->json(['error' => "Data Not Found"], 404);
+        }else{
+            return response()->json($dataRulaChart); 
         }
     }
 

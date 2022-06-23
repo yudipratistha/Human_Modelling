@@ -182,11 +182,18 @@ class ProcessingDataController extends Controller
             $ticketHistory->ssp_ticket_histories_status = 2;
             $ticketHistory->save();
 
-            // DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
+            DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
 
             return response()->json('success');
         } catch (HttpException $exception) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function recalculateRulaData(Request $request){
+        $ticket = SspTicket::where('ssp_tickets.id', $request->$ticketId);
+        $ticket->delete();
+
+        DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
     }
 }

@@ -57,6 +57,8 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'isAdmin'], function () {
     Route::get('processing-data', 'ProcessingDataController@index')->name('admin.processingData.index');
     Route::post('processing-data/processing-data-csv', 'ProcessingDataController@storeDataCSV')->name('admin.processingData.storeDataCSV');
 
+    Route::post('recalculate-rula-data/{ticketId}', 'ProcessingDataController@recalculateRulaData')->name('admin.processingData.recalculateRulaData');
+
     Route::get('tickets-list', 'TicketListController@ticketsListAdminIndex')->name('admin.ticketsList.index');
     Route::get('ticket-get-edit-data/{ticketId}', 'TicketListController@ticketAdminGetEditData')->name('admin.ticketData.getEdit');
     Route::post('update-ticket-data/{ticketId}', 'TicketListController@updateTicketDataAdmin')->name('admin.ticketData.update');
@@ -69,4 +71,5 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'isAdmin'], function () {
     Route::delete('delete-ergonomics-data/{timeId}', 'TicketDataController@destroyErgonomicDataAdmin')->name('admin.ticketData.destroyErgonomicData');
 
     Route::post('get-ssp-rula-data/{ticketId}', 'TicketDataController@getDataSspRulaAdmin')->name('admin.sspRulaData.getDataSspRula');
+    Route::get('get-ssp-rula-data-chart/{ticketId}', 'TicketDataController@getDataSspRulaChartAdmin')->name('admin.sspRulaData.getDataSspRulaChart');
 });
