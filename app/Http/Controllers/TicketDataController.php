@@ -296,6 +296,70 @@ class TicketDataController extends Controller
         }
     }
 
+    public function getDataSspRulaFrequencyAdmin($ticketId){
+        $arrTableC= array();
+        $level1= 0;
+        $level2= 0;
+        $level3= 0;
+        $level4= 0;
+        $level5= 0;
+        $level6= 0;
+        $level7= 0;
+        $level8= 0;
+
+        
+        $dataTableC = DB::table('ssp_rula')->select('ssp_rula_table_c')     
+        ->leftJoin('ssp_times', 'ssp_rula.ssp_time_id', '=', 'ssp_times.id')
+        ->leftJoin('ssp_tickets', 'ssp_rula.ssp_ticket_id', '=', 'ssp_tickets.id')
+        ->where('ssp_tickets.id', $ticketId)->where('ssp_times.time_status', 1)->whereBetween('ssp_ticket_status', [2, 3])
+        ->get();
+
+        foreach (array_chunk($dataTableC->toArray(),1000) as $chunkTableC){
+            foreach ($chunkTableC as $tableC){
+                if($tableC->ssp_rula_table_c === 1){
+                    $level1++;
+                }else if($tableC->ssp_rula_table_c === 2){
+                    $level2++;
+                }else if($tableC->ssp_rula_table_c === 3){
+                    $level3++;
+                }else if($tableC->ssp_rula_table_c === 4){
+                    $level4++;
+                }else if($tableC->ssp_rula_table_c === 5){
+                    $level5++;
+                }else if($tableC->ssp_rula_table_c === 6){
+                    $level6++;
+                }else if($tableC->ssp_rula_table_c === 7){
+                    $level7++;
+                }
+            }
+        }
+        for($i=0; $i<=7; $i++){
+            if($i+1 === 1){
+                $arrTableC[$i]['score'] = $i+1;
+                $arrTableC[$i]['frequency'] = $level1;
+            }else if ($i+1 === 2){
+                $arrTableC[$i]['score'] = $i+1;
+                $arrTableC[$i]['frequency'] = $level2;
+            }else if($i+1 === 3){
+                $arrTableC[$i]['score'] = $i+1;
+                $arrTableC[$i]['frequency'] = $level3;
+            }else if($i+1 === 4) {
+                $arrTableC[$i]['score'] = $i+1;
+                $arrTableC[$i]['frequency'] = $level4;
+            }else if($i+1 === 5) {
+                $arrTableC[$i]['score'] = $i+1;
+                $arrTableC[$i]['frequency'] = $level5;
+            }else if($i+1 === 6) {
+                $arrTableC[$i]['score'] = $i+1;
+                $arrTableC[$i]['frequency'] = $level6;
+            }else if($i+1 === 7) {
+                $arrTableC[$i]['score'] = $i+1;
+                $arrTableC[$i]['frequency'] = $level7;
+            }
+        }
+        return response()->json($arrTableC);
+    }
+
 
     public function dataTicketUserIndex($ticketId){
         try {

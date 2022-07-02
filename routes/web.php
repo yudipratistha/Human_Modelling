@@ -72,4 +72,6 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'isAdmin'], function () {
 
     Route::post('get-ssp-rula-data/{ticketId}', 'TicketDataController@getDataSspRulaAdmin')->name('admin.sspRulaData.getDataSspRula');
     Route::get('get-ssp-rula-data-chart/{ticketId}', 'TicketDataController@getDataSspRulaChartAdmin')->name('admin.sspRulaData.getDataSspRulaChart');
+    
+    Route::get('get-ssp-rula-data-frequency/{ticketId}', 'TicketDataController@getDataSspRulaFrequencyAdmin')->name('admin.sspRulaData.getDataSspRulaFrequency');
 });

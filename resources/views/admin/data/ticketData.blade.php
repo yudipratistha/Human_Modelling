@@ -86,6 +86,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="card">
                             <div class="card-header pb-0">
                                 <h5>Line Chart</h5>
@@ -99,6 +100,70 @@
                                     <button id="drag-switch" onclick="toggleDragMode()">Disable drag mode</button>
                                     <canvas id="mycanvas"></canvas>
                                 </div> -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <!-- <div class="card-header">
+                                <h5>Data Ergonomic</h5>
+                            </div> -->
+                            <div class="card-body">
+                                <div id="length-data-action-level" class="dataTables_wrapper"></div>
+                                <div class="table-responsive">
+                                    <table class="display datatables" id="data-action-level">
+                                        <thead>
+                                            <tr>
+                                                <th>Score</th>
+                                                <th>Frequency</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div id="pagination-data-action-level" class="dataTables_wrapper"></div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-1 d-flex aligns-items-center">
+                            <div class="card-body pb-2 pt-2">
+                                <label class="col-form-label pb-1">Filter Action Level:</label>
+                                <div class="form-group m-t-5 m-checkbox-inline mb-0 custom-radio-ml">
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="fillter-all" type="radio" checked="checked">
+                                        <label for="fillter-all">All</span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-1" type="radio">
+                                        <label for="level-1">Level<span class="digits"> 1</span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-2" type="radio" class="radio">
+                                        <label for="level-2">Level<span class="digits"> 2</span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-3" type="radio" class="radio">
+                                        <label for="level-3">Level<span class="digits"> 3</span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-4" type="radio" class="radio">
+                                        <label for="level-4">Level<span class="digits"> 4</span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-5" type="radio" class="radio">
+                                        <label for="level-5">Level<span class="digits"> 5</span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-6" type="radio" class="radio">
+                                        <label for="level-6">Level<span class="digits"> 6</span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-7" type="radio" class="radio">
+                                        <label for="level-7">Level<span class="digits"> 7</span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-8" type="radio" class="radio">
+                                        <label for="level-8">Level<span class="digits"> 8</span></label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card">
@@ -335,6 +400,11 @@
 <!-- Plugins JS Ends-->
 
 <script>
+
+    $('.filter-checkbox').on('change', function() {
+        $('.filter-checkbox').not(this).prop('checked', false);
+    });
+
     function ucwords(str) {
         str = str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
             return letter.toUpperCase();
@@ -777,9 +847,9 @@
         })
     }
 
-    var table;
+    var tableDataSspRula;
     var api;
-    table = $('#data-ssp-rula').DataTable({
+    tableDataSspRula = $('#data-ssp-rula').DataTable({
     bFilter: false,
     processing: true,
     serverSide: true,
@@ -832,7 +902,33 @@
             $('#data-ssp-rula_paginate').appendTo('#pagination-data-ssp-rula');
         }
     });
-        
+
+    var tableDataActionLevel;
+    tableDataActionLevel = $('#data-action-level').DataTable({
+        bFilter: false,
+        serverSide: true,
+        // scrollY: true,
+        // scrollX: true,
+        // paging: true,
+        // searching: { "regex": true },
+        preDrawCallback: function(settings) {
+            api = new $.fn.dataTable.Api(settings);
+        },
+        ajax: {
+            type: "GET",
+            url: "{{route('admin.sspRulaData.getDataSspRulaFrequency', $ticketId)}}",
+        },
+        columns: [
+            { data: 'score' },
+            { data: 'frequency' },
+        ],
+        initComplete:function( settings, json){
+            // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');
+            $('#data-action-level_length').appendTo('#length-data-action-level');
+            $('#data-action-level_info').appendTo('#pagination-data-action-level');
+            $('#data-action-level_paginate').appendTo('#pagination-data-action-level');
+        }
+    });
     // });
 </script>
 @endsection
