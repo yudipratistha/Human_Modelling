@@ -65,49 +65,113 @@
                                             <h5>Job Variable</h5>
                                         </div>
                                         <div class="card-body pt-0">
-                                            <form id="form-job-variable-score" method="POST">
-                                                <div class="row g-2">
-                                                    <div class="col-md-6" id="hand-location-h-div">
-                                                        <label class="form-label" for="hand-location-h">Lokasi Tangan H (cm)</label>
-                                                        <input class="form-control" id="hand-location-h" name="hand_location_h" type="text" value="" placeholder="..." required="">
-                                                    </div>
-                                                    <div class="col-md-6" id="hand-location-v-div">
-                                                        <label class="form-label" for="hand-location-v">Lokasi Tangan V (cm)</label>
-                                                        <input class="form-control" id="hand-location-v" name="hand_location_v" type="text" value="" placeholder="..." required="">
-                                                    </div>
-                                                </div>
-                                                <div class="row g-2 mt-2">
-                                                    <div class="col-md-6" id="vertical-distance-d-div">
-                                                        <label class="form-label" for="vertical-distance-d">Jarak Vertical D (cm)</label>
-                                                        <input class="form-control" id="vertical-distance-d" name="vertical_distance_d" type="text" value="" placeholder="..." required="">
-                                                    </div>
-                                                    <div class="col-md-6" id="assymetric-angle-a-div">
-                                                        <label class="form-label" for="assymetric-angle-a">Sudut Asimetri A (derajat)</label>
-                                                        <input class="form-control" id="assymetric-angle-a" name="assymetric_angle_a" type="text" value="" placeholder="..." required="">
-                                                    </div>
-                                                </div>
-                                                <div class="row g-2 mt-2">
-                                                    <div class="col-md-6" id="average-frequency-f-div">
-                                                        <label class="form-label" for="average-frequency-f">Average Frequency F (lift/min)</label>
-                                                        <input class="form-control" id="average-frequency-f" name="average_frequency_f" type="text" value="" placeholder="..." required="">
-                                                    </div>
-                                                    <div class="col-md-6" id="duration-div">
-                                                        <label class="form-label" for="duration">Durasi (jam)</label>
-                                                        <input class="form-control" id="duration" name="duration" type="text" value="" placeholder="..." required="">
-                                                    </div>
-                                                </div>
-                                                <div class="row g-2 mt-2">
-                                                    <div class="col-md-6" id="object-clutch-c-div">
-                                                        <label class="form-label" for="object-clutch-c">Kopling Objek C</label>
-                                                        <input class="form-control" id="object-clutch-c" name="object_cluth_c" type="text" value="" placeholder="..." required="">
-                                                    </div>
-                                                    <div class="col-md-6 mb-3" id="object-weight-div">
-                                                        <label class="form-label" for="object-weight">Berat Benda</label>
-                                                        <input class="form-control" id="object-weight" name="object_weight" type="text" value="" placeholder="..." required="">
-                                                    </div>
-                                                </div>
-                                                <button class="btn btn-primary" type="button" onclick="jobVariable()">Calculate Job Variable</button>
-                                            </form>
+                                            <table id="table-job-variable" class="display" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="3">No Pekerjaan</th>
+                                                        <th colspan="2">Berat Beban</th>
+                                                        <th colspan="4">Lokasi Tangan</th>
+                                                        <th rowspan="1">Jarak Vertikal</th>
+                                                        <th colspan="2">Sudut Asimetri</th>
+                                                        <th colspan="1">Rata-Rata Frekuensi</th>
+                                                        <th colspan="1">Durasi</th>
+                                                        <th rowspan="1">Kopling Objek</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th rowspan="2">L (Rata-rata)</th>
+                                                        <th rowspan="2">L (Max)</th>
+                                                        <th colspan="2">Origin</th>
+                                                        <th colspan="2">Destination</th>
+                                                        <th rowspan="1"></th>
+                                                        <th colspan="1">Origin</th>
+                                                        <th colspan="1">Destination</th>
+                                                        <th colspan="1">Lift/Min</th>
+                                                        <th rowspan="1">Jam</th>
+                                                        <th rowspan="1"></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>H</th>
+                                                        <th>V</th>
+                                                        <th>H</th>
+                                                        <th>V</th>
+                                                        <th>D</th>
+                                                        <th>A</th>
+                                                        <th>A</th>
+                                                        <th>F</th>
+                                                        <th></th>
+                                                        <th>C</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <form id="form-job-variable-score" method="POST">
+                                                            <td id="no-pekerjaan-1">
+                                                                1
+                                                            </td>
+                                                            <td>
+                                                                <div id="beban-kerja-L-avg-div-1">
+                                                                    <input class="form-control" id="beban-kerja-L-avg-1" name="beban_kerja_L_avg_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="beban-kerja-L-max-div-1">
+                                                                    <input class="form-control" id="beban-kerja-L-max-1" name="beban_kerja_L_max_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="lokasi-tangan-origin-h-div-1">
+                                                                    <input class="form-control" id="lokasi-tangan-origin-h-1" name="lokasi_tangan_origin_h_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="lokasi-tangan-origin-v-div-1">
+                                                                    <input class="form-control" id="lokasi-tangan-origin-v-1" name="lokasi_tangan_origin_v_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="lokasi-tangan-dest-h-div-1">
+                                                                    <input class="form-control" id="lokasi-tangan-dest-h-1" name="lokasi_tangan_dest_h_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="lokasi-tangan-dest-v-div-1">
+                                                                    <input class="form-control" id="lokasi-tangan-dest-v-1" name="lokasi_tangan_dest_v_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="jarak-vertical-d-div-1">
+                                                                    <input class="form-control" id="jarak-vertical-d-1" name="jarak_vertical_d_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="sudut-asimetri-origin-a-div-1">
+                                                                    <input class="form-control" id="sudut-asimetri-origin-a-1" name="sudut_asimetri_origin_a_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="sudut-asimetri-dest-a-div-1">
+                                                                    <input class="form-control" id="sudut-asimetri-dest-a-1" name="sudut_asimetri_dest_a_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="avg-freq-div-1">
+                                                                    <input class="form-control" id="avg-freq-1" name="avg_freq_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="duration-div">
+                                                                    <input class="form-control" id="duration-1" name="duration_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="object-clutch-c-div-1">
+                                                                    <input class="form-control" id="object-clutch-c-1" name="object_clutch_c_1" type="text" value="" placeholder="..." required="">
+                                                                </div>
+                                                            </td>
+                                                        </form>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="card">
@@ -273,6 +337,13 @@
     var fmRemoveFlag= 0;
 
     $(document).ready(function () {
+        var tableJobVariable = $('#table-job-variable').DataTable({
+            searching: false,
+            ordering:  false,
+            paging: false,
+            bInfo: false
+        });
+
         var tableRwl = $('#table-rwl').DataTable({
             searching: false,
             ordering:  false,
