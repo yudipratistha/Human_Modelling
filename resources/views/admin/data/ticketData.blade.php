@@ -52,28 +52,36 @@
                                     <table class="table table-borderless table-sm">
                                         <tbody>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Title</th>
-                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_title}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Title</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_title}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Analyst</th>
-                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_analyst}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Person In Charge Name</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_person_in_charge_name}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Date</th>
-                                                <td style="padding-left: 0px;">: {{date('d-m-Y', strtotime($ticket->ssp_ticket_job_date))}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Person In Charge Telephone</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_person_in_charge_telephone}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Description</th>
-                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_description}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Analyst</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_analyst}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Location</th>
-                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_location}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Date</td>
+                                                <th style="padding-left: 0px;">: {{date('d-m-Y', strtotime($ticket->ssp_ticket_job_date))}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Approval Status</th>
-                                                <td style="padding-left: 0px;">: @if($ticket->ssp_ticket_status == 2) {{"Validation Process!"}} @elseif($ticket->ssp_ticket_status == 3) {{"Validation Success!"}} @endif</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Description</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_description}}</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Location</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_location}}</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Approval Status</td>
+                                                <th style="padding-left: 0px;">: @if($ticket->ssp_ticket_status == 2) {{"Validation Process!"}} @elseif($ticket->ssp_ticket_status == 3) {{"Validation Success!"}} @endif</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -81,7 +89,6 @@
                                     @if($ticket->ssp_ticket_status != 3)
                                         <button class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm" type="button" onclick="approveTicket({{$ticket->id}}, '{{$ticket->ssp_ticket_job_title}}')" title="Approve Ticket" style="border-radius: 0px !important;">Approve Ticket</button>
                                         <button class="btn btn-pill btn-outline-primary btn-air-secondary btn-sm" type="button" onclick="recalculateRulaData({{$ticket->id}}, '{{$ticket->ssp_ticket_job_title}}')" title="Recalculate Rula Data" style="border-radius: 0px !important;">Recalculate Rula Data</button>
-
                                     @endif
                                 </div>
                             </div>
@@ -89,37 +96,71 @@
 
                         <div class="card">
                             <div class="card-header pb-0">
-                                <h5>Line Chart</h5>
+                                <h5>Rula Chart</h5>
                             </div>
                             <div class="card-body">
-                                <div id="rula-chart" class="col-md-12" style="width: 430px; min-width: 110%; height:400px;">
-                                </div>
-                                <!-- <div id="area-spaline"></div> -->
-                                <!-- <div>
-                                    <button onclick="resetZoom()">Reset Zoom</button>
-                                    <button id="drag-switch" onclick="toggleDragMode()">Disable drag mode</button>
-                                    <canvas id="mycanvas"></canvas>
-                                </div> -->
+                                <div id="rula-chart" class="col-md-12" style="width: 430px; min-width: 110%; height:430px;"></div>
                             </div>
                         </div>
 
                         <div class="card">
-                            <!-- <div class="card-header">
-                                <h5>Data Ergonomic</h5>
-                            </div> -->
+                            <div class="card-header pb-0">
+                                <h5>Action Level Chart</h5>
+                            </div>
                             <div class="card-body">
-                                <div id="length-data-action-level" class="dataTables_wrapper"></div>
                                 <div class="table-responsive">
-                                    <table class="display datatables" id="data-action-level">
-                                        <thead>
+                                    <table class="table table-borderless table-sm">
+                                        <tbody>
                                             <tr>
-                                                <th>Score</th>
-                                                <th>Frequency</th>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 1</td>
+                                                <th style="padding-left: 0px;">: Acceptable posture</th>
                                             </tr>
-                                        </thead>
+                                            <tr>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 2</td>
+                                                <th style="padding-left: 0px;">: Further investigation, change may be needed</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 3</td>
+                                                <th style="padding-left: 0px;">: Further investigation, change soon</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 4</td>
+                                                <th style="padding-left: 0px;">: Invetigate and implement change</th>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
-                                <div id="pagination-data-action-level" class="dataTables_wrapper"></div>
+                                <div id="action-level-chart" class="col-md-12" style="width: 430px; min-width: 110%; height:430px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Action Level Frequency</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="display" id="data-action-level" style="table-layout: fixed !important;width: 98% !important;">
+                                    <thead>
+                                        <tr>
+                                            <th>Score</th>
+                                            <th>Frequency</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Simulation Video</h5>
+                            </div>
+                            <div class="card-body pt-0">
+                                <video id="my_video_1" class="video-js vjs-default-skin" width="640px" height="360px"
+                                    controls preload="none" poster='url'
+                                    data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
+                                    <source src="{!!Storage::url($ticket->ssp_ticket_simulation_video_path)!!}" type='video/mp4' />
+                                    <source src="{!!Storage::url($ticket->ssp_ticket_simulation_video_path)!!}" type='video/webm' />
+                                </video>
                             </div>
                         </div>
 
@@ -128,40 +169,24 @@
                                 <label class="col-form-label pb-1">Filter Action Level:</label>
                                 <div class="form-group m-t-5 m-checkbox-inline mb-0 custom-radio-ml">
                                     <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="fillter-all" type="radio" checked="checked">
-                                        <label for="fillter-all">All</span></label>
+                                        <input class="filter-checkbox" id="filter-all" type="radio" checked="checked" value="All">
+                                        <label for="filter-all">All <span id="filter-all-count" class="fw-bold"></span></label>
                                     </div>
                                     <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-1" type="radio">
-                                        <label for="level-1">Level<span class="digits"> 1</span></label>
+                                        <input class="filter-checkbox" id="level-1" type="radio" value="Level 1">
+                                        <label for="level-1">Level<span class="digits"> 1 </span><span id="level-1-count" class="fw-bold"></span></label>
                                     </div>
                                     <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-2" type="radio" class="radio">
-                                        <label for="level-2">Level<span class="digits"> 2</span></label>
+                                        <input class="filter-checkbox" id="level-2" type="radio" class="radio" value="Level 2">
+                                        <label for="level-2">Level<span class="digits"> 2 </span><span id="level-2-count" class="fw-bold"></span></label>
                                     </div>
                                     <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-3" type="radio" class="radio">
-                                        <label for="level-3">Level<span class="digits"> 3</span></label>
+                                        <input class="filter-checkbox" id="level-3" type="radio" class="radio" value="Level 3">
+                                        <label for="level-3">Level<span class="digits"> 3 </span><span id="level-3-count" class="fw-bold"></span></label>
                                     </div>
                                     <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-4" type="radio" class="radio">
-                                        <label for="level-4">Level<span class="digits"> 4</span></label>
-                                    </div>
-                                    <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-5" type="radio" class="radio">
-                                        <label for="level-5">Level<span class="digits"> 5</span></label>
-                                    </div>
-                                    <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-6" type="radio" class="radio">
-                                        <label for="level-6">Level<span class="digits"> 6</span></label>
-                                    </div>
-                                    <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-7" type="radio" class="radio">
-                                        <label for="level-7">Level<span class="digits"> 7</span></label>
-                                    </div>
-                                    <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-8" type="radio" class="radio">
-                                        <label for="level-8">Level<span class="digits"> 8</span></label>
+                                        <input class="filter-checkbox" id="level-4" type="radio" class="radio" value="Level 4">
+                                        <label for="level-4">Level<span class="digits"> 4 </span><span id="level-4-count" class="fw-bold"></span></label>
                                     </div>
                                 </div>
                             </div>
@@ -176,6 +201,7 @@
                                     <table class="display datatables" id="data-ssp-rula">
                                         <thead>
                                             <tr>
+                                                <th style="min-width: 90px">Action</th>
                                                 <th>Time</th>
                                                 <th>Action Level</th>
                                                 <th>Rula Score Table C</th>
@@ -210,7 +236,6 @@
                                     <table class="display datatables" id="data-ergonomic">
                                         <thead>
                                             <tr>
-                                                <th style="min-width: 90px">Action</th>
                                                 <th>Time</th>
                                                 <th>Task</th>
                                                 <th>Action</th>
@@ -350,7 +375,7 @@
 </div>
 
 <!-- Modal Edit Data Ergonomic-->
-<div class="modal fade" id="editDataErgonomic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-edit-data-ssp-rula" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -361,7 +386,7 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12" id="edit-body-data-ergonomic">
+                        <div class="col-md-12" id="edit-body-data-ssp-rula">
 
                         </div>
                     </div>
@@ -400,7 +425,10 @@
 <!-- Plugins JS Ends-->
 
 <script>
+    var filterActionLevel = "All";
 
+    $('.filter-checkbox').prop('checked', false);
+    $('#filter-all').prop('checked', true);
     $('.filter-checkbox').on('change', function() {
         $('.filter-checkbox').not(this).prop('checked', false);
     });
@@ -412,6 +440,38 @@
         return str;
     }
 
+    tableDataActionLevel = $('#data-action-level').DataTable({
+        bFilter: false,
+        lengthChange: false,
+        serverSide: false,
+        info: false,
+        paging: false,
+        // scrollY: false,
+        // scrollX: false,
+        ordering: false,
+        columns: [
+            { data: 'score' },
+            { data: 'frequency' },
+        ]
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "{{route('admin.sspRulaData.getDataSspRulaFrequency', $ticketId)}}",
+        data: {
+            "_token": "{{ csrf_token() }}",
+        },
+        dataType: "json",
+        success:function(data){
+            console.log(data.arrTableC)
+            $("#filter-all-count").text('('+data.allDataActionLevel+')');
+            $("#level-1-count").text('('+data.arrTableC[0].frequency+')');
+            $("#level-2-count").text('('+data.arrTableC[1].frequency+')');
+            $("#level-3-count").text('('+data.arrTableC[2].frequency+')');
+            $("#level-4-count").text('('+data.arrTableC[3].frequency+')');
+            $('#data-action-level').DataTable().clear().rows.add(data.arrTableC).draw();
+        }
+    });
     
     $.ajax({
         type: "GET",
@@ -436,7 +496,15 @@
                     }
                 },
                 dataZoom: [{
-                    type: 'inside'
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'weakFilter',
+                    height: 20,
+                    bottom: 0,
+                    handleIcon:
+                    'path://M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    handleSize: '80%',
+                    showDetail: true
                 }],
                 toolbox: {
                     right: '9%',
@@ -446,8 +514,9 @@
                     }
                 },
                 grid: {
-                    left:'5%',
-                    right: '13%'
+                    left:'4%',
+                    right: '13%',
+                    bottom:'20%'
                 },
                 title: {
                     text: 'Rula Chart',
@@ -468,7 +537,7 @@
                     label: {
                         formatter: function (params) {
                         return (
-                            'Action Level ' +
+                            'Rula Score ' +
                             
                             (params.seriesData.length ? params.seriesData[0].data : '') + ' ：' + params.value + ' Time (s)'
                         );
@@ -492,9 +561,18 @@
                     type: 'value',
                     min: 1,
                     max: 10,
-                    name: 'Action Level',
+                    name: 'Rula Score',
                     nameLocation: 'middle',
-                    nameGap: 40
+                    nameGap: 40,
+                    splitNumber:10,
+                    axisLabel: {
+                        interval: 0,
+                        formatter: function (value) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    },
                 },
                 series: [{
                     data: dataCharts,
@@ -514,56 +592,128 @@
         }
     });
 
-//     "use strict";
-// var morris_chart = {
-//     init: function() {
-//          Morris.Line({
-//             element: "morris-line-chart",
-//             data: [{
-//                 ssp_rula_table_c: "0.1",
-//                 ssp_time: 100
-//                 },
-//                 {
-//                     ssp_rula_table_c: "2012",
-//                     ssp_time: 75
-//                 },
-//                 {
-//                     ssp_rula_table_c: "2013",
-//                     ssp_time: 50
-//                 },
-//                 {
-//                     ssp_rula_table_c: "2014",
-//                     ssp_time: 75
-//                 },
-//                 {
-//                     ssp_rula_table_c: "2015",
-//                     ssp_time: 50
-//                 },
-//                 {
-//                     ssp_rula_table_c: "2016",
-//                     ssp_time: 75
-//                 },
-//                 {
-//                     ssp_rula_table_c: "2017",
-//                     ssp_time: 100
-//                 }],
-//             xkey: "ssp_rula_table_c",
-//             ykeys: ["ssp_time"],
-//             lineColors: [vihoAdminConfig.primary, vihoAdminConfig.secondary],
-//             labels: ["Series A"],
-//             parseTime: !1,
-//         })
-        
-//     }
-// };
-// (function($) {
-//     "use strict";
-//     morris_chart.init()
-// })(jQuery);
+    $.ajax({
+        type: "GET",
+        url: "{{route('admin.sspRulaData.getDataActionLevelChart', $ticketId)}}",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function(data) {
+            var dataLabels = data.map(function(e) {
+                return e.time;
+            });
+            var dataCharts = data.map(function(e) {
+                return e.action_level;
+            });
+            
+            var rulaChart = echarts.init(document.getElementById('action-level-chart'));
+            
+            var option = {
+                tooltip: {
+                    trigger: 'none',
+                    axisPointer: {
+                    type: 'cross'
+                    }
+                },
+                dataZoom: [{
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'weakFilter',
+                    height: 20,
+                    bottom: 0,
+                    handleIcon:
+                    'path://M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    handleSize: '80%',
+                    showDetail: true
+                }],
+                toolbox: {
+                    right: '9%',
+                    feature: {
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left:'4%',
+                    right: '13%',
+                    bottom:'20%'
+                },
+                title: {
+                    text: 'Action Level Chart',
+                    left: 'center',
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    min: 0,
+                    axisTick: {
+                        show: false,
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        show: true
+                    },
+                    axisPointer: {
+                        label: {
+                            formatter: function (params) {
+                            return (
+                                'Action Level ' +
+                                
+                                (params.seriesData.length ? params.seriesData[0].data : '') + ' ：' + params.value + ' Time (s)'
+                            );
+                            }
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#73c0de'
+                        }
+                    },
+                    axisLabel: {
+                        rotate: 45,
+                    },
+                    name: 'Time (s)',
+                    nameLocation: 'middle',
+                    nameGap: 40,
+                    data: dataLabels
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 1,
+                    max: 4,
+                    name: 'Action Level',
+                    nameLocation: 'middle',
+                    nameGap: 40,
+                    splitNumber:4,
+                    axisLabel: {
+                        interval: 0,
+                        formatter: function (value) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    data: dataCharts,
+                    type: 'line',
+                    areaStyle: {color: '#9dd3e8'},
+                    lineStyle: {
+                        color: '#73c0de'
+                    },
+                    itemStyle: {
+                        color: '#73c0de'
+                    }
+                }]
+            };
+
+            rulaChart.setOption(option);
+            console.log(data)
+        }
+    });
 
 
-    $('#editDataErgonomic').on('hidden.bs.modal', function () {
-        $('#edit-body-data-ergonomic').children().remove();
+    $('#modal-edit-data-ssp-rula').on('hidden.bs.modal', function () {
+        $('#edit-body-data-ssp-rula').children().remove();
     })
 
     var table;
@@ -572,6 +722,7 @@
     bFilter: false,
     processing: true,
     serverSide: true,
+    ordering: false,
     // scrollY: true,
     // scrollX: true,
     // paging: true,
@@ -599,74 +750,74 @@
         }
     },
     columns: [
-        { orderable: false, defaultContent: '\
-            <button type="button" class="btn btn-outline-primary" id="edit-data-ergonomic" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-edit" style="font-size:20px;"></i></button>\
-            <button type="button" class="btn btn-outline-danger" id="delete-data-ergonomic" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-trash" style="font-size:20px;"></i></button>',
-            render: function (data, type, row) { if(row.ssp_ticket_status === 3) table.column(0).visible(false); }
-        },
-        { data: 'time' },{ data: 'task' },{ data: 'action' },
-        { data: 'joint_angles_wrist_flex_ext_left' }, { data: 'joint_angles_wrist_flex_ext_right' }, { data: 'joint_angles_wrist_rad_ulnar_dev_left' }, 
-        { data: 'joint_angles_wrist_rad_ulnar_dev_right' }, { data: 'joint_angles_forearm_sup_pro_left' }, { data: 'joint_angles_forearm_sup_pro_right' }, { data: 'joint_angles_elbow_right' }, { data: 'joint_angles_elbow_left' },
-        { data: 'joint_angles_shoulder_abd_right' }, { data: 'joint_angles_shoulder_abd_left' }, { data: 'joint_angles_shoulder_for_back_right' }, { data: 'joint_angles_shoulder_for_back_left' }, { data: 'joint_angles_humeral_rot_right' },
-        { data: 'joint_angles_humeral_rot_left' }, { data: 'joint_angles_trunk_flex_ext' }, { data: 'joint_angles_trunk_lateral' }, { data: 'joint_angles_trunk_rotation' }, { data: 'joint_angles_hip_flex_ext_right' }, { data: 'joint_angles_hip_flex_ext_left' },
-        { data: 'joint_angles_knee_flex_ext_right' }, { data: 'joint_angles_knee_flex_ext_left' }, { data: 'joint_angles_ankle_flex_ext_right' }, { data: 'joint_angles_ankle_flex_ext_left' },
+        // { orderable: false, defaultContent: '\
+        //     <button type="button" class="btn btn-outline-primary" id="edit-data-ergonomic" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-edit" style="font-size:20px;"></i></button>\
+        //     <button type="button" class="btn btn-outline-danger" id="delete-data-ergonomic" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-trash" style="font-size:20px;"></i></button>',
+        //     render: function (data, type, row) { if(row.ssp_ticket_status === 3) table.column(0).visible(false); }
+        // },
+        { orderable: false, data: 'time' },{ data: 'task' },{ data: 'action' },
+        { orderable: false, data: 'joint_angles_wrist_flex_ext_left' }, { data: 'joint_angles_wrist_flex_ext_right' }, { data: 'joint_angles_wrist_rad_ulnar_dev_left' }, 
+        { orderable: false, data: 'joint_angles_wrist_rad_ulnar_dev_right' }, { data: 'joint_angles_forearm_sup_pro_left' }, { data: 'joint_angles_forearm_sup_pro_right' }, { data: 'joint_angles_elbow_right' }, { data: 'joint_angles_elbow_left' },
+        { orderable: false, data: 'joint_angles_shoulder_abd_right' }, { data: 'joint_angles_shoulder_abd_left' }, { data: 'joint_angles_shoulder_for_back_right' }, { data: 'joint_angles_shoulder_for_back_left' }, { data: 'joint_angles_humeral_rot_right' },
+        { orderable: false, data: 'joint_angles_humeral_rot_left' }, { data: 'joint_angles_trunk_flex_ext' }, { data: 'joint_angles_trunk_lateral' }, { data: 'joint_angles_trunk_rotation' }, { data: 'joint_angles_hip_flex_ext_right' }, { data: 'joint_angles_hip_flex_ext_left' },
+        { orderable: false, data: 'joint_angles_knee_flex_ext_right' }, { data: 'joint_angles_knee_flex_ext_left' }, { data: 'joint_angles_ankle_flex_ext_right' }, { data: 'joint_angles_ankle_flex_ext_left' },
 
-        { data: 'joint_torques_wrist_flex_ext_left' }, { data: 'joint_torques_wrist_flex_ext_right' }, { data: 'joint_torques_wrist_rad_ulnar_dev_left' }, 
-        { data: 'joint_torques_wrist_rad_ulnar_dev_right' }, { data: 'joint_torques_forearm_sup_pro_left' }, { data: 'joint_torques_forearm_sup_pro_right' }, { data: 'joint_torques_elbow_right' }, { data: 'joint_torques_elbow_left' },
-        { data: 'joint_torques_shoulder_abd_right' }, { data: 'joint_torques_shoulder_abd_left' }, { data: 'joint_torques_shoulder_for_back_right' }, { data: 'joint_torques_shoulder_for_back_left' }, { data: 'joint_torques_humeral_rot_right' },
-        { data: 'joint_torques_humeral_rot_left' }, { data: 'joint_torques_trunk_flex_ext' }, { data: 'joint_torques_trunk_lateral' }, { data: 'joint_torques_trunk_rotation' }, { data: 'joint_torques_hip_flex_ext_right' }, { data: 'joint_torques_hip_flex_ext_left' },
-        { data: 'joint_torques_knee_flex_ext_right' }, { data: 'joint_torques_knee_flex_ext_left' }, { data: 'joint_torques_ankle_flex_ext_right' }, { data: 'joint_torques_ankle_flex_ext_left' },
+        { orderable: false, data: 'joint_torques_wrist_flex_ext_left' }, { data: 'joint_torques_wrist_flex_ext_right' }, { data: 'joint_torques_wrist_rad_ulnar_dev_left' }, 
+        { orderable: false, data: 'joint_torques_wrist_rad_ulnar_dev_right' }, { data: 'joint_torques_forearm_sup_pro_left' }, { data: 'joint_torques_forearm_sup_pro_right' }, { data: 'joint_torques_elbow_right' }, { data: 'joint_torques_elbow_left' },
+        { orderable: false, data: 'joint_torques_shoulder_abd_right' }, { data: 'joint_torques_shoulder_abd_left' }, { data: 'joint_torques_shoulder_for_back_right' }, { data: 'joint_torques_shoulder_for_back_left' }, { data: 'joint_torques_humeral_rot_right' },
+        { orderable: false, data: 'joint_torques_humeral_rot_left' }, { data: 'joint_torques_trunk_flex_ext' }, { data: 'joint_torques_trunk_lateral' }, { data: 'joint_torques_trunk_rotation' }, { data: 'joint_torques_hip_flex_ext_right' }, { data: 'joint_torques_hip_flex_ext_left' },
+        { orderable: false, data: 'joint_torques_knee_flex_ext_right' }, { data: 'joint_torques_knee_flex_ext_left' }, { data: 'joint_torques_ankle_flex_ext_right' }, { data: 'joint_torques_ankle_flex_ext_left' },
 
-        { data: 'mean_strengths_wrist_flex_ext_left' }, { data: 'mean_strengths_wrist_flex_ext_right' }, { data: 'mean_strengths_wrist_rad_ulnar_dev_left' }, 
-        { data: 'mean_strengths_wrist_rad_ulnar_dev_right' }, { data: 'mean_strengths_forearm_sup_pro_left' }, { data: 'mean_strengths_forearm_sup_pro_right' }, { data: 'mean_strengths_elbow_right' }, { data: 'mean_strengths_elbow_left' },
-        { data: 'mean_strengths_shoulder_abd_right' }, { data: 'mean_strengths_shoulder_abd_left' }, { data: 'mean_strengths_shoulder_for_back_right' }, { data: 'mean_strengths_shoulder_for_back_left' }, { data: 'mean_strengths_humeral_rot_right' },
-        { data: 'mean_strengths_humeral_rot_left' }, { data: 'mean_strengths_trunk_flex_ext' }, { data: 'mean_strengths_trunk_lateral' }, { data: 'mean_strengths_trunk_rotation' }, { data: 'mean_strengths_hip_flex_ext_right' }, { data: 'mean_strengths_hip_flex_ext_left' },
-        { data: 'mean_strengths_knee_flex_ext_right' }, { data: 'mean_strengths_knee_flex_ext_left' }, { data: 'mean_strengths_ankle_flex_ext_right' }, { data: 'mean_strengths_ankle_flex_ext_left' },
+        { orderable: false, data: 'mean_strengths_wrist_flex_ext_left' }, { data: 'mean_strengths_wrist_flex_ext_right' }, { data: 'mean_strengths_wrist_rad_ulnar_dev_left' }, 
+        { orderable: false, data: 'mean_strengths_wrist_rad_ulnar_dev_right' }, { data: 'mean_strengths_forearm_sup_pro_left' }, { data: 'mean_strengths_forearm_sup_pro_right' }, { data: 'mean_strengths_elbow_right' }, { data: 'mean_strengths_elbow_left' },
+        { orderable: false, data: 'mean_strengths_shoulder_abd_right' }, { data: 'mean_strengths_shoulder_abd_left' }, { data: 'mean_strengths_shoulder_for_back_right' }, { data: 'mean_strengths_shoulder_for_back_left' }, { data: 'mean_strengths_humeral_rot_right' },
+        { orderable: false, data: 'mean_strengths_humeral_rot_left' }, { data: 'mean_strengths_trunk_flex_ext' }, { data: 'mean_strengths_trunk_lateral' }, { data: 'mean_strengths_trunk_rotation' }, { data: 'mean_strengths_hip_flex_ext_right' }, { data: 'mean_strengths_hip_flex_ext_left' },
+        { orderable: false, data: 'mean_strengths_knee_flex_ext_right' }, { data: 'mean_strengths_knee_flex_ext_left' }, { data: 'mean_strengths_ankle_flex_ext_right' }, { data: 'mean_strengths_ankle_flex_ext_left' },
 
-        { data: 'percent_capables_wrist_flex_ext_left' }, { data: 'percent_capables_wrist_flex_ext_right' }, { data: 'percent_capables_wrist_rad_ulnar_dev_left' }, 
-        { data: 'percent_capables_wrist_rad_ulnar_dev_right' }, { data: 'percent_capables_forearm_sup_pro_left' }, { data: 'percent_capables_forearm_sup_pro_right' }, { data: 'percent_capables_elbow_right' }, { data: 'percent_capables_elbow_left' },
-        { data: 'percent_capables_shoulder_abd_right' }, { data: 'percent_capables_shoulder_abd_left' }, { data: 'percent_capables_shoulder_for_back_right' }, { data: 'percent_capables_shoulder_for_back_left' }, { data: 'percent_capables_humeral_rot_right' },
-        { data: 'percent_capables_humeral_rot_left' }, { data: 'percent_capables_trunk_flex_ext' }, { data: 'percent_capables_trunk_lateral' }, { data: 'percent_capables_trunk_rotation' }, { data: 'percent_capables_hip_flex_ext_right' }, { data: 'percent_capables_hip_flex_ext_left' },
-        { data: 'percent_capables_knee_flex_ext_right' }, { data: 'percent_capables_knee_flex_ext_left' }, { data: 'percent_capables_ankle_flex_ext_right' }, { data: 'percent_capables_ankle_flex_ext_left' },
+        { orderable: false, data: 'percent_capables_wrist_flex_ext_left' }, { data: 'percent_capables_wrist_flex_ext_right' }, { data: 'percent_capables_wrist_rad_ulnar_dev_left' }, 
+        { orderable: false, data: 'percent_capables_wrist_rad_ulnar_dev_right' }, { data: 'percent_capables_forearm_sup_pro_left' }, { data: 'percent_capables_forearm_sup_pro_right' }, { data: 'percent_capables_elbow_right' }, { data: 'percent_capables_elbow_left' },
+        { orderable: false, data: 'percent_capables_shoulder_abd_right' }, { data: 'percent_capables_shoulder_abd_left' }, { data: 'percent_capables_shoulder_for_back_right' }, { data: 'percent_capables_shoulder_for_back_left' }, { data: 'percent_capables_humeral_rot_right' },
+        { orderable: false, data: 'percent_capables_humeral_rot_left' }, { data: 'percent_capables_trunk_flex_ext' }, { data: 'percent_capables_trunk_lateral' }, { data: 'percent_capables_trunk_rotation' }, { data: 'percent_capables_hip_flex_ext_right' }, { data: 'percent_capables_hip_flex_ext_left' },
+        { orderable: false, data: 'percent_capables_knee_flex_ext_right' }, { data: 'percent_capables_knee_flex_ext_left' }, { data: 'percent_capables_ankle_flex_ext_right' }, { data: 'percent_capables_ankle_flex_ext_left' },
 
-        { data: 'strength_std_devs_wrist_flex_ext_left' }, { data: 'strength_std_devs_wrist_flex_ext_right' }, { data: 'strength_std_devs_wrist_rad_ulnar_dev_left' }, 
-        { data: 'strength_std_devs_wrist_rad_ulnar_dev_right' }, { data: 'strength_std_devs_forearm_sup_pro_left' }, { data: 'strength_std_devs_forearm_sup_pro_right' }, { data: 'strength_std_devs_elbow_right' }, { data: 'strength_std_devs_elbow_left' },
-        { data: 'strength_std_devs_shoulder_abd_right' }, { data: 'strength_std_devs_shoulder_abd_left' }, { data: 'strength_std_devs_shoulder_for_back_right' }, { data: 'strength_std_devs_shoulder_for_back_left' }, { data: 'strength_std_devs_humeral_rot_right' },
-        { data: 'strength_std_devs_humeral_rot_left' }, { data: 'strength_std_devs_trunk_flex_ext' }, { data: 'strength_std_devs_trunk_lateral' }, { data: 'strength_std_devs_trunk_rotation' }, { data: 'strength_std_devs_hip_flex_ext_right' }, { data: 'strength_std_devs_hip_flex_ext_left' },
-        { data: 'strength_std_devs_knee_flex_ext_right' }, { data: 'strength_std_devs_knee_flex_ext_left' }, { data: 'strength_std_devs_ankle_flex_ext_right' }, { data: 'strength_std_devs_ankle_flex_ext_left' },
+        { orderable: false, data: 'strength_std_devs_wrist_flex_ext_left' }, { data: 'strength_std_devs_wrist_flex_ext_right' }, { data: 'strength_std_devs_wrist_rad_ulnar_dev_left' }, 
+        { orderable: false, data: 'strength_std_devs_wrist_rad_ulnar_dev_right' }, { data: 'strength_std_devs_forearm_sup_pro_left' }, { data: 'strength_std_devs_forearm_sup_pro_right' }, { data: 'strength_std_devs_elbow_right' }, { data: 'strength_std_devs_elbow_left' },
+        { orderable: false, data: 'strength_std_devs_shoulder_abd_right' }, { data: 'strength_std_devs_shoulder_abd_left' }, { data: 'strength_std_devs_shoulder_for_back_right' }, { data: 'strength_std_devs_shoulder_for_back_left' }, { data: 'strength_std_devs_humeral_rot_right' },
+        { orderable: false, data: 'strength_std_devs_humeral_rot_left' }, { data: 'strength_std_devs_trunk_flex_ext' }, { data: 'strength_std_devs_trunk_lateral' }, { data: 'strength_std_devs_trunk_rotation' }, { data: 'strength_std_devs_hip_flex_ext_right' }, { data: 'strength_std_devs_hip_flex_ext_left' },
+        { orderable: false, data: 'strength_std_devs_knee_flex_ext_right' }, { data: 'strength_std_devs_knee_flex_ext_left' }, { data: 'strength_std_devs_ankle_flex_ext_right' }, { data: 'strength_std_devs_ankle_flex_ext_left' },
         ],
-        order: [[ 1, "asc" ]],
-        fixedColumns:{left: 1},
+        order: [[ 0, "asc" ]],
+        // fixedColumns:{left: 1},
         initComplete:function( settings, json){
             // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');
             $('#data-ergonomic_length').appendTo('#length-data-ergonomic');
             $('#data-ergonomic_info').appendTo('#pagination-data-ergonomic');
             $('#data-ergonomic_paginate').appendTo('#pagination-data-ergonomic');
-            $('#data-ergonomic tbody').on('click', "#edit-data-ergonomic", function() {
-                let row = $(this).parents('tr')[0];
-                console.log(table.row(row).data().ssp_time_id);
+            // $('#data-ssp-rula tbody').on('click', "#edit-data-ssp-rula", function() {
+            //     let row = $(this).parents('tr')[0];
+            //     console.log(table.row(row).data().ssp_time_id);
                 
-                $('#edit-body-data-ergonomic').append('<input type="hidden" id="ticket-id" name="ticket_id" value="'+table.row(row).data().ssp_ticket_id+'">\
-                    <input type="hidden" id="time-id" name="time_id" value="'+table.row(row).data().ssp_time_id+'">');
+            //     $('#edit-body-data-ssp-rula').append('<input type="hidden" id="ticket-id" name="ticket_id" value="'+table.row(row).data().ssp_ticket_id+'">\
+            //         <input type="hidden" id="time-id" name="time_id" value="'+table.row(row).data().ssp_time_id+'">');
 
-                Object.keys(table.row(row).data()).forEach(function(item, index) {
-                    if(index >= 6){
-                        $('#edit-body-data-ergonomic').append('\
-                            <div class="form-group row" id="job-analyst-div">\
-                                <label class="col-xl-3 col-sm-4 col-form-label">'+ucwords(item.replace(/_/g, " "))+'</label>\
-                                <div class="col-xl-9 col-sm-8">\
-                                    <input type="text" class="form-control" id="'+item.replace(/_/g, "-")+'" name="'+item+'" placeholder="'+ucwords(item.replace(/_/g, " "))+'..." value="'+table.row(row).data()[item]+'">\
-                                </div>\
-                            </div>');
-                    }
-                })
-                $('#editDataErgonomic').modal('show');
-            });
+            //     Object.keys(table.row(row).data()).forEach(function(item, index) {
+            //         if(index >= 5){
+            //             $('#edit-body-data-ssp-rula').append('\
+            //                 <div class="form-group row" id="job-analyst-div">\
+            //                     <label class="col-xl-3 col-sm-4 col-form-label">'+ucwords(item.replace(/_/g, " "))+'</label>\
+            //                     <div class="col-xl-9 col-sm-8">\
+            //                         <input type="text" class="form-control" id="'+item.replace(/_/g, "-")+'" name="'+item+'" placeholder="'+ucwords(item.replace(/_/g, " "))+'..." value="'+table.row(row).data()[item]+'">\
+            //                     </div>\
+            //                 </div>');
+            //         }
+            //     })
+            //     $('#edit-data-ssp-rula').modal('show');
+            // });
 
-            $('#data-ergonomic tbody').on('click', "#delete-data-ergonomic", function() {
-                let row = $(this).parents('tr')[0];
-                deleteDataErgonomic(table.row(row).data().ssp_time_id);
-            });
+            // $('#data-ssp-rula tbody').on('click', "#delete-data-ssp-rula", function() {
+            //     let row = $(this).parents('tr')[0];
+            //     deleteDataErgonomic(table.row(row).data().ssp_time_id);
+            // });
         }
     });
 
@@ -742,8 +893,105 @@
         })
     }
 
+    var tableDataSspRula;
+    var api;
+    tableDataSspRula = $('#data-ssp-rula').DataTable({
+        bFilter: false,
+        processing: true,
+        serverSide: true,
+        ordering: false,
+        // scrollY: true,
+        // scrollX: true,
+        // paging: true,
+        // searching: { "regex": true },
+        preDrawCallback: function(settings) {
+            api = new $.fn.dataTable.Api(settings);
+        },
+        ajax: {
+            type: "POST",
+            url: "{{route('admin.sspRulaData.getDataSspRula', $ticketId)}}",
+            dataType: "json",
+            contentType: 'application/json',
+            data: function (data) {
+                var form = {};
+                $.each($("form").serializeArray(), function (i, field) {
+                    form[field.name] = field.value || "";
+                });
+                // Add options used by Datatables
+                var info = { "start": api.page.info().start, "length": api.page.info().length, "draw": api.page.info().draw, "filterActionLevel" : filterActionLevel };
+                $.extend(form, info);
+                return JSON.stringify(form);
+            },
+            "complete": function(response) {
+
+            }
+        },
+        columns: [
+            { orderable: false, defaultContent: '\
+                <button type="button" class="btn btn-outline-primary" id="edit-data-ssp-rula" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-edit" style="font-size:20px;"></i></button>\
+                <button type="button" class="btn btn-outline-danger" id="delete-data-ssp-rula" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-trash" style="font-size:20px;"></i></button>',
+                render: function (data, type, row) { 
+                    if(row.ssp_ticket_status === 3) table.column(0).visible(false); 
+                }
+            },
+            { orderable: false, data: 'time', 
+                render: function (data, type, row) {
+                    return '<span id="simulation-video" style="cursor: pointer;" onclick="simulationVideoCurrentTime('+row.time+')">'+row.time+'</span>'; 
+                }
+            },
+            { orderable: false,
+                defaultContent:'',
+                render: function (data, type, row) {
+                    if(row.ssp_rula_table_c === 1 || row.ssp_rula_table_c === 2) return 'Level 1'; 
+                    if(row.ssp_rula_table_c === 3 || row.ssp_rula_table_c === 4) return 'Level 2';
+                    if(row.ssp_rula_table_c === 5 || row.ssp_rula_table_c === 6) return 'Level 3';
+                    if(row.ssp_rula_table_c === 7) return 'Level 4';
+                }
+            },
+            { data: 'ssp_rula_table_c' }, { data: 'ssp_rula_table_b' }, { data: 'ssp_rula_table_a' }, 
+            { data: 'ssp_rula_upper_arm_left' }, { data: 'ssp_rula_upper_arm_right' }, { data: 'ssp_rula_lower_arm_left' }, { data: 'ssp_rula_lower_arm_right' }, { data: 'ssp_rula_wrist_left' },
+            { data: 'ssp_rula_wrist_right' }, { data: 'ssp_rula_wrist_twist_left' }, { data: 'ssp_rula_wrist_twist_right' }, { data: 'ssp_rula_neck' }, { data: 'ssp_rula_trunk_position' },
+            { data: 'ssp_rula_legs' },
+        ],
+        fixedColumns:{left: 1},
+        order: [[ 1, "desc" ]],
+        initComplete:function( settings, json){
+            // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');            
+            $('#data-ssp-rula_length').appendTo('#length-data-ssp-rula');
+            $('#data-ssp-rula_info').appendTo('#pagination-data-ssp-rula');
+            $('#data-ssp-rula_paginate').appendTo('#pagination-data-ssp-rula');
+            $('#data-ssp-rula tbody').on('click', "#edit-data-ssp-rula", function() {
+                let row = $(this).parents('tr')[0];
+                console.log(tableDataSspRula.row(row).data().ssp_time_id);
+                
+                $('#edit-body-data-ssp-rula').append('<input type="hidden" id="ticket-id" name="ticket_id" value="'+tableDataSspRula.row(row).data().ssp_ticket_id+'">\
+                    <input type="hidden" id="time-id" name="time_id" value="'+tableDataSspRula.row(row).data().ssp_time_id+'">');
+
+                Object.keys(tableDataSspRula.row(row).data()).forEach(function(item, index) {
+                    console.log(item)
+                    if(index >= 7){
+                        
+                        $('#edit-body-data-ssp-rula').append('\
+                            <div class="form-group row" id="job-analyst-div">\
+                                <label class="col-xl-3 col-sm-4 col-form-label">'+ucwords(item.replace('ssp_rula_','').replace(/_/g, " "))+'</label>\
+                                <div class="col-xl-9 col-sm-8">\
+                                    <input type="text" class="form-control" id="'+item.replace(/_/g, "-")+'" name="'+item.replace('ssp_rula_','')+'" placeholder="'+ucwords(item.replace('ssp_rula_','').replace(/_/g, " "))+'..." value="'+tableDataSspRula.row(row).data()[item]+'">\
+                                </div>\
+                            </div>');
+                    }
+                })
+                $('#modal-edit-data-ssp-rula').modal('show');
+            });
+
+            $('#data-ssp-rula tbody').on('click', "#delete-data-ssp-rula", function() {
+                let row = $(this).parents('tr')[0];
+                deleteDataErgonomic(tableDataSspRula.row(row).data().ssp_time_id);
+            });
+        }
+    });
+
     function updateErgonomicData(){
-        link = "{{route('admin.ticketData.updateErgonomicData', ':timeId')}}";
+        link = "{{route('admin.ticketData.updateSspRulaDataAdmin', ':timeId')}}";
         link = link.replace(":timeId", $("#updateErgonomicData").find("#time-id").val());
         swal.fire({
             title: "Update Ergonomics Data",
@@ -812,7 +1060,7 @@
     }
 
     function deleteDataErgonomic(timeId){
-        link = "{{route('admin.ticketData.destroyErgonomicData', ':id')}}";
+        link = "{{route('admin.ticketData.destroySspRulaDataAdmin', ':id')}}";
         link = link.replace(':id', timeId);
         
 		swal.fire({
@@ -847,88 +1095,16 @@
         })
     }
 
-    var tableDataSspRula;
-    var api;
-    tableDataSspRula = $('#data-ssp-rula').DataTable({
-    bFilter: false,
-    processing: true,
-    serverSide: true,
-    // scrollY: true,
-    // scrollX: true,
-    // paging: true,
-    // searching: { "regex": true },
-    preDrawCallback: function(settings) {
-        api = new $.fn.dataTable.Api(settings);
-    },
-    ajax: {
-        type: "POST",
-        url: "{{route('admin.sspRulaData.getDataSspRula', $ticketId)}}",
-        dataType: "json",
-        contentType: 'application/json',
-        data: function (data) {
-            var form = {};
-            $.each($("form").serializeArray(), function (i, field) {
-                form[field.name] = field.value || "";
-            });
-            // Add options used by Datatables
-            var info = { "start": api.page.info().start, "length": api.page.info().length, "draw": api.page.info().draw };
-            $.extend(form, info);
-            return JSON.stringify(form);
-        },
-        "complete": function(response) {
+    function simulationVideoCurrentTime(value) {
+        console.log(value)
+        var video = document.getElementById("my_video_1");
+        video.currentTime = value;
+    }
 
-        }
-    },
-    columns: [
-        { data: 'time' },
-        { orderable: false,
-            defaultContent:'',
-            render: function (data, type, row) {
-                 if(row.ssp_rula_table_c === 1 || row.ssp_rula_table_c === 2) return 'Level 1'; 
-                 if(row.ssp_rula_table_c === 3 || row.ssp_rula_table_c === 4) return 'Level 2';
-                 if(row.ssp_rula_table_c === 5 || row.ssp_rula_table_c === 6) return 'Level 3';
-                 if(row.ssp_rula_table_c === 7) return 'Level 4';
-            }
-        },
-        { data: 'ssp_rula_table_c' }, { data: 'ssp_rula_table_b' }, { data: 'ssp_rula_table_a' }, 
-        { data: 'ssp_rula_upper_arm_left' }, { data: 'ssp_rula_upper_arm_right' }, { data: 'ssp_rula_lower_arm_left' }, { data: 'ssp_rula_lower_arm_right' }, { data: 'ssp_rula_wrist_left' },
-        { data: 'ssp_rula_wrist_right' }, { data: 'ssp_rula_wrist_twist_left' }, { data: 'ssp_rula_wrist_twist_right' }, { data: 'ssp_rula_neck' }, { data: 'ssp_rula_trunk_position' },
-        { data: 'ssp_rula_legs' },
-        ],
-        initComplete:function( settings, json){
-            // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');
-            $('#data-ssp-rula_length').appendTo('#length-data-ssp-rula');
-            $('#data-ssp-rula_info').appendTo('#pagination-data-ssp-rula');
-            $('#data-ssp-rula_paginate').appendTo('#pagination-data-ssp-rula');
-        }
+    $(".filter-checkbox").change(function() {
+        filterActionLevel = this.value;
+        console.log(filterActionLevel);
+        $('#data-ssp-rula').DataTable().ajax.reload();
     });
-
-    var tableDataActionLevel;
-    tableDataActionLevel = $('#data-action-level').DataTable({
-        bFilter: false,
-        serverSide: true,
-        // scrollY: true,
-        // scrollX: true,
-        // paging: true,
-        // searching: { "regex": true },
-        preDrawCallback: function(settings) {
-            api = new $.fn.dataTable.Api(settings);
-        },
-        ajax: {
-            type: "GET",
-            url: "{{route('admin.sspRulaData.getDataSspRulaFrequency', $ticketId)}}",
-        },
-        columns: [
-            { data: 'score' },
-            { data: 'frequency' },
-        ],
-        initComplete:function( settings, json){
-            // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');
-            $('#data-action-level_length').appendTo('#length-data-action-level');
-            $('#data-action-level_info').appendTo('#pagination-data-action-level');
-            $('#data-action-level_paginate').appendTo('#pagination-data-action-level');
-        }
-    });
-    // });
 </script>
 @endsection

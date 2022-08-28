@@ -36,6 +36,8 @@ Route::get('/', function () {
         return redirect()->route('admin.ticketsList.index');
     }else if(Auth::user()->is_admin == 1){
         return redirect()->route('user.ticketsList.index');
+    }else if(Auth::user()->is_admin == 2){
+        return redirect()->route('nioshCalculationSingleTask.index');
     }
 })->middleware(['auth']);
 
@@ -49,6 +51,12 @@ Route::group(['prefix' => '', 'middleware' => 'regularUser'], function () {
 
     Route::get('ticket-data/{id}', 'TicketDataController@dataTicketUserIndex')->name('user.ticketData.index');
     Route::post('get-ticket-data/{ticketId}', 'TicketDataController@getDataTicketUser')->name('user.ticketData.getTicketData');
+
+    Route::post('get-ssp-rula-data/{ticketId}', 'TicketDataController@getDataSspRulaAdmin')->name('user.sspRulaData.getDataSspRula');
+    Route::get('get-ssp-rula-data-chart/{ticketId}', 'TicketDataController@getDataSspRulaChartAdmin')->name('user.sspRulaData.getDataSspRulaChart');
+    Route::get('get-action-level-chart/{ticketId}', 'TicketDataController@getDataActionLevelChartAdmin')->name('user.sspRulaData.getDataActionLevelChart');
+    
+    Route::post('get-ssp-rula-data-frequency/{ticketId}', 'TicketDataController@getDataSspRulaFrequencyAdmin')->name('user.sspRulaData.getDataSspRulaFrequency');
 });
 
 //admin
@@ -56,6 +64,7 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'isAdmin'], function () {
     Route::get('home', 'HomeController@adminHome')->name('admin.home');
     Route::get('processing-data', 'ProcessingDataController@index')->name('admin.processingData.index');
     Route::post('processing-data/processing-data-csv', 'ProcessingDataController@storeDataCSV')->name('admin.processingData.storeDataCSV');
+    Route::post('upload-simulation-video', 'ProcessingDataController@uploadLargeFiles')->name('admin.processingData.uploadLargeFiles');
 
     Route::post('recalculate-rula-data/{ticketId}', 'ProcessingDataController@recalculateRulaData')->name('admin.processingData.recalculateRulaData');
 
@@ -67,11 +76,17 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'isAdmin'], function () {
     Route::get('ticket-data/{id}', 'TicketDataController@dataTicketAdminIndex')->name('admin.ticketData.index');
     Route::post('get-ticket-data/{ticketId}', 'TicketDataController@getDataTicketAdmin')->name('admin.ticketData.getTicketData');
     Route::post('approve-ticket-data/{ticketId}', 'TicketDataController@approveDataTicketAdmin')->name('admin.ticketData.approveTicketData');
-    Route::post('update-ergonomic-data/{timeId}', 'TicketDataController@updateErgonomicDataAdmin')->name('admin.ticketData.updateErgonomicData');
-    Route::delete('delete-ergonomics-data/{timeId}', 'TicketDataController@destroyErgonomicDataAdmin')->name('admin.ticketData.destroyErgonomicData');
 
+    Route::post('update-ssp-rula-data/{timeId}', 'TicketDataController@updateSspRulaDataAdmin')->name('admin.ticketData.updateSspRulaDataAdmin');
+    Route::delete('delete-ssp-rula-data/{timeId}', 'TicketDataController@destroySspRulaDataAdmin')->name('admin.ticketData.destroySspRulaDataAdmin');
     Route::post('get-ssp-rula-data/{ticketId}', 'TicketDataController@getDataSspRulaAdmin')->name('admin.sspRulaData.getDataSspRula');
     Route::get('get-ssp-rula-data-chart/{ticketId}', 'TicketDataController@getDataSspRulaChartAdmin')->name('admin.sspRulaData.getDataSspRulaChart');
+    Route::get('get-action-level-chart/{ticketId}', 'TicketDataController@getDataActionLevelChartAdmin')->name('admin.sspRulaData.getDataActionLevelChart');
     
-    Route::get('get-ssp-rula-data-frequency/{ticketId}', 'TicketDataController@getDataSspRulaFrequencyAdmin')->name('admin.sspRulaData.getDataSspRulaFrequency');
+    Route::post('get-ssp-rula-data-frequency/{ticketId}', 'TicketDataController@getDataSspRulaFrequencyAdmin')->name('admin.sspRulaData.getDataSspRulaFrequency');
+});
+
+Route::group(['prefix' => 'niosh/', 'middleware' => 'nioshUser'], function () {
+    Route::get('niosh-calculation-single-task', 'NioshController@nioshCalculationSingleTask')->name('nioshCalculationSingleTask.index');
+    Route::get('niosh-calculation-multi-task', 'NioshController@nioshCalculationMultiTask')->name('nioshCalculationMultiTask.index');
 });

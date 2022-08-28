@@ -156,38 +156,50 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row" id="job-title-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Title</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Title</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <input type="text" class="form-control" id="job-title" name="job_title" placeholder="Title..." >
                                 </div>
                             </div>
+                            <div class="form-group row" id="person-in-charge-name-div">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Person In Charge Name</label>
+                                <div class="col-xl-9 col-sm-8">
+                                    <input type="text" class="form-control" id="person-in-charge-name" name="person_in_charge_name" placeholder="PiC Name...">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="person-in-charge-telephone-div">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Person In Charge Telephone</label>
+                                <div class="col-xl-9 col-sm-8">
+                                    <input type="text" class="form-control" id="person-in-charge-telephone" name="person_in_charge_telephone" placeholder="08xx...">
+                                </div>
+                            </div>
                             <div class="form-group row" id="job-date-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Date</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Date</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <input class="form-control digits" id="job-date" name="job_date" type="text">
                                 </div>
                             </div>
                             <div class="form-group row" id="job-description-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Description</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Description</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <textarea class="form-control" id="job-description" name="job_description" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row" id="job-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="job-location" name="job_location" placeholder="Location..." >
                                 </div>
                             </div>
                             <div class="form-group row" id="job-lat-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Latitude Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Latitude Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="job-lat-location" name="job_lat_location" placeholder="Latitude Location..." >
                                 </div>
                             </div>
                             <div class="form-group row" id="job-lng-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Longitude Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Longitude Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="job-lng-location" name="job_lng_location" placeholder="Longitude Location..." >
                                 </div>
                             </div>
@@ -220,38 +232,50 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row" id="edit-job-title-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Title</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Title</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <input type="text" class="form-control" id="edit-job-title" name="edit_job_title" placeholder="Title..." value="">
                                 </div>
                             </div>
+                            <div class="form-group row" id="edit-person-in-charge-name-div">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Person In Charge Name</label>
+                                <div class="col-xl-9 col-sm-8">
+                                    <input type="text" class="form-control" id="edit-person-in-charge-name" name="edit_person_in_charge_name" placeholder="PiC Name..." >
+                                </div>
+                            </div>
+                            <div class="form-group row" id="edit-person-in-charge-telephone-div">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Person In Charge Telephone</label>
+                                <div class="col-xl-9 col-sm-8">
+                                    <input type="text" class="form-control" id="edit-person-in-charge-telephone" name="edit_person_in_charge_telephone" placeholder="08xx..." >
+                                </div>
+                            </div>
                             <div class="form-group row" id="edit-job-date-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Date</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Date</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <input class="form-control digits" id="edit-job-date" name="edit_job_date" type="text">
                                 </div>
                             </div>
                             <div class="form-group row" id="edit-job-description-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Description</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Description</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <textarea class="form-control" id="edit-job-description" name="edit_job_description" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row" id="edit-job-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="edit-job-location" name="edit_job_location" placeholder="Location..." >
                                 </div>
                             </div>
                             <div class="form-group row" id="edit-job-lat-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Latitude Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Latitude Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="edit-job-lat-location" name="edit_job_lat_location" placeholder="Latitude Location..." >
                                 </div>
                             </div>
                             <div class="form-group row" id="edit-job-lng-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Longitude Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Longitude Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="edit-job-lng-location" name="edit_job_lng_location" placeholder="Longitude Location..." >
                                 </div>
                             </div>
@@ -391,6 +415,18 @@
             $("#job-title").addClass("is-valid");
         });
 
+        $('#person-in-charge-name').on("change", function(){ 
+            $("#person-in-charge-name").removeClass("is-invalid");
+            $("#error-msg-person-in-charge-name").remove();
+            $("#person-in-charge-name").addClass("is-valid");
+        });
+
+        $('#person-in-charge-telephone').on("change", function(){ 
+            $("#person-in-charge-telephone").removeClass("is-invalid");
+            $("#error-msg-person-in-charge-telephone").remove();
+            $("#person-in-charge-telephone").addClass("is-valid");
+        });
+
         $('#job-date').on("change", function(){ 
             $("#job-date").removeClass("is-invalid");
             $("#error-msg-job-date").remove();
@@ -425,6 +461,18 @@
             $("#edit-job-title").removeClass("is-invalid");
             $("#error-msg-edit-job-title").remove();
             $("#edit-job-title").addClass("is-valid");
+        });
+
+        $('#edit-person-in-charge-name').on("change", function(){ 
+            $("#edit-person-in-charge-name").removeClass("is-invalid");
+            $("#error-msg-edit-person-in-charge-name").remove();
+            $("#edit-person-in-charge-name").addClass("is-valid");
+        });
+
+        $('#edit-person-in-charge-telephone').on("change", function(){ 
+            $("#edit-person-in-charge-telephone").removeClass("is-invalid");
+            $("#error-msg-edit-person-in-charge-telephone").remove();
+            $("#edit-person-in-charge-telephone").addClass("is-valid");
         });
 
         $('#edit-job-date').on("change", function(){ 
@@ -501,9 +549,12 @@
                                     if(i == "job_title"){
                                         $("#job-title").addClass("is-invalid");
                                         $('#job-title-div').append('<div id="error-msg-job-title" class="text-danger">The job title field is required.</div>');
-                                    }else if(i == "job_analyst"){
-                                        $("#job-analyst").addClass("is-invalid");
-                                        $('#job-analyst-div').append('<div id="error-msg-job-analyst" class="text-danger">The job analyst field is required.</div>');
+                                    }else if(i == "person_in_charge_name"){
+                                        $("#person-in-charge-name").addClass("is-invalid");
+                                        $('#person-in-charge-name-div').append('<div id="error-msg-person-in-charge-name" class="text-danger">The job person in charge name field is required.</div>');
+                                    }else if(i == "person_in_charge_telephone"){
+                                        $("#person-in-charge-telephone").addClass("is-invalid");
+                                        $('#person-in-charge-telephone-div').append('<div id="error-msg-person-in-charge-telephone" class="text-danger">The job person in charge telephone field is required.</div>');
                                     }else if(i == "job_date"){
                                         $("#job-date").addClass("is-invalid");
                                         $('#job-date-div').append('<div id="error-msg-job-date" class="text-danger">The job date field is required.</div>');
@@ -553,6 +604,8 @@
                 // console.log(data[])
                 // data_token = jQuery.parseJSON(data.data_token);
                 $('#edit-job-title').val(data.ssp_ticket_job_title).trigger('change');
+                $('#edit-person-in-charge-name').val(data.ssp_ticket_person_in_charge_name).trigger('change');
+                $('#edit-person-in-charge-telephone').val(data.ssp_ticket_person_in_charge_telephone).trigger('change');
                 $('#edit-job-date').val(data.ssp_ticket_job_date).trigger('change');
                 $('#edit-job-description').val(data.ssp_ticket_job_description).trigger('change');
                 $('#edit-job-location').val(data.ssp_ticket_job_location).trigger('change');
@@ -561,6 +614,7 @@
                 $('#editTicketModal').find('#ticket-id').val(data.id);
 				$('#editTicketModal').modal('show');
                 var latlngview = L.latLng($('#job-lat-location').val(), $('#job-lng-location').val());
+                console.log(latlngview)
                 if(latlngview.lat == 0 && latlngview.lng == 0) latlngview = L.latLng(data.ssp_ticket_job_lat_location, data.ssp_ticket_job_lng_location);
                 var map = L.map('map-edit', {
                     zoomControl:true,
@@ -652,6 +706,12 @@
                                     if(i == "job_title"){
                                         $("#edit-job-title").addClass("is-invalid");
                                         $('#edit-job-title-div').append('<div id="error-msg-edit-job-title" class="text-danger">The job title field is required.</div>');
+                                    }else if(i == "person_in_charge_name"){
+                                        $("#edit-person-in-charge-name").addClass("is-invalid");
+                                        $('#edit-person-in-charge-name-div').append('<div id="error-msg-edit-person-in-charge-name" class="text-danger">The job person in charge name field is required.</div>');
+                                    }else if(i == "person_in_charge_telephone"){
+                                        $("#edit-person-in-charge-telephone").addClass("is-invalid");
+                                        $('#edit-person-in-charge-telephone-div').append('<div id="error-msg-edit-person-in-charge-telephone" class="text-danger">The job person in charge telephone field is required.</div>');
                                     }else if(i == "job_date"){
                                         $("#edit-job-date").addClass("is-invalid");
                                         $('#edit-job-date-div').append('<div id="error-msg-edit-job-date" class="text-danger">The job date field is required.</div>');

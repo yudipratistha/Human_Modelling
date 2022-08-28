@@ -31,8 +31,10 @@
                   </li>-->
                   @elseif (Auth::user()->is_admin == 1)
                     <li class="dropdown "><a class="nav-link menu-title link-nav {{ isset($activeMenu) ? 'active' : '' }}" href="{{route('user.ticketsList.index')}}"><i class="icon-ticket" style="margin-right: 15px;vertical-align: bottom;float: none;margin-left: -3px;font-size: 21px;"></i><span>Tickets</span></a></li>
-
-                  @endif
+                  @elseif (Auth::user()->is_admin == 2)
+                    <li class="dropdown "><a class="nav-link menu-title link-nav {{ isset($activeMenu) ? 'active' : '' }}" href="{{route('nioshCalculationSingleTask.index')}}"><i class="icofont icofont-calculations" style="margin-right: 15px;vertical-align: bottom;float: none;margin-left: -3px;font-size: 21px;"></i><span>NIOSH Single Task</span></a></li>
+                    <li class="dropdown "><a class="nav-link menu-title link-nav {{ isset($activeMenu) ? 'active' : '' }}" href="{{route('nioshCalculationMultiTask.index')}}"><i class="icofont icofont-calculations" style="margin-right: 15px;vertical-align: bottom;float: none;margin-left: -3px;font-size: 21px;"></i><span>NIOSH Multi Task</span></a></li>
+                    @endif
                   
                   
                 </ul>

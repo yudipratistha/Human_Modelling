@@ -21,6 +21,10 @@ use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
 use Maatwebsite\Excel\Facades\Excel;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class ProcessingDataController extends Controller
 {
@@ -42,6 +46,52 @@ class ProcessingDataController extends Controller
     public function index()
     {
         return view('admin.data.processingData');
+    }
+
+    public function uploadLargeFiles(Request $request) {
+        // dd($request->ticketId);
+        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+    
+        if (!$receiver->isUploaded()) {
+            // file not uploaded
+        }
+    
+        $fileReceived = $receiver->receive(); // receive file
+        if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
+
+            $ticket = SspTicket::find($request->ticketId);
+            // dd($ticket->ssp_ticket_job_title);
+            $file = $fileReceived->getFile(); // get file
+            $extension = $file->getClientOriginalExtension();
+            // $fileName = str_replace('.'.$extension, '', $file->getClientOriginalName()); //file name without extenstion
+            // $fileName .= '_' . md5(time()) . '.' . $extension; // a unique file name
+            $fileName = $ticket->ssp_ticket_job_title . '.' . $extension; // a unique file name
+
+    
+            $videosPath = 'videos/'.$request->ticketId;
+            Storage::disk('public')->makeDirectory($videosPath);
+
+            $disk = Storage::disk('public');
+            $path = $disk->putFileAs($videosPath, $file, $fileName);
+
+            $ticketData = SspTicket::find($request->ticketId);
+            $ticketData->ssp_ticket_simulation_video_path = $path;
+            $ticketData->save();
+    
+            // delete chunked file
+            unlink($file->getPathname());
+            return [
+                'path' => asset('storage/' . $path),
+                'filename' => $fileName
+            ];
+        }
+    
+        // otherwise return percentage information
+        $handler = $fileReceived->handler();
+        return [
+            'done' => $handler->getPercentageDone(),
+            'status' => true
+        ];
     }
 
     public function storeDataCSV(Request $request)

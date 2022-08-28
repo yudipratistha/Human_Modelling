@@ -21,51 +21,29 @@
         <!-- Page Sidebar End-->
         <div class="page-body">
             <!-- Container-fluid starts-->
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
+            <div class="container pt-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header pb-0">
-                                <h5>Upload CSV File</h5>
+                            <div class="card-header text-center">
+                                <h5>Upload File</h5>
                             </div>
+
                             <div class="card-body">
-                                <span id="success-message"></span>
-                                <form id="upload-csv" class="form-horizontal" method="POST" action="{{route('admin.processingData.storeDataCSV')}}" enctype="multipart/form-data">
-                                    {{ csrf_field() }}
+                                <div id="upload-container" class="text-center">
+                                <!-- <input type="file" class="form-control" name="video_simulation" id="browseFile" aria-label="file" > -->
 
-                                    <div class="form-group{{ $errors->has('csv_file') ? ' has-error' : '' }}">
-                                        <label for="csv_file" class="col-md-4 control-label">CSV file to import</label>
-
-                                        <div class="col-md-6">
-                                            <input id="csv_file" type="file" class="form-control" name="csvFile">
-
-                                            @if ($errors->has('csv_file'))
-                                                <span class="help-block">
-                                                <strong>{{ $errors->first('csv_file') }}</strong>
-                                            </span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-md-8 col-md-offset-4">
-                                            <button id="btn-parse-csv" type="submit" class="btn btn-primary">
-                                                Parse CSV
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="form-group" id="process" style="display:none;">
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style=""></div>
-                                    </div>
+                                    <button id="browseFile" class="btn btn-primary">Brows File</button>
                                 </div>
-
-                                <!-- <form class="dropzone digits" id="singleFileUpload" action="{{route('admin.processingData.storeDataCSV')}}">
-                                    <div class="dz-message needsclick"><i class="icon-cloud-up"></i>
-                                        <h6>Drop files here or click to upload.</h6>
-                                    </div>
-                                </form> -->
+                                <div  style="display: none" class="progress mt-3" style="height: 25px">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; height: 100%">75%</div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-info" aria-label="Start upload" id="start-upload-btn">
+                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Start upload
+            </button>
+                            <div class="card-footer p-4" style="display: none">
+                                <video id="videoPreview" src="" controls style="width: 100%; height: auto"></video>
                             </div>
                         </div>
                     </div>
@@ -83,9 +61,72 @@
 <!-- Plugins JS start-->
 <script src="../../assets/js/dropzone/dropzone.js"></script>
 <script src="../../assets/js/dropzone/dropzone-script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
 <!-- Plugins JS Ends-->
 
 <script>
+
+var form = $("#dataImportCSV").get(0)
+
+                let browseFile = $('#browseFile');
+                
+                let resumable = new Resumable({
+                    target: "{{ route('admin.processingData.uploadLargeFiles') }}",
+                    query:{_token:'{{ csrf_token() }}'} ,// CSRF token
+                    fileType: ['mp4'],
+                    chunkSize: 10*1024*1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+                    headers: {
+                        'Accept' : 'application/json'
+                    },
+                    testChunks: false,
+                    throttleProgressCallbacks: 1,
+                });
+// console.log(resumable)
+                resumable.assignBrowse(browseFile[0]);
+
+                $('#start-upload-btn').click(function(){
+                    resumable.upload();
+                });
+
+                // resumable.on('fileAdded', function (file) { // trigger when file picked
+                    
+                //     // showProgress();
+                //     resumable.upload() // to actually start uploading.
+                // });
+
+                // resumable.on('fileProgress', function (file) { // trigger when file progress update
+                //     updateProgress(Math.floor(file.progress() * 100));
+                // });
+
+                // resumable.on('fileSuccess', function (file, response) { // trigger when file upload complete
+                //     response = JSON.parse(response)
+                //     $('#videoPreview').attr('src', response.path);
+                //     $('.card-footer').show();
+                // });
+
+                // resumable.on('fileError', function (file, response) { // trigger when there is any error
+                //     alert('file uploading error.')
+                // });
+
+
+                // let progress = $('.progress');
+                // function showProgress() {
+                //     progress.find('.progress-bar').css('width', '0%');
+                //     progress.find('.progress-bar').html('0%');
+                //     progress.find('.progress-bar').removeClass('bg-success');
+                //     progress.show();
+                // }
+
+                // function updateProgress(value) {
+                //     progress.find('.progress-bar').css('width', `${value}%`)
+                //     progress.find('.progress-bar').html(`${value}%`)
+                // }
+
+                // function hideProgress() {
+                //     progress.hide();
+                // }
+
+
     var DropzoneExample = function () {
     var DropzoneDemos = function () {
         Dropzone.options.singleFileUpload = {

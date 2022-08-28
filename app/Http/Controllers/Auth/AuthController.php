@@ -36,8 +36,10 @@ class AuthController extends Controller
         {
             if (auth()->user()->is_admin == 0) {
                 return redirect()->route('admin.ticketsList.index');
-            }else{
+            }else if (auth()->user()->is_admin == 1) {
                 return redirect()->route('user.ticketsList.index');
+            }else if (auth()->user()->is_admin == 2) {
+                return redirect()->route('nioshCalculationSingleTask.index');
             }
         }else{
             return redirect()->route('login')
@@ -64,7 +66,7 @@ class AuthController extends Controller
         $user->save();
         
         
-        return redirect()->route('login');
+        return response()->json('success');
     }
 
     public function logout() {

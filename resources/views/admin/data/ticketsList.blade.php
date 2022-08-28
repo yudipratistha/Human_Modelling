@@ -89,17 +89,25 @@
                                                         <table class="table table-borderless table-sm">
                                                             <tbody>
                                                                 <tr>
-                                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Analyst</th>
-                                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_analyst}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Date</th>
-                                                                <td style="padding-left: 0px;">: {{date('d-m-Y', strtotime($ticket->ssp_ticket_job_date))}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Description</th>
-                                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_description}}</td>
-                                                            </tr>
+                                                                    <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Person In Charge Name</td>
+                                                                    <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_person_in_charge_name}}</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Person In Charge Telephone</td>
+                                                                    <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_person_in_charge_telephone}}</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Analyst</th>
+                                                                    <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_analyst}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Date</th>
+                                                                    <td style="padding-left: 0px;">: {{date('d-m-Y', strtotime($ticket->ssp_ticket_job_date))}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Description</th>
+                                                                    <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_description}}</td>
+                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -108,7 +116,7 @@
                                                     </div>
                                                     
                                                     @if($ticket->ssp_ticket_status == 1)
-                                                        <button type="button" class="btn btn-outline-primary" onclick="modalImportCSV({{$ticket->id}})"></i>Upload CSV Data</button>
+                                                        <button type="button" id="btn-modal-import-csv" class="btn btn-outline-primary" onclick="modalImportCSV({{$ticket->id}})"></i>Upload CSV Data</button>
                                                     @endif
                                                     @if($ticket->ssp_ticket_status != 1)
                                                         <a href="{{route('admin.ticketData.index', $ticket->id)}}"><button type="button" class="btn btn-outline-primary"></i>Show</button></a>
@@ -153,38 +161,50 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row" id="edit-job-title-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Title</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Title</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <input type="text" class="form-control" id="edit-job-title" name="edit_job_title" placeholder="Title..." value="">
                                 </div>
                             </div>
+                            <div class="form-group row" id="edit-person-in-charge-name-div">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Person In Charge Name</label>
+                                <div class="col-xl-9 col-sm-8">
+                                    <input type="text" class="form-control" id="edit-person-in-charge-name" name="edit_person_in_charge_name" placeholder="PiC Name..." >
+                                </div>
+                            </div>
+                            <div class="form-group row" id="edit-person-in-charge-telephone-div">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Person In Charge Telephone</label>
+                                <div class="col-xl-9 col-sm-8">
+                                    <input type="text" class="form-control" id="edit-person-in-charge-telephone" name="edit_person_in_charge_telephone" placeholder="08xx..." >
+                                </div>
+                            </div>
                             <div class="form-group row" id="edit-job-date-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Date</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Date</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <input class="form-control digits" id="edit-job-date" name="edit_job_date" type="text">
                                 </div>
                             </div>
                             <div class="form-group row" id="edit-job-description-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Description</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Description</label>
+                                <div class="col-xl-9 col-sm-8">
                                     <textarea class="form-control" id="edit-job-description" name="edit_job_description" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row" id="edit-job-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="edit-job-location" name="edit_job_location" placeholder="Location..." >
                                 </div>
                             </div>
                             <div class="form-group row" id="edit-job-lat-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Latitude Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Latitude Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="edit-job-lat-location" name="edit_job_lat_location" placeholder="Latitude Location..." >
                                 </div>
                             </div>
                             <div class="form-group row" id="edit-job-lng-location-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Job Longitude Location</label>
-                                <div class="col-xl-10 col-sm-9">
+                                <label class="col-xl-3 col-sm-4 col-form-label">Job Longitude Location</label>
+                                <div class="col-xl-9 col-sm-8">
                                 <input type="text" class="form-control" id="edit-job-lng-location" name="edit_job_lng_location" placeholder="Longitude Location..." >
                                 </div>
                             </div>
@@ -241,18 +261,28 @@
                                 <input type="number" class="form-control" id="weight-of-object" name="weight_of_object" placeholder="1231..." >
                                 </div>
                             </div>
+                            <div class="form-group row" id="video-simulation-div">
+                                <label class="col-xl-2 col-sm-3 col-form-label">Upload Simulation Video</label>
+                                <div class="col-xl-10 col-sm-9">
+                                    <button id="btn-video-simulation" class="btn btn-primary">Browse File</button>
+                                    <input type="file" class="form-control" name="video_simulation" id="video-simulation" aria-label="video" accept="video/mp4,video/x-m4v,video/*" size="1" style="display:none;">
+                                </div>
+                            </div>
                             <div class="form-group row" id="csv-file-div">
                                 <label class="col-xl-2 col-sm-3 col-form-label">CSV file to Import</label>
                                 <div class="col-xl-10 col-sm-9">
                                     <input type="file" class="form-control" name="csvFile" id="csv-file" aria-label="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                                 </div>
                             </div>
+                            <div  style="display: none" class="progress mt-3" style="height: 25px">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; height: 100%">75%</div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-square btn-outline-light txt-dark" data-bs-dismiss="modal">Close</button>
-                    <button type="button" onclick="parseCSVData()" class="btn btn-square btn-outline-secondary">Process CSV Data</button>
+                    <button type="button" id="process-csv-data" onclick="parseCSVData()" class="btn btn-square btn-outline-secondary">Process CSV Data</button>
                 </div>
             </form>
         </div>
@@ -269,10 +299,16 @@
 <script src="{{url('/assets/js/tooltip-init.js')}}"></script>
 <script src="{{url('/assets/js/leaflet/leaflet.js')}}"></script>
 <script src="{{url('/assets/js/leaflet/leaflet-gesture-handling.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
+<!-- <script src="{{url('/assets/js/blueimp/js/jquery.fileupload.js')}}"></script> -->
+<!-- <script src="{{url('/assets/js/blueimp/js/vendor/jquery.ui.widget.js')}}"></script>
+<script src="{{url('/assets/js/blueimp/js/jquery.iframe-transport.js')}}"></script>
+<script src="{{url('/assets/js/blueimp/js/jquery.fileupload.js')}}"></script> -->
 <!-- Plugins JS Ends-->
 
 <script>
-    
+    var resumable;
+
     $(document).ready(function(){
         var tickets = {!! json_encode($tickets->toArray()) !!};
         tickets.data.forEach(function(item, index) {
@@ -297,51 +333,51 @@
         });
         
         
-        var latlngview = L.latLng($('#job-lat-location').val(), $('#job-lng-location').val());
-        if(latlngview.lat == 0 && latlngview.lng == 0) latlngview = L.latLng('-8.660315332079342', '115.21636962890626');
-        var map = L.map('map', {
-            zoomControl:true,
-            gestureHandling: true
-        }).setView([latlngview.lat, latlngview.lng],12.5);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoieXVkaXByYXRpc3RoYSIsImEiOiJjbDJ6cHpsZ2owMzQ3M2JtcDQxdzFhdDd5In0.lPuxJO3S88Xy70aZfF4dLQ'
-        }).addTo(map);
+        // var latlngview = L.latLng($('#job-lat-location').val(), $('#job-lng-location').val());
+        // if(latlngview.lat == 0 && latlngview.lng == 0) latlngview = L.latLng('-8.660315332079342', '115.21636962890626');
+        // var map = L.map('map', {
+        //     zoomControl:true,
+        //     gestureHandling: true
+        // }).setView([latlngview.lat, latlngview.lng],12.5);
+        // L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        //     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        //     maxZoom: 18,
+        //     id: 'mapbox/streets-v11',
+        //     tileSize: 512,
+        //     zoomOffset: -1,
+        //     accessToken: 'pk.eyJ1IjoieXVkaXByYXRpc3RoYSIsImEiOiJjbDJ6cHpsZ2owMzQ3M2JtcDQxdzFhdDd5In0.lPuxJO3S88Xy70aZfF4dLQ'
+        // }).addTo(map);
 
-        var latlng = L.latLng($('#job-lat-location').val(), $('#job-lng-location').val());
-        if(latlng != undefined){
-            currentMarker = L.marker(latlng, {
-                draggable: true
-            }).addTo(map);
-        }
-        var currentMarker;
-        map.on('click', function(e) {
-            if (currentMarker != undefined) {
-                map.removeLayer(currentMarker);
-            };
-            currentMarker = L.marker(e.latlng, {
-                draggable: true
-            }).addTo(map)
-            latLngInput(e.latlng.lat, e.latlng.lng)
-            currentMarker.on("dragend", function(ev) { 
-                var chagedPos = ev.target.getLatLng();
-                latLngInput(chagedPos.lat, chagedPos.lng)
-            });
-        });
-        if(currentMarker != undefined){
-            currentMarker.on("dragend", function(ev) {
-                var chagedPos = ev.target.getLatLng();
-                latLngInput(chagedPos.lat, chagedPos.lng)
-            });
-        }
-        function latLngInput(lat, lng){
-            $('#job-lat-location').val(lat).trigger('change');
-            $('#job-lng-location').val(lng).trigger('change');
-        }
+        // var latlng = L.latLng($('#job-lat-location').val(), $('#job-lng-location').val());
+        // if(latlng != undefined){
+        //     currentMarker = L.marker(latlng, {
+        //         draggable: true
+        //     }).addTo(map);
+        // }
+        // var currentMarker;
+        // map.on('click', function(e) {
+        //     if (currentMarker != undefined) {
+        //         map.removeLayer(currentMarker);
+        //     };
+        //     currentMarker = L.marker(e.latlng, {
+        //         draggable: true
+        //     }).addTo(map)
+        //     latLngInput(e.latlng.lat, e.latlng.lng)
+        //     currentMarker.on("dragend", function(ev) { 
+        //         var chagedPos = ev.target.getLatLng();
+        //         latLngInput(chagedPos.lat, chagedPos.lng)
+        //     });
+        // });
+        // if(currentMarker != undefined){
+        //     currentMarker.on("dragend", function(ev) {
+        //         var chagedPos = ev.target.getLatLng();
+        //         latLngInput(chagedPos.lat, chagedPos.lng)
+        //     });
+        // }
+        // function latLngInput(lat, lng){
+        //     $('#job-lat-location').val(lat).trigger('change');
+        //     $('#job-lng-location').val(lng).trigger('change');
+        // }
 
         // Restricts input for each element in the set of matched elements to the given inputFilter.
         (function($) {
@@ -415,6 +451,18 @@
             $("#edit-job-title").addClass("is-valid");
         });
 
+        $('#edit-person-in-charge-name').on("change", function(){ 
+            $("#edit-person-in-charge-name").removeClass("is-invalid");
+            $("#error-msg-edit-person-in-charge-name").remove();
+            $("#edit-person-in-charge-name").addClass("is-valid");
+        });
+
+        $('#edit-person-in-charge-telephone').on("change", function(){ 
+            $("#edit-person-in-charge-telephone").removeClass("is-invalid");
+            $("#error-msg-edit-person-in-charge-telephone").remove();
+            $("#edit-person-in-charge-telephone").addClass("is-valid");
+        });
+
         $('#edit-job-date').on("change", function(){ 
             $("#edit-job-date").removeClass("is-invalid");
             $("#error-msg-edit-job-date").remove();
@@ -456,6 +504,11 @@
             $("#error-msg-csv-file").remove();
             $("#csv-file").addClass("is-valid");
         });
+        $('#video-simulation').on("change", function(){ 
+            $("#video-simulation").removeClass("is-invalid");
+            $("#error-msg-video-simulation").remove();
+            $("#video-simulation").addClass("is-valid");
+        });
     });
 
     function getTicketData(ticketId){
@@ -467,10 +520,12 @@
             method: "GET",
 			dataType: 'json',
 			success: function(data){
-                console.log(data.ssp_ticket_job_title)
+                console.log(data)
                 // console.log(data[])
                 // data_token = jQuery.parseJSON(data.data_token);
                 $('#edit-job-title').val(data.ssp_ticket_job_title).trigger('change');
+                $('#edit-person-in-charge-name').val(data.ssp_ticket_person_in_charge_name).trigger('change');
+                $('#edit-person-in-charge-telephone').val(data.ssp_ticket_person_in_charge_telephone).trigger('change');
                 $('#edit-job-date').val(data.ssp_ticket_job_date).trigger('change');
                 $('#edit-job-description').val(data.ssp_ticket_job_description).trigger('change');
                 $('#edit-job-location').val(data.ssp_ticket_job_location).trigger('change');
@@ -478,7 +533,7 @@
                 $('#edit-job-lng-location').val(data.ssp_ticket_job_lng_location).trigger('change');
                 $('#editTicketModal').find('#ticket-id').val(data.id);
 				$('#editTicketModal').modal('show');
-                var latlngview = L.latLng($('#job-lat-location').val(), $('#job-lng-location').val());
+                var latlngview = L.latLng($('#edit-job-lat-location').val(), $('#edit-job-lng-location').val());
                 if(latlngview.lat == 0 && latlngview.lng == 0) latlngview = L.latLng(data.ssp_ticket_job_lat_location, data.ssp_ticket_job_lng_location);
                 var map = L.map('map-edit', {
                     zoomControl:true,
@@ -573,6 +628,12 @@
                                     }else if(i == "job_date"){
                                         $("#edit-job-date").addClass("is-invalid");
                                         $('#edit-job-date-div').append('<div id="error-msg-edit-job-date" class="text-danger">The job date field is required.</div>');
+                                    }else if(i == "person_in_charge_name"){
+                                        $("#edit-person-in-charge-name").addClass("is-invalid");
+                                        $('#edit-person-in-charge-name-div').append('<div id="error-msg-edit-person-in-charge-name" class="text-danger">The job date field is required.</div>');
+                                    }else if(i == "person_in_charge_telephone"){
+                                        $("#edit-person-in-charge-telephone").addClass("is-invalid");
+                                        $('#edit-person-in-charge-telephone-div').append('<div id="error-msg-edit-person-in-charge-telephone" class="text-danger">The job date field is required.</div>');
                                     }else if(i == "job_description"){
                                         $("#edit-job-description").addClass("is-invalid");
                                         $('#edit-job-description-div').append('<div id="error-msg-edit-job-description" class="text-danger">The job comments field is required.</div>'); 
@@ -641,13 +702,38 @@
             }
         })
     }
-
+    
     function modalImportCSV($ticketId){
+        let browseFile = $('#video-simulation');
+        var resumable = new Resumable({
+            target: "{{ route('admin.processingData.uploadLargeFiles') }}",
+            query:{_token:'{{ csrf_token() }}', ticketId:$ticketId},
+            fileType: ['mp4'],
+            chunkSize: 10*1024*1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+            headers: {
+                'Accept' : 'application/json'
+            },
+            testChunks: false,
+            throttleProgressCallbacks: 1,
+        });
+
+        $('#btn-video-simulation').click(function () {
+            $('#video-simulation').trigger('click');
+        })
+        $('#video-simulation').change(function(e){
+            console.log(e.target.files[0].name)
+        });
+        
+        resumable.assignBrowse(browseFile[0]);
+
         $("#importCSVModal").find("#ticket-id").val($ticketId);
         $("#importCSVModal").modal('show');
     }
 
+    
+
     function parseCSVData(){
+        console.log($('#ticket-id').val())
         swal.fire({
             title: "Import CSV Data",
             text: "Add new CSV data? ",
@@ -656,6 +742,44 @@
             confirmButtonText: "Process CSV Data",
             showLoaderOnConfirm: true,
             preConfirm: (login) => {  
+                var request;
+                 resumable.upload();
+                
+                resumable.on('fileProgress', function (file) { // trigger when file progress update
+                    updateProgress(Math.floor(file.progress() * 100));
+                });
+
+                resumable.on('fileSuccess', function (file, response) { // trigger when file upload complete
+                    response = JSON.parse(response)
+                    request = 'success';
+                    alert('Success')
+                    $('#videoPreview').attr('src', response.path);
+                    $('.card-footer').show();
+                });
+
+                resumable.on('fileError', function (file, response) { // trigger when there is any error
+                    alert('file uploading error.')
+                });
+
+
+                let progress = $('.progress');
+                function showProgress() {
+                    // swal.showLoading();
+                    progress.find('.progress-bar').css('width', '0%');
+                    progress.find('.progress-bar').html('0%');
+                    progress.find('.progress-bar').removeClass('bg-success');
+                    progress.show();
+                }
+
+                function updateProgress(value) {
+                    progress.find('.progress-bar').css('width', `${value}%`)
+                    progress.find('.progress-bar').html(`${value}%`)
+                }
+
+                function hideProgress() {
+                    progress.hide();
+                }
+
                 var form = $("#dataImportCSV").get(0)
                 return $.ajax({
                     type: "POST", 
@@ -665,7 +789,7 @@
                     cache: false,
                     data: new FormData(form), 
                     success: function(data) {
-                    var request = 'success';
+                        var request = 'success';
                     },
                     error: function(xhr, status, error){
                         if(xhr.responseText.search("Call to a member function getRealPath() on null")){
@@ -681,6 +805,9 @@
                                     }else if(i == "csvFile"){
                                         $("#csv-file").addClass("is-invalid");
                                         $('#csv-file-div').append('<div id="error-msg-csv-file" class="text-danger">Please select the file first.</div>');
+                                    }else if(i == "video_simulation"){
+                                        $("#video-simulation").addClass("is-invalid");
+                                        $('#video-simulation-div').append('<div id="error-msg-video-simulation" class="text-danger">Please select the video file first.</div>');
                                     }
                                 });
                             });
@@ -691,8 +818,9 @@
                     }
                 });
             }                       
-        }).then((result) => {
-        console.log("sadsa ", result.value)
+        })
+        .then((result) => {
+        console.log("sadsa ", result)
             if(result.value){
             swal.fire({title:"New CSV Data Added", text:"Successfuly add new CSV data!", icon:"success"})
             .then(function(){ 

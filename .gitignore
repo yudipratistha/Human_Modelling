@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
+/human_modelling
 /storage/*.key
 /vendor
 .env

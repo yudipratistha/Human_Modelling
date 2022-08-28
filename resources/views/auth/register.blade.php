@@ -2,6 +2,12 @@
 
 @section('title', 'Register')
 
+@section('plugin_css')
+<!-- Plugins css start-->
+<link rel="stylesheet" type="text/css" href="{{url('/assets/css/sweetalert2.css')}}">
+<!-- Plugins css Ends-->
+@endsection
+
 @section('content')
 <!-- page-wrapper Start-->
 <section>         
@@ -14,7 +20,7 @@
             </video>
           </div>
           <div class="login-card">
-            <form class="theme-form login-form" method="POST" action="{{ route('register') }}">
+            <form id="form-register-user" class="theme-form login-form" method="POST">
               @csrf  
               <h4>Create your account</h4>
               <h6>Enter your personal details to create account</h6>
@@ -46,7 +52,7 @@
                 </div>
               </div> -->
               <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit">Create Account</button>
+                <button class="btn btn-primary btn-block" type="button" onclick="registerUser()">Create Account</button>
               </div>
               <!-- <div class="login-social-title">                
                 <h5>signup with</h5>
@@ -70,6 +76,7 @@
 <!-- page-wrapper end-->
 
 @section('plugin_js')
+<script src="{{url('/assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 
 <script>
   var min_w = 300; // minimum video width allowed
@@ -107,6 +114,28 @@
       jQuery('#video-viewport').scrollLeft((jQuery('video').width() - jQuery(window).width()) / 2);
       jQuery('#video-viewport').scrollTop((jQuery('video').height() - jQuery(window).height()) / 2);
   };
+
+  function registerUser(){
+      $.ajax({
+          type: "POST",
+          url: "{{route('register')}}",
+          datatype : "json", 
+          data: $("#form-register-user").serialize(), 
+          success:function(data){
+            swal.fire({
+                title: "Register Account Success!",
+                text: "You will be redirected to the login page",
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonText: "Ok",
+                showLoaderOnConfirm: true                    
+            })
+            .then((result) => {
+              window.location.href = "{{route('login')}}"
+            })
+          }
+      });
+  }
 </script>
 
 @endsection

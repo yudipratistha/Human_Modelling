@@ -35,6 +35,8 @@ class TicketListController extends Controller
     public function updateTicketDataAdmin(Request $request){
         $this->validate($request,[
             'edit_job_title' => 'required',
+            'edit_person_in_charge_name' => 'required',
+            'edit_person_in_charge_telephone' => 'required',
             'edit_job_location' => 'required',
             'edit_job_date' => 'required',
             'edit_job_description' => 'required',
@@ -44,6 +46,8 @@ class TicketListController extends Controller
 
         $ticket = SspTicket::find($request->ticket_id);
         $ticket->ssp_ticket_job_title = $request->edit_job_title;
+        $ticket->ssp_ticket_person_in_charge_name = $request->edit_person_in_charge_name;
+        $ticket->ssp_ticket_person_in_charge_telephone = $request->edit_person_in_charge_telephone;
         $ticket->ssp_ticket_job_date = date('Y-m-d', strtotime($request->edit_job_date));
         $ticket->ssp_ticket_job_description = $request->edit_job_description;
         $ticket->ssp_ticket_job_location = $request->edit_job_location;
@@ -70,6 +74,8 @@ class TicketListController extends Controller
     public function ticketDataUserStore(Request $request){
         $this->validate($request,[
             'job_title' => 'required',
+            'person_in_charge_name' => 'required',
+            'person_in_charge_telephone' => 'required',
             'job_location' => 'required',
             'job_date' => 'required',
             'job_description' => 'required',
@@ -80,6 +86,8 @@ class TicketListController extends Controller
         $ticket = new SspTicket;
         $ticket->user_id = Auth::user()->id;
         $ticket->ssp_ticket_job_title = $request->job_title;
+        $ticket->ssp_ticket_person_in_charge_name = $request->person_in_charge_name;
+        $ticket->ssp_ticket_person_in_charge_telephone = $request->person_in_charge_telephone;
         $ticket->ssp_ticket_job_analyst = "-";
         $ticket->ssp_ticket_job_date = date('Y-m-d', strtotime($request->job_date));
         $ticket->ssp_ticket_job_description = $request->job_description;

@@ -37,41 +37,179 @@
                     <!-- Ajax data source array start-->
                     <div class="col-sm-12">
                         <div class="card" style="margin-bottom: 10px;">
-                            <!-- <div class="card-header">
-                                
-                            </div> -->
+                            <div class="card-header pb-0">
+                                <h5>Ticket Summary</h5>
+                            </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-borderless table-sm">
                                         <tbody>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Title</th>
-                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_title}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Title</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_title}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Analyst</th>
-                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_analyst}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Person In Charge Name</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_person_in_charge_name}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Date</th>
-                                                <td style="padding-left: 0px;">: {{date('d-m-Y', strtotime($ticket->ssp_ticket_job_date))}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Person In Charge Telephone</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_person_in_charge_telephone}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Description</th>
-                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_description}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Analyst</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_analyst}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Job Location</th>
-                                                <td style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_location}}</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Date</td>
+                                                <th style="padding-left: 0px;">: {{date('d-m-Y', strtotime($ticket->ssp_ticket_job_date))}}</th>
                                             </tr>
                                             <tr>
-                                                <th scope="row" style="width: 10%;padding-left: 0px;padding-right: 0px;">Approval Status</th>
-                                                <td style="padding-left: 0px;">: @if($ticket->ssp_ticket_status == 2) {{"Validation Process!"}} @elseif($ticket->ssp_ticket_status == 3) {{"Validation Success!"}} @endif</td>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Description</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_description}}</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Job Location</td>
+                                                <th style="padding-left: 0px;">: {{$ticket->ssp_ticket_job_location}}</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 13%;padding-left: 0px;padding-right: 0px;">Approval Status</>
+                                                <th style="padding-left: 0px;">: @if($ticket->ssp_ticket_status == 2) {{"Validation Process!"}} @elseif($ticket->ssp_ticket_status == 3) {{"Validation Success!"}} @endif</th>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <hr/>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header pb-0">
+                                <h5>Rula Chart</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rula-chart" class="col-md-12" style="width: 430px; min-width: 110%; height:430px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header pb-0">
+                                <h5>Action Level Chart</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 1</td>
+                                                <th style="padding-left: 0px;">: Acceptable posture</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 2</td>
+                                                <th style="padding-left: 0px;">: Further investigation, change may be needed</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 3</td>
+                                                <th style="padding-left: 0px;">: Further investigation, change soon</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 4</td>
+                                                <th style="padding-left: 0px;">: Invetigate and implement change</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="action-level-chart" class="col-md-12" style="width: 430px; min-width: 110%; height:430px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Action Level Frequency</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="display" id="data-action-level" style="table-layout: fixed !important;width: 98% !important;">
+                                    <thead>
+                                        <tr>
+                                            <th>Score</th>
+                                            <th>Frequency</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Simulation Video</h5>
+                            </div>
+                            <div class="card-body pt-0">
+                                <video id="my_video_1" class="video-js vjs-default-skin" width="640px" height="360px"
+                                    controls preload="none" poster='url'
+                                    data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
+                                    <source src="{!!Storage::url($ticket->ssp_ticket_simulation_video_path)!!}" type='video/mp4' />
+                                    <source src="{!!Storage::url($ticket->ssp_ticket_simulation_video_path)!!}" type='video/webm' />
+                                </video>
+                            </div>
+                        </div>
+
+                        <div class="card mb-1 d-flex aligns-items-center">
+                            <div class="card-body pb-2 pt-2">
+                                <label class="col-form-label pb-1">Filter Action Level:</label>
+                                <div class="form-group m-t-5 m-checkbox-inline mb-0 custom-radio-ml">
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="filter-all" type="radio" checked="checked" value="All">
+                                        <label for="filter-all">All <span id="filter-all-count" class="fw-bold"></span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-1" type="radio" value="Level 1">
+                                        <label for="level-1">Level<span class="digits"> 1 </span><span id="level-1-count" class="fw-bold"></span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-2" type="radio" class="radio" value="Level 2">
+                                        <label for="level-2">Level<span class="digits"> 2 </span><span id="level-2-count" class="fw-bold"></span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-3" type="radio" class="radio" value="Level 3">
+                                        <label for="level-3">Level<span class="digits"> 3 </span><span id="level-3-count" class="fw-bold"></span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-4" type="radio" class="radio" value="Level 4">
+                                        <label for="level-4">Level<span class="digits"> 4 </span><span id="level-4-count" class="fw-bold"></span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <!-- <div class="card-header">
+                                <h5>Data Ergonomic</h5>
+                            </div> -->
+                            <div class="card-body">
+                                <div id="length-data-ssp-rula" class="dataTables_wrapper"></div>
+                                <div class="table-responsive">
+                                    <table class="display datatables" id="data-ssp-rula">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Action Level</th>
+                                                <th>Rula Score Table C</th>
+                                                <th>Rula Score Table B</th>
+                                                <th>Rula Score Table A</th>
+                                                <th>Upper Arm Left</th>
+                                                <th>Upper Arm Right</th>
+                                                <th>Lower Arm Left</th>
+                                                <th>Lower Arm Right</th>
+                                                <th>wrist Left</th>
+                                                <th>Wrist Right</th>
+                                                <th>Wrist Twist Left</th>
+                                                <th>Wrist Twist Right</th>
+                                                <th>Neck</th>
+                                                <th>Trunk Position</th>
+                                                <th>Legs</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div id="pagination-data-ssp-rula" class="dataTables_wrapper"></div>
                             </div>
                         </div>
                         <div class="card">
@@ -222,43 +360,25 @@
     <!-- footer start-->
     @include('layouts.footer')
 </div>
-
-<!-- Modal Edit Data Ergonomic-->
-<div class="modal fade" id="editDataErgonomic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Edit Data Ergonomic</h3>
-                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form class="theme-form" id="editDataFormErgonomic" enctype="multipart/form-data" action="" method="POST">
-                @csrf
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12" id="edit-body-data-ergonomic">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-square btn-outline-light txt-dark" data-bs-dismiss="modal">Close</button>
-                    <button type="button" onclick="updateErgonomicData()" class="btn btn-square btn-outline-secondary">Update Ergonomics Data</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @section('plugin_js')
 <!-- Plugins JS start-->
 <script src="{{url('/assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 <script src="{{url('/assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{url('/assets/js/datatable/datatable-extension/dataTables.fixedColumns.min.js')}}"></script>
+<script src="{{url('/assets/js/chart/echarts/echarts.min.js')}}"></script>
+<script src="{{url('/assets/js/tooltip-init.js')}}"></script>
 <!-- Plugins JS Ends-->
 
 <script>
+    var filterActionLevel = "All";
+
+    $('.filter-checkbox').prop('checked', false);
+    $('#filter-all').prop('checked', true);
+    $('.filter-checkbox').on('change', function() {
+        $('.filter-checkbox').not(this).prop('checked', false);
+    });
+
     function ucwords(str) {
         str = str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
             return letter.toUpperCase();
@@ -266,9 +386,276 @@
         return str;
     }
 
-    $('#editDataErgonomic').on('hidden.bs.modal', function () {
-        $('#edit-body-data-ergonomic').children().remove();
+    tableDataActionLevel = $('#data-action-level').DataTable({
+        bFilter: false,
+        lengthChange: false,
+        serverSide: false,
+        info: false,
+        paging: false,
+        // scrollY: false,
+        // scrollX: false,
+        ordering: false,
+        columns: [
+            { data: 'score' },
+            { data: 'frequency' },
+        ]
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "{{route('user.sspRulaData.getDataSspRulaFrequency', $ticketId)}}",
+        data: {
+            "_token": "{{ csrf_token() }}",
+        },
+        dataType: "json",
+        success:function(data){
+            console.log(data.arrTableC)
+            $("#filter-all-count").text('('+data.allDataActionLevel+')');
+            $("#level-1-count").text('('+data.arrTableC[0].frequency+')');
+            $("#level-2-count").text('('+data.arrTableC[1].frequency+')');
+            $("#level-3-count").text('('+data.arrTableC[2].frequency+')');
+            $("#level-4-count").text('('+data.arrTableC[3].frequency+')');
+            $('#data-action-level').DataTable().clear().rows.add(data.arrTableC).draw();
+        }
     })
+
+    $.ajax({
+        type: "GET",
+        url: "{{route('user.sspRulaData.getDataSspRulaChart', $ticketId)}}",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function(data) {
+            var dataLabels = data.map(function(e) {
+                return e.time;
+            });
+            var dataCharts = data.map(function(e) {
+                return e.ssp_rula_table_c;
+            });
+            
+            var rulaChart = echarts.init(document.getElementById('rula-chart'));
+            
+            var option = {
+                tooltip: {
+                    trigger: 'none',
+                    axisPointer: {
+                    type: 'cross'
+                    }
+                },
+                dataZoom: [{
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'weakFilter',
+                    height: 20,
+                    bottom: 0,
+                    handleIcon:
+                    'path://M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    handleSize: '80%',
+                    showDetail: true
+                }],
+                toolbox: {
+                    right: '9%',
+                    feature: {
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left:'4%',
+                    right: '13%',
+                    bottom:'20%'
+                },
+                title: {
+                    text: 'Rula Chart',
+                    left: 'center',
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    min: 0,
+                    axisTick: {
+                        show: false,
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        show: true
+                    },
+                    axisPointer: {
+                    label: {
+                        formatter: function (params) {
+                        return (
+                            'Rula Score ' +
+                            
+                            (params.seriesData.length ? params.seriesData[0].data : '') + ' ：' + params.value + ' Time (s)'
+                        );
+                        }
+                    }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#73c0de'
+                        }
+                    },
+                    axisLabel: {
+                        rotate: 45,
+                    },
+                    name: 'Time (s)',
+                    nameLocation: 'middle',
+                    nameGap: 40,
+                    data: dataLabels
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 1,
+                    max: 10,
+                    name: 'Rula Score',
+                    nameLocation: 'middle',
+                    nameGap: 40,
+                    splitNumber:10,
+                    axisLabel: {
+                        interval: 0,
+                        formatter: function (value) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    },
+                },
+                series: [{
+                    data: dataCharts,
+                    type: 'line',
+                    areaStyle: {color: '#9dd3e8'},
+                    lineStyle: {
+                        color: '#73c0de'
+                    },
+                    itemStyle: {
+                        color: '#73c0de'
+                    }
+                }]
+            };
+
+            rulaChart.setOption(option);
+            console.log(data)
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "{{route('user.sspRulaData.getDataActionLevelChart', $ticketId)}}",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function(data) {
+            var dataLabels = data.map(function(e) {
+                return e.time;
+            });
+            var dataCharts = data.map(function(e) {
+                return e.action_level;
+            });
+            
+            var rulaChart = echarts.init(document.getElementById('action-level-chart'));
+            
+            var option = {
+                tooltip: {
+                    trigger: 'none',
+                    axisPointer: {
+                    type: 'cross'
+                    }
+                },
+                dataZoom: [{
+                    type: 'slider',
+                    xAxisIndex: 0,
+                    filterMode: 'weakFilter',
+                    height: 20,
+                    bottom: 0,
+                    handleIcon:
+                    'path://M10.7,11.9H9.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4h1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    handleSize: '80%',
+                    showDetail: true
+                }],
+                toolbox: {
+                    right: '9%',
+                    feature: {
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                grid: {
+                    left:'4%',
+                    right: '13%',
+                    bottom:'20%'
+                },
+                title: {
+                    text: 'Action Level Chart',
+                    left: 'center',
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    min: 0,
+                    axisTick: {
+                        show: false,
+                        alignWithLabel: true
+                    },
+                    axisLine: {
+                        show: true
+                    },
+                    axisPointer: {
+                        label: {
+                            formatter: function (params) {
+                            return (
+                                'Action Level ' +
+                                
+                                (params.seriesData.length ? params.seriesData[0].data : '') + ' ：' + params.value + ' Time (s)'
+                            );
+                            }
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#73c0de'
+                        }
+                    },
+                    axisLabel: {
+                        rotate: 45,
+                    },
+                    name: 'Time (s)',
+                    nameLocation: 'middle',
+                    nameGap: 40,
+                    data: dataLabels
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 1,
+                    max: 4,
+                    name: 'Action Level',
+                    nameLocation: 'middle',
+                    nameGap: 40,
+                    splitNumber:4,
+                    axisLabel: {
+                        interval: 0,
+                        formatter: function (value) {
+                            if (Math.floor(value) === value) {
+                                return value;
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    data: dataCharts,
+                    type: 'line',
+                    areaStyle: {color: '#9dd3e8'},
+                    lineStyle: {
+                        color: '#73c0de'
+                    },
+                    itemStyle: {
+                        color: '#73c0de'
+                    }
+                }]
+            };
+
+            rulaChart.setOption(option);
+            console.log(data)
+        }
+    });
 
     var table;
     var api;
@@ -339,6 +726,78 @@
             $('#data-ergonomic_info').appendTo('#pagination-data-ergonomic');
             $('#data-ergonomic_paginate').appendTo('#pagination-data-ergonomic');
         }
+    });
+
+    var tableDataSspRula;
+    var api;
+    tableDataSspRula = $('#data-ssp-rula').DataTable({
+    bFilter: false,
+    processing: true,
+    serverSide: true,
+    // scrollY: true,
+    // scrollX: true,
+    // paging: true,
+    // searching: { "regex": true },
+    preDrawCallback: function(settings) {
+        api = new $.fn.dataTable.Api(settings);
+    },
+    ajax: {
+        type: "POST",
+        url: "{{route('user.sspRulaData.getDataSspRula', $ticketId)}}",
+        dataType: "json",
+        contentType: 'application/json',
+        data: function (data) {
+            var form = {};
+            $.each($("form").serializeArray(), function (i, field) {
+                form[field.name] = field.value || "";
+            });
+            // Add options used by Datatables
+            var info = { "start": api.page.info().start, "length": api.page.info().length, "draw": api.page.info().draw, "filterActionLevel" : filterActionLevel };
+            $.extend(form, info);
+            return JSON.stringify(form);
+        },
+        "complete": function(response) {
+
+        }
+    },
+    columns: [
+        { data: 'time', 
+            render: function (data, type, row) {
+                return '<span id="simulation-video" style="cursor: pointer;" onclick="simulationVideoCurrentTime('+row.time+')">'+row.time+'</span>'; 
+            }
+        },
+        { orderable: false,
+            defaultContent:'',
+            render: function (data, type, row) {
+                 if(row.ssp_rula_table_c === 1 || row.ssp_rula_table_c === 2) return 'Level 1'; 
+                 if(row.ssp_rula_table_c === 3 || row.ssp_rula_table_c === 4) return 'Level 2';
+                 if(row.ssp_rula_table_c === 5 || row.ssp_rula_table_c === 6) return 'Level 3';
+                 if(row.ssp_rula_table_c === 7) return 'Level 4';
+            }
+        },
+        { data: 'ssp_rula_table_c' }, { data: 'ssp_rula_table_b' }, { data: 'ssp_rula_table_a' }, 
+        { data: 'ssp_rula_upper_arm_left' }, { data: 'ssp_rula_upper_arm_right' }, { data: 'ssp_rula_lower_arm_left' }, { data: 'ssp_rula_lower_arm_right' }, { data: 'ssp_rula_wrist_left' },
+        { data: 'ssp_rula_wrist_right' }, { data: 'ssp_rula_wrist_twist_left' }, { data: 'ssp_rula_wrist_twist_right' }, { data: 'ssp_rula_neck' }, { data: 'ssp_rula_trunk_position' },
+        { data: 'ssp_rula_legs' },
+        ],
+        initComplete:function( settings, json){
+            // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');            
+            $('#data-ssp-rula_length').appendTo('#length-data-ssp-rula');
+            $('#data-ssp-rula_info').appendTo('#pagination-data-ssp-rula');
+            $('#data-ssp-rula_paginate').appendTo('#pagination-data-ssp-rula');
+        }
+    });
+
+    function simulationVideoCurrentTime(value) {
+        console.log(value)
+        var video = document.getElementById("my_video_1");
+        video.currentTime = value;
+    }
+
+    $(".filter-checkbox").change(function() {
+        filterActionLevel = this.value;
+        console.log(filterActionLevel);
+        $('#data-ssp-rula').DataTable().ajax.reload();
     });
         
     // });
