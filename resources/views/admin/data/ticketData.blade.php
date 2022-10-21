@@ -88,7 +88,7 @@
                                     <hr/>
                                     @if($ticket->ssp_ticket_status != 3)
                                         <button class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm" type="button" onclick="approveTicket({{$ticket->id}}, '{{$ticket->ssp_ticket_job_title}}')" title="Approve Ticket" style="border-radius: 0px !important;">Approve Ticket</button>
-                                        <button class="btn btn-pill btn-outline-primary btn-air-secondary btn-sm" type="button" onclick="recalculateRulaData({{$ticket->id}}, '{{$ticket->ssp_ticket_job_title}}')" title="Recalculate Rula Data" style="border-radius: 0px !important;">Recalculate Rula Data</button>
+                                        <button id="btn-modal-import-csv" class="btn btn-pill btn-outline-primary btn-air-secondary btn-sm" type="button" onclick="modalImportCSV({{$ticket->id}})" title="Re-Upload CSV Data" style="border-radius: 0px !important;">Re-Upload CSV Data</button>
                                     @endif
                                 </div>
                             </div>
@@ -374,6 +374,76 @@
     @include('layouts.footer')
 </div>
 
+<!-- Modal Upload CSV-->
+<div class="modal fade" id="importCSVModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Import CSV</h3>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="theme-form" id="dataImportCSV" enctype="multipart/form-data" action="" method="POST">
+                @csrf
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" id="ticket-id" name="ticket_id" value=""> 
+                            <div class="form-group row" id="job-analyst-div">
+                                <label class="col-xl-2 col-sm-3 col-form-label">Job Analyst</label>
+                                <div class="col-xl-10 col-sm-9">
+                                <input type="text" class="form-control" id="job-analyst" name="job_analyst" placeholder="Analyst..." >
+                                </div>
+                            </div>
+                            <div class="form-group row" id="movement-type-div">
+                                <label class="col-xl-2 col-sm-3 col-form-label">Movement Type</label>
+                                <div class="col-xl-10 col-sm-9">
+                                    <select class="form-select" id="movement-type" name="movement_type" required="">
+                                        <option selected="" disabled="" value="">Choose...</option>
+                                        <option value="1">Static</option>
+                                        <option value="2">Intermitten</option>
+                                        <option value="3">Repeated</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="weight-of-object-div">
+                                <label class="col-xl-2 col-sm-3 col-form-label">Weight of Object Being Transported</label>
+                                <div class="col-xl-10 col-sm-9">
+                                <input type="number" class="form-control" id="weight-of-object" name="weight_of_object" placeholder="1231..." >
+                                </div>
+                            </div>
+                            <div class="form-group row" id="video-simulation-div">
+                                <label class="col-xl-2 col-sm-3 col-form-label">Upload Simulation Video</label>
+                                <video width="400" controls>
+                                    <source src="" id="video_here">
+                                    Your browser does not support HTML5 video.
+                                </video>
+                                <div class="image-preview" id="image-preview-foto-lapangan-1"></div>
+                                <div class="col-xl-10 col-sm-9">
+                                    <button id="btn-video-simulation" class="btn btn-primary" type="button">Browse File</button>
+                                    <input type="file" class="form-control" name="video_simulation" id="video-simulation" aria-label="video" accept="video/mp4,video/x-m4v,video/*" size="1" style="display:none;">
+                                </div>
+                            </div>
+                            <div class="form-group row" id="csv-file-div">
+                                <label class="col-xl-2 col-sm-3 col-form-label">CSV file to Import</label>
+                                <div class="col-xl-10 col-sm-9">
+                                    <input type="file" class="form-control" name="csvFile" id="csv-file" aria-label="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                                </div>
+                            </div>
+                            <div  style="display: none" class="progress mt-3" style="height: 25px">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; height: 100%">75%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-square btn-outline-light txt-dark" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="process-csv-data" onclick="parseCSVData()" class="btn btn-square btn-outline-secondary">Process CSV Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Edit Data Ergonomic-->
 <div class="modal fade" id="modal-edit-data-ssp-rula" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -422,6 +492,7 @@
 
 <!-- <script src="{{url('/assets/js/chart/apex-chart/chart-custom.js')}}"></script> -->
 <script src="{{url('/assets/js/tooltip-init.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
 <!-- Plugins JS Ends-->
 
 <script>
@@ -1106,5 +1177,132 @@
         console.log(filterActionLevel);
         $('#data-ssp-rula').DataTable().ajax.reload();
     });
+
+    function modalImportCSV($ticketId){
+        let browseFile = $('#video-simulation');
+        var resumable = new Resumable({
+            target: "{{ route('admin.processingData.uploadLargeFiles') }}",
+            query:{_token:'{{ csrf_token() }}', ticketId:$ticketId},
+            fileType: ['mp4'],
+            chunkSize: 10*1024*1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+            headers: {
+                'Accept' : 'application/json'
+            },
+            testChunks: false,
+            throttleProgressCallbacks: 1,
+        });
+
+        $('#btn-video-simulation').click(function () {
+            $('#video-simulation').trigger('click');
+        })
+        $('#video-simulation').change(function(e){
+            console.log(e.target.files[0].name)
+        });
+        
+        resumable.assignBrowse(browseFile[0]);
+
+        $("#importCSVModal").find("#ticket-id").val($ticketId);
+        $("#importCSVModal").modal('show');
+    }
+
+    function parseCSVData(){
+        swal.fire({
+            title: "Import CSV Data",
+            text: "Add new CSV data? ",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: "Process CSV Data",
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {  
+                var request;
+                 resumable.upload();
+                
+                resumable.on('fileProgress', function (file) { // trigger when file progress update
+                    updateProgress(Math.floor(file.progress() * 100));
+                });
+
+                resumable.on('fileSuccess', function (file, response) { // trigger when file upload complete
+                    response = JSON.parse(response)
+                    request = 'success';
+                    alert('Success')
+                    $('#videoPreview').attr('src', response.path);
+                    $('.card-footer').show();
+                });
+
+                resumable.on('fileError', function (file, response) { // trigger when there is any error
+                    alert('file uploading error.')
+                });
+
+
+                let progress = $('.progress');
+                function showProgress() {
+                    // swal.showLoading();
+                    progress.find('.progress-bar').css('width', '0%');
+                    progress.find('.progress-bar').html('0%');
+                    progress.find('.progress-bar').removeClass('bg-success');
+                    progress.show();
+                }
+
+                function updateProgress(value) {
+                    progress.find('.progress-bar').css('width', `${value}%`)
+                    progress.find('.progress-bar').html(`${value}%`)
+                }
+
+                function hideProgress() {
+                    progress.hide();
+                }
+
+                var form = $("#dataImportCSV").get(0)
+
+                link = "{{route('admin.processingData.updateDataCSV', ':ticketId')}}";
+                link = link.replace(":ticketId", $('#ticket-id').val());
+                return $.ajax({
+                    type: "POST", 
+                    url: link,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: new FormData(form), 
+                    success: function(data) {
+                        var request = 'success';
+                    },
+                    error: function(xhr, status, error){
+                        if(xhr.responseText.search("Call to a member function getRealPath() on null")){
+                            $(document).ready(function (){
+                                console.log(xhr.responseJSON)
+                                swal.fire({title:"Add Data CSV Error!", text: "File Not Found!", icon:"error"});
+                                var errorMsg = $('');
+
+                                $.each(xhr.responseJSON.errors, function (i, field) {
+                                    if(i == "job_analyst"){
+                                        $("#job-analyst").addClass("is-invalid");
+                                        $('#job-analyst-div').append('<div id="error-msg-job-analyst" class="text-danger">The job analyst field is required.</div>');
+                                    }else if(i == "csvFile"){
+                                        $("#csv-file").addClass("is-invalid");
+                                        $('#csv-file-div').append('<div id="error-msg-csv-file" class="text-danger">Please select the file first.</div>');
+                                    }else if(i == "video_simulation"){
+                                        $("#video-simulation").addClass("is-invalid");
+                                        $('#video-simulation-div').append('<div id="error-msg-video-simulation" class="text-danger">Please select the video file first.</div>');
+                                    }
+                                });
+                            });
+                        }else{
+                            console.log(xhr)
+                        }
+                        
+                    }
+                });
+            }                       
+        })
+        .then((result) => {
+        console.log("sadsa ", result)
+            if(result.value){
+            swal.fire({title:"New CSV Data Added", text:"Successfuly add new CSV data!", icon:"success"})
+            .then(function(){ 
+                window.location.reload(true);
+            });
+            }
+        })
+    }
 </script>
 @endsection

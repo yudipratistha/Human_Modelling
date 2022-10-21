@@ -64,6 +64,7 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'isAdmin'], function () {
     Route::get('home', 'HomeController@adminHome')->name('admin.home');
     Route::get('processing-data', 'ProcessingDataController@index')->name('admin.processingData.index');
     Route::post('processing-data/processing-data-csv', 'ProcessingDataController@storeDataCSV')->name('admin.processingData.storeDataCSV');
+    Route::post('processing-data/update-data-csv/{ticketId}', 'ProcessingDataController@updateDataCSV')->name('admin.processingData.updateDataCSV');
     Route::post('upload-simulation-video', 'ProcessingDataController@uploadLargeFiles')->name('admin.processingData.uploadLargeFiles');
 
     Route::post('recalculate-rula-data/{ticketId}', 'ProcessingDataController@recalculateRulaData')->name('admin.processingData.recalculateRulaData');

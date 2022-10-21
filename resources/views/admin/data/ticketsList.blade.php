@@ -263,10 +263,15 @@
                             </div>
                             <div class="form-group row" id="video-simulation-div">
                                 <label class="col-xl-2 col-sm-3 col-form-label">Upload Simulation Video</label>
+                                <video width="400" controls>
+                                    <source src="" id="video_here">
+                                    Your browser does not support HTML5 video.
+                                </video>
                                 <div class="col-xl-10 col-sm-9">
-                                    <button id="btn-video-simulation" class="btn btn-primary">Browse File</button>
+                                    <button id="btn-video-simulation" class="btn btn-primary" type="button">Browse File</button>
                                     <input type="file" class="form-control" name="video_simulation" id="video-simulation" aria-label="video" accept="video/mp4,video/x-m4v,video/*" size="1" style="display:none;">
                                 </div>
+                                
                             </div>
                             <div class="form-group row" id="csv-file-div">
                                 <label class="col-xl-2 col-sm-3 col-form-label">CSV file to Import</label>
@@ -655,7 +660,7 @@
                         }
                     }
                 });
-            }                       
+            }                    
         }).then((result) => {
         console.log("sadsa ", result.value)
             if(result.value){
@@ -705,7 +710,7 @@
     
     function modalImportCSV($ticketId){
         let browseFile = $('#video-simulation');
-        var resumable = new Resumable({
+        resumable = new Resumable({
             target: "{{ route('admin.processingData.uploadLargeFiles') }}",
             query:{_token:'{{ csrf_token() }}', ticketId:$ticketId},
             fileType: ['mp4'],
@@ -720,8 +725,17 @@
         $('#btn-video-simulation').click(function () {
             $('#video-simulation').trigger('click');
         })
+
+        // $('#video-simulation').change(function(e){
+        //     console.log(e.target.files[0].name)
+        // });
+
         $('#video-simulation').change(function(e){
             console.log(e.target.files[0].name)
+
+            var $source = $('#video_here');
+            $source[0].src = URL.createObjectURL(this.files[0]);
+            $source.parent()[0].load();
         });
         
         resumable.assignBrowse(browseFile[0]);
