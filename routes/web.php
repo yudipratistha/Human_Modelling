@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ Route::group(['prefix' => '/'], function(){
 
     Route::get('register', 'Auth\AuthController@registrationForm')->name('register');
     Route::post('register', 'Auth\AuthController@createUser');
-    
+
     Route::post('password/confirm', 'Auth\ConfirmPasswordController@confirm');
     Route::get('password/confirm', 'Auth\ConfirmPasswordController@showConfirmForm')->name('password.confirm');
 
@@ -55,8 +56,14 @@ Route::group(['prefix' => '', 'middleware' => 'regularUser'], function () {
     Route::post('get-ssp-rula-data/{ticketId}', 'TicketDataController@getDataSspRulaAdmin')->name('user.sspRulaData.getDataSspRula');
     Route::get('get-ssp-rula-data-chart/{ticketId}', 'TicketDataController@getDataSspRulaChartAdmin')->name('user.sspRulaData.getDataSspRulaChart');
     Route::get('get-action-level-chart/{ticketId}', 'TicketDataController@getDataActionLevelChartAdmin')->name('user.sspRulaData.getDataActionLevelChart');
-    
+
     Route::post('get-ssp-rula-data-frequency/{ticketId}', 'TicketDataController@getDataSspRulaFrequencyAdmin')->name('user.sspRulaData.getDataSspRulaFrequency');
+
+    Route::post('get-ssp-reba-data/{ticketId}', 'TicketDataController@getDataSspRebaAdmin')->name('user.sspRebaData.getDataSspReba');
+    Route::get('get-ssp-reba-data-chart/{ticketId}', 'TicketDataController@getDataSspRebaChartAdmin')->name('user.sspRebaData.getDataSspRebaChart');
+    Route::get('get-action-level-chart/{ticketId}', 'TicketDataController@getDataActionLevelRebaChartAdmin')->name('user.sspRebaData.getDataActionLevelChart');
+
+    Route::post('get-ssp-reba-data-frequency/{ticketId}', 'TicketDataController@getDataSspRebaFrequencyAdmin')->name('user.sspRebaData.getDataSspRebaFrequency');
 });
 
 //admin
@@ -68,12 +75,13 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'isAdmin'], function () {
     Route::post('upload-simulation-video', 'ProcessingDataController@uploadLargeFiles')->name('admin.processingData.uploadLargeFiles');
 
     Route::post('recalculate-rula-data/{ticketId}', 'ProcessingDataController@recalculateRulaData')->name('admin.processingData.recalculateRulaData');
+    Route::post('recalculate-reba-data/{ticketId}', 'ProcessingDataController@recalculateRebaData')->name('admin.processingData.recalculateRebaData');
 
     Route::get('tickets-list', 'TicketListController@ticketsListAdminIndex')->name('admin.ticketsList.index');
     Route::get('ticket-get-edit-data/{ticketId}', 'TicketListController@ticketAdminGetEditData')->name('admin.ticketData.getEdit');
     Route::post('update-ticket-data/{ticketId}', 'TicketListController@updateTicketDataAdmin')->name('admin.ticketData.update');
     Route::delete('delete-ticket-data/{ticketId}', 'TicketListController@destroyTicketDataAdmin')->name('admin.ticketData.destroy');
-    
+
     Route::get('ticket-data/{id}', 'TicketDataController@dataTicketAdminIndex')->name('admin.ticketData.index');
     Route::post('get-ticket-data/{ticketId}', 'TicketDataController@getDataTicketAdmin')->name('admin.ticketData.getTicketData');
     Route::post('approve-ticket-data/{ticketId}', 'TicketDataController@approveDataTicketAdmin')->name('admin.ticketData.approveTicketData');
@@ -82,9 +90,17 @@ Route::group(['prefix' => 'admin/', 'middleware' => 'isAdmin'], function () {
     Route::delete('delete-ssp-rula-data/{timeId}', 'TicketDataController@destroySspRulaDataAdmin')->name('admin.ticketData.destroySspRulaDataAdmin');
     Route::post('get-ssp-rula-data/{ticketId}', 'TicketDataController@getDataSspRulaAdmin')->name('admin.sspRulaData.getDataSspRula');
     Route::get('get-ssp-rula-data-chart/{ticketId}', 'TicketDataController@getDataSspRulaChartAdmin')->name('admin.sspRulaData.getDataSspRulaChart');
-    Route::get('get-action-level-chart/{ticketId}', 'TicketDataController@getDataActionLevelChartAdmin')->name('admin.sspRulaData.getDataActionLevelChart');
-    
+    Route::get('get-action-level-rula-chart/{ticketId}', 'TicketDataController@getDataActionLevelChartAdmin')->name('admin.sspRulaData.getDataActionLevelChart');
+
     Route::post('get-ssp-rula-data-frequency/{ticketId}', 'TicketDataController@getDataSspRulaFrequencyAdmin')->name('admin.sspRulaData.getDataSspRulaFrequency');
+
+    Route::post('update-ssp-reba-data/{timeId}', 'TicketDataController@updateSspRebaDataAdmin')->name('admin.ticketData.updateSspRebaDataAdmin');
+    Route::delete('delete-ssp-reba-data/{timeId}', 'TicketDataController@destroySspRebaDataAdmin')->name('admin.ticketData.destroySspRebaDataAdmin');
+    Route::post('get-ssp-reba-data/{ticketId}', 'TicketDataController@getDataSspRebaAdmin')->name('admin.sspRebaData.getDataSspReba');
+    Route::get('get-ssp-reba-data-chart/{ticketId}', 'TicketDataController@getDataSspRebaChartAdmin')->name('admin.sspRebaData.getDataSspRebaChart');
+    Route::get('get-action-level-reba-chart/{ticketId}', 'TicketDataController@getDataActionLevelRebaChartAdmin')->name('admin.sspRebaData.getDataActionLevelRebaChartAdmin');
+
+    Route::post('get-ssp-reba-data-frequency/{ticketId}', 'TicketDataController@getDataSspRebaFrequencyAdmin')->name('admin.sspRebaData.getDataSspRebaFrequencyAdmin');
 });
 
 Route::group(['prefix' => 'niosh/', 'middleware' => 'nioshUser'], function () {

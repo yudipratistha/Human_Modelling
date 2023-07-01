@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Ticket Rula')
+@section('title', 'Data Ticket Reba')
 
 @section('plugin_css')
 <!-- Plugins css start-->
@@ -96,10 +96,10 @@
 
                         <div class="card">
                             <div class="card-header pb-0">
-                                <h5>Rula Chart</h5>
+                                <h5>Reba Chart</h5>
                             </div>
                             <div class="card-body">
-                                <div id="rula-chart" class="col-md-12" style="width: 430px; min-width: 110%; height:430px;"></div>
+                                <div id="reba-chart" class="col-md-12" style="width: 430px; min-width: 110%; height:430px;"></div>
                             </div>
                         </div>
 
@@ -112,20 +112,24 @@
                                     <table class="table table-borderless table-sm">
                                         <tbody>
                                             <tr>
-                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 1</td>
-                                                <th style="padding-left: 0px;">: Acceptable posture</th>
+                                                <td scope="row" style="width: 7%;padding-left: 0px;padding-right: 0px;">Level 1</td>
+                                                <th style="padding-left: 0px;">: Negligible Risk</th>
                                             </tr>
                                             <tr>
-                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 2</td>
-                                                <th style="padding-left: 0px;">: Further investigation, change may be needed</th>
+                                                <td scope="row" style="width: 7%;padding-left: 0px;padding-right: 0px;">Level 2 to 3</td>
+                                                <th style="padding-left: 0px;">: Low risk, change may be needed</th>
                                             </tr>
                                             <tr>
-                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 3</td>
-                                                <th style="padding-left: 0px;">: Further investigation, change soon</th>
+                                                <td scope="row" style="width: 7%;padding-left: 0px;padding-right: 0px;">Level 4 to 7</td>
+                                                <th style="padding-left: 0px;">: Medium risk, further investigation, change soon</th>
                                             </tr>
                                             <tr>
-                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 4</td>
-                                                <th style="padding-left: 0px;">: Invetigate and implement change</th>
+                                                <td scope="row" style="width: 7%;padding-left: 0px;padding-right: 0px;">Level 8 to 10</td>
+                                                <th style="padding-left: 0px;">: High risk, investigate and implement change</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 7%;padding-left: 0px;padding-right: 0px;">Level above 11</td>
+                                                <th style="padding-left: 0px;">: Very high risk, implement change</th>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -177,16 +181,20 @@
                                         <label for="level-1">Level<span class="digits"> 1 </span><span id="level-1-count" class="fw-bold"></span></label>
                                     </div>
                                     <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-2" type="radio" class="radio" value="Level 2">
-                                        <label for="level-2">Level<span class="digits"> 2 </span><span id="level-2-count" class="fw-bold"></span></label>
+                                        <input class="filter-checkbox" id="level-2" type="radio" class="radio" value="Level 2 to 3">
+                                        <label for="level-2">Level<span class="digits"> 2 to 3 </span><span id="level-2-to-3-count" class="fw-bold"></span></label>
                                     </div>
                                     <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-3" type="radio" class="radio" value="Level 3">
-                                        <label for="level-3">Level<span class="digits"> 3 </span><span id="level-3-count" class="fw-bold"></span></label>
+                                        <input class="filter-checkbox" id="level-3" type="radio" class="radio" value="Level 4 to 7">
+                                        <label for="level-3">Level<span class="digits"> 4 to 7 </span><span id="level-4-to-7-count" class="fw-bold"></span></label>
                                     </div>
                                     <div class="radio radio-primary">
-                                        <input class="filter-checkbox" id="level-4" type="radio" class="radio" value="Level 4">
-                                        <label for="level-4">Level<span class="digits"> 4 </span><span id="level-4-count" class="fw-bold"></span></label>
+                                        <input class="filter-checkbox" id="level-4" type="radio" class="radio" value="Level 8 to 10">
+                                        <label for="level-4">Level<span class="digits"> 8 to 10 </span><span id="level-8-to-10-count" class="fw-bold"></span></label>
+                                    </div>
+                                    <div class="radio radio-primary">
+                                        <input class="filter-checkbox" id="level-4" type="radio" class="radio" value="Level above 11">
+                                        <label for="level-4">Level<span class="digits"> 11+ </span><span id="level-above-11-count" class="fw-bold"></span></label>
                                     </div>
                                 </div>
                             </div>
@@ -196,17 +204,17 @@
                                 <h5>Data Ergonomic</h5>
                             </div> -->
                             <div class="card-body">
-                                <div id="length-data-ssp-rula" class="dataTables_wrapper"></div>
+                                <div id="length-data-ssp-reba" class="dataTables_wrapper"></div>
                                 <div class="table-responsive">
-                                    <table class="display datatables" id="data-ssp-rula">
+                                    <table class="display datatables" id="data-ssp-reba">
                                         <thead>
                                             <tr>
                                                 <th style="min-width: 90px">Action</th>
                                                 <th>Time</th>
                                                 <th>Action Level</th>
-                                                <th>Rula Score Table C</th>
-                                                <th>Rula Score Table B</th>
-                                                <th>Rula Score Table A</th>
+                                                <th>Reba Score Table C</th>
+                                                <th>Reba Score Table B</th>
+                                                <th>Reba Score Table A</th>
                                                 <th>Upper Arm Left</th>
                                                 <th>Upper Arm Right</th>
                                                 <th>Lower Arm Left</th>
@@ -222,7 +230,7 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div id="pagination-data-ssp-rula" class="dataTables_wrapper"></div>
+                                <div id="pagination-data-ssp-reba" class="dataTables_wrapper"></div>
                             </div>
                         </div>
 
@@ -429,16 +437,6 @@
                                     <input type="file" class="form-control" name="csvFile" id="csv-file" aria-label="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                                 </div>
                             </div>
-                            <div class="form-group row" id="calculation-type-div">
-                                <label class="col-xl-2 col-sm-3 col-form-label">Calculation Type</label>
-                                <div class="col-xl-10 col-sm-9">
-                                    <select class="form-select" id="calculation-type" name="calculation_type" required="">
-                                        <option selected="" disabled="" value="">Choose...</option>
-                                        <option value="1">Rula</option>
-                                        <option value="2">Reba</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div  style="display: none" class="progress mt-3" style="height: 25px">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; height: 100%">75%</div>
                             </div>
@@ -455,7 +453,7 @@
 </div>
 
 <!-- Modal Edit Data Ergonomic-->
-<div class="modal fade" id="modal-edit-data-ssp-rula" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-edit-data-ssp-reba" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -466,7 +464,7 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12" id="edit-body-data-ssp-rula">
+                        <div class="col-md-12" id="edit-body-data-ssp-reba">
 
                         </div>
                     </div>
@@ -538,25 +536,26 @@
 
     $.ajax({
         type: "POST",
-        url: "{{route('admin.sspRulaData.getDataSspRulaFrequency', $ticketId)}}",
+        url: "{{route('admin.sspRebaData.getDataSspRebaFrequencyAdmin', $ticketId)}}",
         data: {
             "_token": "{{ csrf_token() }}",
         },
         dataType: "json",
         success:function(data){
-            console.log(data.arrTableC)
+            console.log('test data reba ', data.arrTableC)
             $("#filter-all-count").text('('+data.allDataActionLevel+')');
             $("#level-1-count").text('('+data.arrTableC[0].frequency+')');
-            $("#level-2-count").text('('+data.arrTableC[1].frequency+')');
-            $("#level-3-count").text('('+data.arrTableC[2].frequency+')');
-            $("#level-4-count").text('('+data.arrTableC[3].frequency+')');
+            $("#level-2-to-3-count").text('('+data.arrTableC[1].frequency+')');
+            $("#level-4-to-7-count").text('('+data.arrTableC[2].frequency+')');
+            $("#level-8-to-10-count").text('('+data.arrTableC[3].frequency+')');
+            $("#level-above-11-count").text('('+data.arrTableC[4].frequency+')');
             $('#data-action-level').DataTable().clear().rows.add(data.arrTableC).draw();
         }
     });
 
     $.ajax({
         type: "GET",
-        url: "{{route('admin.sspRulaData.getDataSspRulaChart', $ticketId)}}",
+        url: "{{route('admin.sspRebaData.getDataSspRebaChart', $ticketId)}}",
         dataType: "json",
         contentType: 'application/json',
         success: function(data) {
@@ -564,10 +563,10 @@
                 return e.time;
             });
             var dataCharts = data.map(function(e) {
-                return e.ssp_rula_table_c;
+                return e.ssp_reba_table_c;
             });
 
-            var rulaChart = echarts.init(document.getElementById('rula-chart'));
+            var rebaChart = echarts.init(document.getElementById('reba-chart'));
 
             var option = {
                 tooltip: {
@@ -600,7 +599,7 @@
                     bottom:'20%'
                 },
                 title: {
-                    text: 'Rula Chart',
+                    text: 'Reba Chart',
                     left: 'center',
                 },
                 xAxis: {
@@ -618,7 +617,7 @@
                     label: {
                         formatter: function (params) {
                         return (
-                            'Rula Score ' +
+                            'Reba Score ' +
 
                             (params.seriesData.length ? params.seriesData[0].data : '') + ' ：' + params.value + ' Time (s)'
                         );
@@ -641,8 +640,8 @@
                 yAxis: {
                     type: 'value',
                     min: 1,
-                    max: 10,
-                    name: 'Rula Score',
+                    max: 11,
+                    name: 'Reba Score',
                     nameLocation: 'middle',
                     nameGap: 40,
                     splitNumber:10,
@@ -668,14 +667,14 @@
                 }]
             };
 
-            rulaChart.setOption(option);
+            rebaChart.setOption(option);
             console.log(data)
         }
     });
 
     $.ajax({
         type: "GET",
-        url: "{{route('admin.sspRulaData.getDataActionLevelChart', $ticketId)}}",
+        url: "{{route('admin.sspRebaData.getDataActionLevelRebaChartAdmin', $ticketId)}}",
         dataType: "json",
         contentType: 'application/json',
         success: function(data) {
@@ -686,7 +685,7 @@
                 return e.action_level;
             });
 
-            var rulaChart = echarts.init(document.getElementById('action-level-chart'));
+            var rebaChart = echarts.init(document.getElementById('action-level-chart'));
 
             var option = {
                 tooltip: {
@@ -758,21 +757,24 @@
                     data: dataLabels
                 },
                 yAxis: {
-                    type: 'value',
-                    min: 1,
-                    max: 4,
+                    type: 'category',
+                    // min: 1,
+                    // max: 11,
+                    boundaryGap: false,
                     name: 'Action Level',
                     nameLocation: 'middle',
-                    nameGap: 40,
-                    splitNumber:4,
-                    axisLabel: {
-                        interval: 0,
-                        formatter: function (value) {
-                            if (Math.floor(value) === value) {
-                                return value;
-                            }
-                        }
-                    }
+                    nameGap: 55,
+                    data: ['1', '2 To 3', '4 To 7', '8 To 10', 'Above 11'],
+                    // splitNumber:11,
+                    // axisLabel: {
+                    //     interval: 1,
+                    //     formatter: function (value) {
+                    //         console.log('test 'value)
+                    //         // if (Math.floor(value) === value) {
+                    //         //     return value;
+                    //         // }
+                    //     }
+                    // }
                 },
                 series: [{
                     data: dataCharts,
@@ -787,14 +789,14 @@
                 }]
             };
 
-            rulaChart.setOption(option);
-            console.log(data)
+            rebaChart.setOption(option);
+            console.log('test ', dataCharts)
         }
     });
 
 
-    $('#modal-edit-data-ssp-rula').on('hidden.bs.modal', function () {
-        $('#edit-body-data-ssp-rula').children().remove();
+    $('#modal-edit-data-ssp-reba').on('hidden.bs.modal', function () {
+        $('#edit-body-data-ssp-reba').children().remove();
     })
 
     var table;
@@ -874,16 +876,16 @@
             $('#data-ergonomic_length').appendTo('#length-data-ergonomic');
             $('#data-ergonomic_info').appendTo('#pagination-data-ergonomic');
             $('#data-ergonomic_paginate').appendTo('#pagination-data-ergonomic');
-            // $('#data-ssp-rula tbody').on('click', "#edit-data-ssp-rula", function() {
+            // $('#data-ssp-reba tbody').on('click', "#edit-data-ssp-reba", function() {
             //     let row = $(this).parents('tr')[0];
             //     console.log(table.row(row).data().ssp_time_id);
 
-            //     $('#edit-body-data-ssp-rula').append('<input type="hidden" id="ticket-id" name="ticket_id" value="'+table.row(row).data().ssp_ticket_id+'">\
+            //     $('#edit-body-data-ssp-reba').append('<input type="hidden" id="ticket-id" name="ticket_id" value="'+table.row(row).data().ssp_ticket_id+'">\
             //         <input type="hidden" id="time-id" name="time_id" value="'+table.row(row).data().ssp_time_id+'">');
 
             //     Object.keys(table.row(row).data()).forEach(function(item, index) {
             //         if(index >= 5){
-            //             $('#edit-body-data-ssp-rula').append('\
+            //             $('#edit-body-data-ssp-reba').append('\
             //                 <div class="form-group row" id="job-analyst-div">\
             //                     <label class="col-xl-3 col-sm-4 col-form-label">'+ucwords(item.replace(/_/g, " "))+'</label>\
             //                     <div class="col-xl-9 col-sm-8">\
@@ -892,10 +894,10 @@
             //                 </div>');
             //         }
             //     })
-            //     $('#edit-data-ssp-rula').modal('show');
+            //     $('#edit-data-ssp-reba').modal('show');
             // });
 
-            // $('#data-ssp-rula tbody').on('click', "#delete-data-ssp-rula", function() {
+            // $('#data-ssp-reba tbody').on('click', "#delete-data-ssp-reba", function() {
             //     let row = $(this).parents('tr')[0];
             //     deleteDataErgonomic(table.row(row).data().ssp_time_id);
             // });
@@ -938,12 +940,12 @@
         })
     }
 
-    function recalculateRulaData(ticketId, ticketTitle){
-        link = "{{route('admin.processingData.recalculateRulaData', ':id')}}";
+    function recalculateRebaData(ticketId, ticketTitle){
+        link = "{{route('admin.processingData.recalculateRebaData', ':id')}}";
         link = link.replace(':id', ticketId);
 
 		swal.fire({
-			title: "Recalculate Rula Data Ticket "+ticketTitle+"?",
+			title: "Recalculate Reba Data Ticket "+ticketTitle+"?",
 			text: "Ticket "+ticketTitle+" will be approved on tickets list!",
 			icon: "warning",
 			showCancelButton: true,
@@ -974,9 +976,9 @@
         })
     }
 
-    var tableDataSspRula;
+    var tableDataSspReba;
     var api;
-    tableDataSspRula = $('#data-ssp-rula').DataTable({
+    tableDataSspReba = $('#data-ssp-reba').DataTable({
         bFilter: false,
         processing: true,
         serverSide: true,
@@ -990,7 +992,7 @@
         },
         ajax: {
             type: "POST",
-            url: "{{route('admin.sspRulaData.getDataSspRula', $ticketId)}}",
+            url: "{{route('admin.sspRebaData.getDataSspReba', $ticketId)}}",
             dataType: "json",
             contentType: 'application/json',
             data: function (data) {
@@ -1009,8 +1011,8 @@
         },
         columns: [
             { orderable: false, defaultContent: '\
-                <button type="button" class="btn btn-outline-primary" id="edit-data-ssp-rula" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-edit" style="font-size:20px;"></i></button>\
-                <button type="button" class="btn btn-outline-danger" id="delete-data-ssp-rula" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-trash" style="font-size:20px;"></i></button>',
+                <button type="button" class="btn btn-outline-primary" id="edit-data-ssp-reba" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-edit" style="font-size:20px;"></i></button>\
+                <button type="button" class="btn btn-outline-danger" id="delete-data-ssp-reba" style="width: 37px; padding-top: 2px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px; margin-right:5px;"><i class="fa fa-trash" style="font-size:20px;"></i></button>',
                 render: function (data, type, row) {
                     if(row.ssp_ticket_status === 3) table.column(0).visible(false);
                 }
@@ -1023,56 +1025,56 @@
             { orderable: false,
                 defaultContent:'',
                 render: function (data, type, row) {
-                    if(row.ssp_rula_table_c === 1 || row.ssp_rula_table_c === 2) return 'Level 1';
-                    if(row.ssp_rula_table_c === 3 || row.ssp_rula_table_c === 4) return 'Level 2';
-                    if(row.ssp_rula_table_c === 5 || row.ssp_rula_table_c === 6) return 'Level 3';
-                    if(row.ssp_rula_table_c === 7) return 'Level 4';
+                    if(row.ssp_reba_table_c === 1 || row.ssp_reba_table_c === 2) return 'Level 1';
+                    if(row.ssp_reba_table_c === 3 || row.ssp_reba_table_c === 4) return 'Level 2';
+                    if(row.ssp_reba_table_c === 5 || row.ssp_reba_table_c === 6) return 'Level 3';
+                    if(row.ssp_reba_table_c === 7) return 'Level 4';
                 }
             },
-            { data: 'ssp_rula_table_c' }, { data: 'ssp_rula_table_b' }, { data: 'ssp_rula_table_a' },
-            { data: 'ssp_rula_upper_arm_left' }, { data: 'ssp_rula_upper_arm_right' }, { data: 'ssp_rula_lower_arm_left' }, { data: 'ssp_rula_lower_arm_right' }, { data: 'ssp_rula_wrist_left' },
-            { data: 'ssp_rula_wrist_right' }, { data: 'ssp_rula_wrist_twist_left' }, { data: 'ssp_rula_wrist_twist_right' }, { data: 'ssp_rula_neck' }, { data: 'ssp_rula_trunk_position' },
-            { data: 'ssp_rula_legs' },
+            { data: 'ssp_reba_table_c' }, { data: 'ssp_reba_table_b' }, { data: 'ssp_reba_table_a' },
+            { data: 'ssp_reba_upper_arm_left' }, { data: 'ssp_reba_upper_arm_right' }, { data: 'ssp_reba_lower_arm_left' }, { data: 'ssp_reba_lower_arm_right' }, { data: 'ssp_reba_wrist_left' },
+            { data: 'ssp_reba_wrist_right' }, { data: 'ssp_reba_wrist_twist_left' }, { data: 'ssp_reba_wrist_twist_right' }, { data: 'ssp_reba_neck' }, { data: 'ssp_reba_trunk_position' },
+            { data: 'ssp_reba_legs' },
         ],
         fixedColumns:{left: 1},
         order: [[ 1, "desc" ]],
         initComplete:function( settings, json){
             // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');
-            $('#data-ssp-rula_length').appendTo('#length-data-ssp-rula');
-            $('#data-ssp-rula_info').appendTo('#pagination-data-ssp-rula');
-            $('#data-ssp-rula_paginate').appendTo('#pagination-data-ssp-rula');
-            $('#data-ssp-rula tbody').on('click', "#edit-data-ssp-rula", function() {
+            $('#data-ssp-reba_length').appendTo('#length-data-ssp-reba');
+            $('#data-ssp-reba_info').appendTo('#pagination-data-ssp-reba');
+            $('#data-ssp-reba_paginate').appendTo('#pagination-data-ssp-reba');
+            $('#data-ssp-reba tbody').on('click', "#edit-data-ssp-reba", function() {
                 let row = $(this).parents('tr')[0];
-                console.log(tableDataSspRula.row(row).data().ssp_time_id);
+                console.log(tableDataSspReba.row(row).data().ssp_time_id);
 
-                $('#edit-body-data-ssp-rula').append('<input type="hidden" id="ticket-id" name="ticket_id" value="'+tableDataSspRula.row(row).data().ssp_ticket_id+'">\
-                    <input type="hidden" id="time-id" name="time_id" value="'+tableDataSspRula.row(row).data().ssp_time_id+'">');
+                $('#edit-body-data-ssp-reba').append('<input type="hidden" id="ticket-id" name="ticket_id" value="'+tableDataSspReba.row(row).data().ssp_ticket_id+'">\
+                    <input type="hidden" id="time-id" name="time_id" value="'+tableDataSspReba.row(row).data().ssp_time_id+'">');
 
-                Object.keys(tableDataSspRula.row(row).data()).forEach(function(item, index) {
+                Object.keys(tableDataSspReba.row(row).data()).forEach(function(item, index) {
                     console.log(item)
                     if(index >= 7){
 
-                        $('#edit-body-data-ssp-rula').append('\
+                        $('#edit-body-data-ssp-reba').append('\
                             <div class="form-group row" id="job-analyst-div">\
-                                <label class="col-xl-3 col-sm-4 col-form-label">'+ucwords(item.replace('ssp_rula_','').replace(/_/g, " "))+'</label>\
+                                <label class="col-xl-3 col-sm-4 col-form-label">'+ucwords(item.replace('ssp_reba_','').replace(/_/g, " "))+'</label>\
                                 <div class="col-xl-9 col-sm-8">\
-                                    <input type="text" class="form-control" id="'+item.replace(/_/g, "-")+'" name="'+item.replace('ssp_rula_','')+'" placeholder="'+ucwords(item.replace('ssp_rula_','').replace(/_/g, " "))+'..." value="'+tableDataSspRula.row(row).data()[item]+'">\
+                                    <input type="text" class="form-control" id="'+item.replace(/_/g, "-")+'" name="'+item.replace('ssp_reba_','')+'" placeholder="'+ucwords(item.replace('ssp_reba_','').replace(/_/g, " "))+'..." value="'+tableDataSspReba.row(row).data()[item]+'">\
                                 </div>\
                             </div>');
                     }
                 })
-                $('#modal-edit-data-ssp-rula').modal('show');
+                $('#modal-edit-data-ssp-reba').modal('show');
             });
 
-            $('#data-ssp-rula tbody').on('click', "#delete-data-ssp-rula", function() {
+            $('#data-ssp-reba tbody').on('click', "#delete-data-ssp-reba", function() {
                 let row = $(this).parents('tr')[0];
-                deleteDataErgonomic(tableDataSspRula.row(row).data().ssp_time_id);
+                deleteDataErgonomic(tableDataSspReba.row(row).data().ssp_time_id);
             });
         }
     });
 
     function updateErgonomicData(){
-        link = "{{route('admin.ticketData.updateSspRulaDataAdmin', ':timeId')}}";
+        link = "{{route('admin.ticketData.updateSspRebaDataAdmin', ':timeId')}}";
         link = link.replace(":timeId", $("#updateErgonomicData").find("#time-id").val());
         swal.fire({
             title: "Update Ergonomics Data",
@@ -1141,7 +1143,7 @@
     }
 
     function deleteDataErgonomic(timeId){
-        link = "{{route('admin.ticketData.destroySspRulaDataAdmin', ':id')}}";
+        link = "{{route('admin.ticketData.destroySspRebaDataAdmin', ':id')}}";
         link = link.replace(':id', timeId);
 
 		swal.fire({
@@ -1185,7 +1187,7 @@
     $(".filter-checkbox").change(function() {
         filterActionLevel = this.value;
         console.log(filterActionLevel);
-        $('#data-ssp-rula').DataTable().ajax.reload();
+        $('#data-ssp-reba').DataTable().ajax.reload();
     });
 
     function modalImportCSV($ticketId){
@@ -1316,3 +1318,5 @@
     }
 </script>
 @endsection
+
+

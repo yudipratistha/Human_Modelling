@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Ticket Rula')
+@section('title', 'Data Ticket Reba')
 
 @section('plugin_css')
 <!-- Plugins css start-->
@@ -101,19 +101,23 @@
                                         <tbody>
                                             <tr>
                                                 <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 1</td>
-                                                <th style="padding-left: 0px;">: Acceptable posture</th>
+                                                <th style="padding-left: 0px;">: Negligible Risk</th>
                                             </tr>
                                             <tr>
                                                 <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 2</td>
-                                                <th style="padding-left: 0px;">: Further investigation, change may be needed</th>
+                                                <th style="padding-left: 0px;">: Low risk, change may be needed</th>
                                             </tr>
                                             <tr>
                                                 <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 3</td>
-                                                <th style="padding-left: 0px;">: Further investigation, change soon</th>
+                                                <th style="padding-left: 0px;">: Medium risk, further investigation, change soon</th>
                                             </tr>
                                             <tr>
                                                 <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 4</td>
-                                                <th style="padding-left: 0px;">: Invetigate and implement change</th>
+                                                <th style="padding-left: 0px;">: High risk, investigate and implement change</th>
+                                            </tr>
+                                            <tr>
+                                                <td scope="row" style="width: 4%;padding-left: 0px;padding-right: 0px;">Level 4</td>
+                                                <th style="padding-left: 0px;">: Very high risk, implement change</th>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -403,13 +407,13 @@
 
     $.ajax({
         type: "POST",
-        url: "{{route('user.sspRulaData.getDataSspRulaFrequency', $ticketId)}}",
+        url: "{{route('user.sspRebaData.getDataSspRebaFrequency', $ticketId)}}",
         data: {
             "_token": "{{ csrf_token() }}",
         },
         dataType: "json",
         success:function(data){
-            console.log(data.arrTableC)
+            console.log('test data reba ', data.arrTableC)
             $("#filter-all-count").text('('+data.allDataActionLevel+')');
             $("#level-1-count").text('('+data.arrTableC[0].frequency+')');
             $("#level-2-count").text('('+data.arrTableC[1].frequency+')');
@@ -421,7 +425,7 @@
 
     $.ajax({
         type: "GET",
-        url: "{{route('user.sspRulaData.getDataSspRulaChart', $ticketId)}}",
+        url: "{{route('user.sspRebaData.getDataSspRebaChart', $ticketId)}}",
         dataType: "json",
         contentType: 'application/json',
         success: function(data) {
@@ -429,7 +433,7 @@
                 return e.time;
             });
             var dataCharts = data.map(function(e) {
-                return e.ssp_rula_table_c;
+                return e.ssp_reba_table_c;
             });
 
             var rulaChart = echarts.init(document.getElementById('rula-chart'));
@@ -540,10 +544,11 @@
 
     $.ajax({
         type: "GET",
-        url: "{{route('user.sspRulaData.getDataActionLevelChart', $ticketId)}}",
+        url: "{{route('user.sspRebaData.getDataActionLevelChart', $ticketId)}}",
         dataType: "json",
         contentType: 'application/json',
         success: function(data) {
+
             var dataLabels = data.map(function(e) {
                 return e.time;
             });
@@ -589,6 +594,7 @@
                 },
                 xAxis: {
                     type: 'category',
+                    // data: ['Matcha Latte', 'Milk Tea', 'Cheese Cocoa', 'Walnut Brownie'],
                     boundaryGap: false,
                     min: 0,
                     axisTick: {
@@ -633,6 +639,7 @@
                     axisLabel: {
                         interval: 0,
                         formatter: function (value) {
+                            console.log(value)
                             if (Math.floor(value) === value) {
                                 return value;
                             }
@@ -743,7 +750,7 @@
     },
     ajax: {
         type: "POST",
-        url: "{{route('user.sspRulaData.getDataSspRula', $ticketId)}}",
+        url: "{{route('user.sspRebaData.getDataSspReba', $ticketId)}}",
         dataType: "json",
         contentType: 'application/json',
         data: function (data) {
@@ -769,16 +776,16 @@
         { orderable: false,
             defaultContent:'',
             render: function (data, type, row) {
-                 if(row.ssp_rula_table_c === 1 || row.ssp_rula_table_c === 2) return 'Level 1';
-                 if(row.ssp_rula_table_c === 3 || row.ssp_rula_table_c === 4) return 'Level 2';
-                 if(row.ssp_rula_table_c === 5 || row.ssp_rula_table_c === 6) return 'Level 3';
-                 if(row.ssp_rula_table_c === 7) return 'Level 4';
+                 if(row.ssp_reba_table_c === 1 || row.ssp_reba_table_c === 2) return 'Level 1';
+                 if(row.ssp_reba_table_c === 3 || row.ssp_reba_table_c === 4) return 'Level 2';
+                 if(row.ssp_reba_table_c === 5 || row.ssp_reba_table_c === 6) return 'Level 3';
+                 if(row.ssp_reba_table_c === 7) return 'Level 4';
             }
         },
-        { data: 'ssp_rula_table_c' }, { data: 'ssp_rula_table_b' }, { data: 'ssp_rula_table_a' },
-        { data: 'ssp_rula_upper_arm_left' }, { data: 'ssp_rula_upper_arm_right' }, { data: 'ssp_rula_lower_arm_left' }, { data: 'ssp_rula_lower_arm_right' }, { data: 'ssp_rula_wrist_left' },
-        { data: 'ssp_rula_wrist_right' }, { data: 'ssp_rula_wrist_twist_left' }, { data: 'ssp_rula_wrist_twist_right' }, { data: 'ssp_rula_neck' }, { data: 'ssp_rula_trunk_position' },
-        { data: 'ssp_rula_legs' },
+        { data: 'ssp_reba_table_c' }, { data: 'ssp_reba_table_b' }, { data: 'ssp_reba_table_a' },
+        { data: 'ssp_reba_upper_arm_left' }, { data: 'ssp_reba_upper_arm_right' }, { data: 'ssp_reba_lower_arm_left' }, { data: 'ssp_reba_lower_arm_right' }, { data: 'ssp_reba_wrist_left' },
+        { data: 'ssp_reba_wrist_right' }, { data: 'ssp_reba_wrist_twist_left' }, { data: 'ssp_reba_wrist_twist_right' }, { data: 'ssp_reba_neck' }, { data: 'ssp_reba_trunk_position' },
+        { data: 'ssp_reba_legs' },
         ],
         initComplete:function( settings, json){
             // $("div.dataTables_length").append('&nbsp<span onclick="approveTicket()" class="btn btn-pill btn-outline-secondary btn-air-secondary btn-sm">Approve Ticket</span>');

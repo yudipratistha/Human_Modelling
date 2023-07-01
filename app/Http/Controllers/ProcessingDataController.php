@@ -37,7 +37,7 @@ class ProcessingDataController extends Controller
     {
         $this->middleware('auth');
     }
-  
+
     /**
      * Show the application dashboard.
      *
@@ -51,11 +51,11 @@ class ProcessingDataController extends Controller
     public function uploadLargeFiles(Request $request) {
         // dd($request->ticketId);
         $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
-    
+
         if (!$receiver->isUploaded()) {
             // file not uploaded
         }
-    
+
         $fileReceived = $receiver->receive(); // receive file
         if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
 
@@ -67,7 +67,7 @@ class ProcessingDataController extends Controller
             // $fileName .= '_' . md5(time()) . '.' . $extension; // a unique file name
             $fileName = $ticket->ssp_ticket_job_title . '.' . $extension; // a unique file name
 
-    
+
             $videosPath = 'videos/'.$request->ticketId;
             Storage::disk('public')->makeDirectory($videosPath);
 
@@ -77,7 +77,7 @@ class ProcessingDataController extends Controller
             $ticketData = SspTicket::find($request->ticketId);
             $ticketData->ssp_ticket_simulation_video_path = $path;
             $ticketData->save();
-    
+
             // delete chunked file
             unlink($file->getPathname());
             return [
@@ -85,7 +85,7 @@ class ProcessingDataController extends Controller
                 'filename' => $fileName
             ];
         }
-    
+
         // otherwise return percentage information
         $handler = $fileReceived->handler();
         return [
@@ -119,13 +119,13 @@ class ProcessingDataController extends Controller
                 }
             }
             $reader->close();
-            
+
             $csvTableNameArray = [];
             $csvDataArray = [];
             $columnLength=0;
             $columnCount = 0;
             $lastArrFoundStats= false;
-            
+
             array_pop($csvData);
             // array_pop($csvData[0]);
             foreach(array_reverse($csvData[0]) as $tableNameKey => $tableNameValue){
@@ -136,7 +136,7 @@ class ProcessingDataController extends Controller
                     $columnLength++;
                 }
             }
-            
+
             for(end($csvTableNameArray); key($csvTableNameArray)!==null; prev($csvTableNameArray)){
                 $csvColumnNameKey = key($csvTableNameArray);
                 $csvColumnNameValue = current($csvTableNameArray);
@@ -159,7 +159,7 @@ class ProcessingDataController extends Controller
                     $columnCount++;
                 }
             }
-            
+
             $timesDataArr = array();
             $jointAnglesDataArr = array();
             $jointTorquesDataArr = array();
@@ -176,15 +176,15 @@ class ProcessingDataController extends Controller
                     'time_status' => 1)
                 );
             }
-            
+
             foreach (array_chunk($timesDataArr,1000) as $timesData){
                 SspTime::insert($timesData);
             }
-            
+
             $i = 0;
             foreach(SspTime::where('ssp_ticket_id', $request->ticket_id)->cursor()->toArray() as $sspTimes){
                 // echo "<pre>".print_r($csvDataArray[$i],true)."</pre>";
-                
+
                 $jointAnglesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
                 $jointTorquesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
                 $meanStrengthsDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
@@ -199,7 +199,7 @@ class ProcessingDataController extends Controller
                 }
                 $i++;
             }
-            
+
             foreach(array_chunk($jointAnglesDataArr,1000) as $jointAnglesData){
                 SspJointAngle::insert($jointAnglesData);
             }
@@ -219,12 +219,13 @@ class ProcessingDataController extends Controller
             foreach(array_chunk($percentCapablesDataArr,1000) as $percentCapablesData){
                 SspStrengthStdDev::insert($percentCapablesData);
             }
-            
+
             $ticket = SspTicket::find($request->ticket_id);
             $ticket->ssp_ticket_status = 2;
             $ticket->ssp_ticket_job_analyst = $request->job_analyst;
             $ticket->movement_type = $request->movement_type;
             $ticket->weight_of_object = $request->weight_of_object;
+            $ticket->ssp_calc_type = $request->calculation_type;
             $ticket->save();
 
             $ticketHistory = new SspTicketHistory;
@@ -232,7 +233,11 @@ class ProcessingDataController extends Controller
             $ticketHistory->ssp_ticket_histories_status = 2;
             $ticketHistory->save();
 
-            DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
+            if($request->calculation_type === '1'){
+                DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
+            }else if($request->calculation_type === '2'){
+                DB::select('CALL generate_reba_data(?)', [$request->ticket_id]);
+            }
 
             return response()->json('success');
         } catch (HttpException $exception) {
@@ -272,13 +277,13 @@ class ProcessingDataController extends Controller
                 }
             }
             $reader->close();
-            
+
             $csvTableNameArray = [];
             $csvDataArray = [];
             $columnLength=0;
             $columnCount = 0;
             $lastArrFoundStats= false;
-            
+
             array_pop($csvData);
             // array_pop($csvData[0]);
             foreach(array_reverse($csvData[0]) as $tableNameKey => $tableNameValue){
@@ -289,7 +294,7 @@ class ProcessingDataController extends Controller
                     $columnLength++;
                 }
             }
-            
+
             for(end($csvTableNameArray); key($csvTableNameArray)!==null; prev($csvTableNameArray)){
                 $csvColumnNameKey = key($csvTableNameArray);
                 $csvColumnNameValue = current($csvTableNameArray);
@@ -312,7 +317,7 @@ class ProcessingDataController extends Controller
                     $columnCount++;
                 }
             }
-            
+
             $timesDataArr = array();
             $jointAnglesDataArr = array();
             $jointTorquesDataArr = array();
@@ -329,15 +334,15 @@ class ProcessingDataController extends Controller
                     'time_status' => 1)
                 );
             }
-            
+
             foreach (array_chunk($timesDataArr,1000) as $timesData){
                 SspTime::insert($timesData);
             }
-            
+
             $i = 0;
             foreach(SspTime::where('ssp_ticket_id', $request->ticket_id)->cursor()->toArray() as $sspTimes){
                 // echo "<pre>".print_r($csvDataArray[$i],true)."</pre>";
-                
+
                 $jointAnglesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
                 $jointTorquesDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
                 $meanStrengthsDataArr[$i]["id_ssp_times"] = $sspTimes["id"];
@@ -352,7 +357,7 @@ class ProcessingDataController extends Controller
                 }
                 $i++;
             }
-            
+
             foreach(array_chunk($jointAnglesDataArr,1000) as $jointAnglesData){
                 SspJointAngle::insert($jointAnglesData);
             }
@@ -372,12 +377,13 @@ class ProcessingDataController extends Controller
             foreach(array_chunk($percentCapablesDataArr,1000) as $percentCapablesData){
                 SspStrengthStdDev::insert($percentCapablesData);
             }
-            
+
             $ticket = SspTicket::find($request->ticket_id);
             $ticket->ssp_ticket_status = 2;
             $ticket->ssp_ticket_job_analyst = $request->job_analyst;
             $ticket->movement_type = $request->movement_type;
             $ticket->weight_of_object = $request->weight_of_object;
+            $ticket->ssp_calc_type = $request->calculation_type;
             $ticket->save();
 
             $ticketHistory = new SspTicketHistory;
@@ -385,7 +391,11 @@ class ProcessingDataController extends Controller
             $ticketHistory->ssp_ticket_histories_status = 2;
             $ticketHistory->save();
 
-            DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
+            if($request->calculation_type === '1'){
+                DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
+            }else if($request->calculation_type === '2'){
+                DB::select('CALL generate_reba_data(?)', [$request->ticket_id]);
+            }
 
             return response()->json('success');
         } catch (HttpException $exception) {
@@ -397,6 +407,13 @@ class ProcessingDataController extends Controller
         $ticket = SspTicket::where('ssp_tickets.id', $request->$ticketId);
         $ticket->delete();
 
-        DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
+        $ticketData = SspTicket::find($request->ticket_id);
+
+        if($ticketData->ssp_calc_type === 1){
+            DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
+        } else if($ticketData->ssp_calc_type === 2){
+            DB::select('CALL generate_reba_data(?)', [$request->ticket_id]);
+        }
+        // DB::select('CALL generate_rula_data(?)', [$request->ticket_id]);
     }
 }
